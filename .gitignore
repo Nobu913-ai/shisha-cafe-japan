@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+
+# Environment / secrets
+.env
+
+# Claude / Cursor local settings
+.claude/
+.cursor/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Data processing scripts and logs
+scripts/
+data/
+
+# Backup files
+shops_backup_*.json
+
+# Internal docs
+docs/
+設計説明.md
+
+# Original large images (only -sm versions are used)
+images/coming-soon.png
+images/sommelier-avatar.png
+images/README.md
+
+# Local-only files
+qr_local.png

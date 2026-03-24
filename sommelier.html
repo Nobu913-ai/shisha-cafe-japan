@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>フレーバー相談｜SHISHA CAFE JAPAN</title>
+  <meta name="description" content="好みに合わせてシーシャのフレーバー組み合わせを提案。フレーバー相談で対話しながらおすすめを見つけよう。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="sommelier.js?v=20260324a" as="script">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260324e">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SHISHA CAFE <span>JAPAN</span></a>
+      <nav class="nav">
+        <a href="index.html">トップ</a>
+        <a href="search.html">店舗検索</a>
+        <a href="flavors.html">シーシャガイド</a>
+      </nav>
+      <button class="menu-btn" aria-label="メニュー" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main class="sommelier-main">
+    <div class="sommelier-container container">
+      <header class="sommelier-header">
+        <h1 class="sommelier-title">フレーバー相談</h1>
+        <p class="sommelier-desc">いくつか質問に答えると、あなたにぴったりのフレーバーの組み合わせを提案します。店舗で「この組み合わせで」と伝えてみてください。</p>
+      </header>
+
+      <div class="sommelier-chat-wrap">
+        <div class="sommelier-character">
+          <div class="sommelier-avatar sommelier-avatar--img" aria-hidden="true">
+            <img src="images/sommelier-avatar-sm.png" alt="" width="160" height="160" class="sommelier-avatar-img" loading="eager" decoding="async" onerror="var s=this.nextElementSibling;s&amp;&amp;(this.style.display='none',s.style.display='flex');">
+            <div class="sommelier-avatar-fallback" style="display: none;">
+              <svg class="sommelier-avatar-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="sommelier-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#1c1917"/>
+                    <stop offset="100%" style="stop-color:#292524"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r="58" fill="url(#sommelier-bg)" stroke="#57534e" stroke-width="2"/>
+                <ellipse cx="60" cy="72" rx="28" ry="26" fill="#44403c"/>
+                <circle cx="60" cy="48" r="22" fill="#78716c"/>
+                <circle cx="55" cy="45" r="3" fill="#fafaf9"/>
+                <circle cx="65" cy="45" r="3" fill="#fafaf9"/>
+                <path d="M 48 58 Q 60 68 72 58" stroke="#57534e" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <ellipse cx="60" cy="92" rx="18" ry="6" fill="#292524"/>
+              </svg>
+            </div>
+          </div>
+          <p class="sommelier-character-name">ルナ・ミスト</p>
+          <p class="sommelier-character-role">フレーバー<br>コンシェルジュ</p>
+        </div>
+        <div class="sommelier-chat">
+          <div class="sommelier-messages" id="sommelier-messages" role="log" aria-live="polite">
+            <div class="sommelier-msg sommelier-msg--bot sommelier-msg--visible" id="sommelier-placeholder">
+              <div class="sommelier-msg-inner sommelier-typing-dots"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+          <div class="sommelier-choices" id="sommelier-choices" aria-label="選択肢">
+            <!-- 選択肢ボタンがJSで挿入される -->
+          </div>
+          <nav class="sommelier-result-nav" id="sommelier-result-nav" hidden aria-label="提案レシピへジャンプ"></nav>
+          <div class="sommelier-restart-wrap" id="sommelier-restart-wrap" style="display: none;">
+            <button type="button" class="sommelier-restart-btn" id="sommelier-restart">もう一度相談する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-logo">SHISHA CAFE JAPAN</p>
+      <p class="footer-nav"><a href="index.html">トップ</a>｜<a href="search.html">店舗検索</a>｜<a href="flavors.html">シーシャガイド</a>｜<a href="terms.html">利用規約</a></p>
+      <p class="footer-copy">掲載情報は参考です。詳細は各店舗へお問い合わせください。</p>
+    </div>
+  </footer>
+
+  <script src="sommelier.js?v=20260324a" defer></script>
+  <script>
+    (function () {
+      var menuBtn = document.querySelector('.menu-btn');
+      var nav = document.querySelector('.nav');
+      if (menuBtn && nav) {
+        menuBtn.addEventListener('click', function () {
+          var expanded = menuBtn.getAttribute('aria-expanded') !== 'true';
+          menuBtn.setAttribute('aria-expanded', expanded);
+          nav.classList.toggle('is-open', expanded);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

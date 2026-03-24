@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>店舗検索｜SHISHA CAFE JAPAN</title>
+  <meta name="description" content="地域・キーワード・設備でシーシャカフェ・ラウンジを検索。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260324e">
+</head>
+<body class="search-page">
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SHISHA CAFE <span>JAPAN</span></a>
+      <nav class="nav">
+        <a href="index.html">トップ</a>
+        <a href="flavors.html">シーシャガイド</a>
+        <a href="sommelier.html">フレーバー相談</a>
+      </nav>
+      <button class="menu-btn" aria-label="メニュー" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main class="search-main">
+    <div class="search-main-inner">
+      <div class="search-page-header">
+        <h1 class="search-page-title">店舗検索</h1>
+        <p class="search-page-desc">地域やキーワードで絞り込んで、お近くのシーシャカフェを見つけましょう。</p>
+      </div>
+
+      <div class="search-layout">
+        <!-- PC：右カラム上段＝件数・絞り込み / スマホ：検索条件の上に表示 -->
+        <div class="search-summary-slot">
+          <div class="search-toolbar" id="search-results-toolbar">
+            <div class="search-result-summary" id="search-result-summary" aria-live="polite" aria-atomic="true">
+              <p class="search-result-headline"><span id="search-result-count-value">—</span></p>
+              <p class="search-result-conditions" id="search-result-conditions">店舗データを読み込み中です…</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="search-sidebar" id="search-sidebar">
+          <button type="button" class="search-sidebar-toggle" id="search-sidebar-toggle">絞り込み</button>
+          <div class="search-sidebar-inner" id="search-sidebar-inner">
+
+            <div class="search-section">
+              <h2 class="search-section-title">キーワード</h2>
+              <input type="search" id="search-keyword" class="search-form-input" placeholder="店舗名・地名で検索" autocomplete="off">
+            </div>
+
+            <div class="search-section">
+              <h2 class="search-section-title">地域</h2>
+<div class="search-area-buttons" id="search-area-buttons"></div>
+              <div class="search-subarea-panel" id="search-subarea-group" hidden>
+                <div class="search-subarea-panel-sticky-head">
+                  <p class="search-subarea-panel-heading" id="search-subarea-summary">エリアで絞り込む</p>
+                  <p class="search-jump-to-features-wrap" id="search-jump-to-features-wrap" hidden>
+                    <a href="#search-features-section" class="search-jump-features-link" id="search-jump-to-features" title="エリア一覧の下にある「設備・サービス」までスクロールします">設備・サービスでさらに絞り込む</a>
+                  </p>
+                </div>
+                <div class="search-subarea-buttons" id="search-subarea-buttons"></div>
+              </div>
+            </div>
+
+            <div class="search-section" id="search-station-section">
+              <h2 class="search-section-title">最寄駅</h2>
+              <input type="search" id="search-station-input" class="search-form-input" placeholder="駅名で絞り込む" autocomplete="off">
+              <div id="search-station-buttons" class="search-station-buttons"></div>
+            </div>
+
+            <div class="search-section" id="search-features-section" tabindex="-1">
+              <h2 class="search-section-title">設備・サービス</h2>
+              <div class="search-feature-tags" id="search-feature-tags"></div>
+            </div>
+
+            <div class="search-section search-section--actions">
+              <button type="button" id="search-filter-clear" class="search-sidebar-clear">条件をクリア</button>
+            </div>
+
+          </div>
+          <button type="button" class="search-sidebar-toggle-close" id="search-sidebar-toggle-close">検索結果を見る</button>
+        </aside>
+
+        <!-- 店舗リスト（一覧先頭への scroll 用アンカー） -->
+        <div class="search-content">
+          <div id="search-results-top-anchor" class="search-results-top-anchor" aria-hidden="true"></div>
+          <div id="search-loading" class="search-loading">店舗情報を読み込み中…</div>
+          <div id="search-results-container" class="search-results-list"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-logo">SHISHA CAFE JAPAN</p>
+      <p class="footer-nav"><a href="index.html">トップ</a>｜<a href="flavors.html">シーシャガイド</a>｜<a href="sommelier.html">フレーバー相談</a>｜<a href="terms.html">利用規約</a></p>
+      <p class="footer-copy">掲載情報は参考です。詳細は各店舗へお問い合わせください。</p>
+    </div>
+  </footer>
+
+  <div id="shop-modal" class="shop-modal" aria-hidden="true">
+    <div class="shop-modal-backdrop"></div>
+    <div class="shop-modal-inner">
+      <button type="button" class="shop-modal-close" aria-label="閉じる">&times;</button>
+      <div class="shop-modal-content">
+        <p class="shop-modal-area" id="shop-modal-area"></p>
+        <h2 class="shop-modal-name" id="shop-modal-name"></h2>
+        <div class="shop-modal-section shop-modal-ai-desc">
+          <h3 class="shop-modal-section-title">AI紹介</h3>
+          <p class="shop-modal-desc" id="shop-modal-desc"></p>
+        </div>
+        <dl class="shop-modal-dl">
+          <dt>アクセス</dt>
+          <dd id="shop-modal-access"></dd>
+          <dt>住所</dt>
+          <dd id="shop-modal-address"></dd>
+          <dt>電話番号</dt>
+          <dd id="shop-modal-phone"></dd>
+          <dt>営業時間</dt>
+          <dd id="shop-modal-hours"></dd>
+          <dt>定休日</dt>
+          <dd id="shop-modal-closed"></dd>
+          <dt>料金の目安</dt>
+          <dd id="shop-modal-price"></dd>
+          <dt>予約</dt>
+          <dd id="shop-modal-reservation"></dd>
+          <dt>設備・サービス</dt>
+          <dd id="shop-modal-features"></dd>
+          <dt>支払い</dt>
+          <dd id="shop-modal-payment"></dd>
+          <dt>評価・口コミ</dt>
+          <dd id="shop-modal-review"></dd>
+          <dt>公式HP</dt>
+          <dd id="shop-modal-official"></dd>
+        </dl>
+        <div class="shop-modal-map-section" id="shop-modal-map"></div>
+        <div class="shop-modal-links" id="shop-modal-links"></div>
+        <p class="shop-modal-note">営業時間・料金・休業日・予約の有無は変わる場合があります。詳細は各店舗の公式情報でご確認ください。</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="area-normalize.js?v=20260223d"></script>
+  <script src="search.js?v=20260324b"></script>
+  <script>
+    (function () {
+      var toggle = document.getElementById('search-sidebar-toggle');
+      var inner = document.getElementById('search-sidebar-inner');
+      var closeBtn = document.getElementById('search-sidebar-toggle-close');
+      if (!toggle || !inner) return;
+
+      function openPanel() {
+        inner.classList.add('is-open');
+        toggle.classList.add('is-open');
+        toggle.textContent = '✕ 閉じる';
+        document.body.style.overflow = 'hidden';
+      }
+      function closePanel() {
+        inner.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.textContent = '絞り込み';
+        document.body.style.overflow = '';
+      }
+
+      toggle.addEventListener('click', function () {
+        inner.classList.contains('is-open') ? closePanel() : openPanel();
+      });
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closePanel);
+      }
+    })();
+  </script>
+</body>
+</html>

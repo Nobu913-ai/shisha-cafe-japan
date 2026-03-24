@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SHISHA CAFE JAPAN｜日本のシーシャカフェ情報</title>
+  <meta name="description" content="東京・大阪・名古屋など全国のシーシャカフェ・ラウンジの情報をエリア別に紹介。おすすめ店舗、営業時間、雰囲気で探せます。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260324e">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">SHISHA CAFE <span>JAPAN</span></a>
+      <nav class="nav">
+        <a href="search.html">店舗検索</a>
+        <a href="flavors.html">シーシャガイド</a>
+        <a href="sommelier.html">フレーバー相談</a>
+      </nav>
+      <button class="menu-btn" aria-label="メニュー" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-inner">
+        <p class="hero-label">日本のシーシャカルチャーへ</p>
+        <h1 class="hero-title">シーシャカフェで、<br>ゆったり時間を。</h1>
+        <p class="hero-desc">東京・大阪・名古屋など、エリア別に厳選したシーシャカフェ・ラウンジの情報をお届けします。</p>
+        <a href="#areas" class="hero-cta">エリアを選んで探す</a>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <div class="container">
+        <h2 class="section-title">シーシャとは</h2>
+        <div class="about-grid">
+          <button type="button" class="about-card about-card--clickable" data-about-detail="water">
+            <span class="about-icon">💭</span>
+            <h3>水タバコ</h3>
+            <p>中東発祥の水タバコ。フレーバー付きの煙を水を通して楽しむスタイルで、カフェやラウンジでくつろぎながら味わえます。</p>
+          </button>
+          <button type="button" class="about-card about-card--clickable" data-about-detail="cafe">
+            <span class="about-icon">☕</span>
+            <h3>カフェ＆バー</h3>
+            <p>ドリンクや軽食と一緒に楽しめるお店が多数。昼はカフェ、夜はバーとして営業している店も多く、デートや友人との集まりに人気です。</p>
+          </button>
+          <button type="button" class="about-card about-card--clickable" data-about-detail="late">
+            <span class="about-icon">🕐</span>
+            <h3>深夜まで営業</h3>
+            <p>多くの店舗が深夜〜早朝まで営業。仕事帰りや週末の二次会にも利用できます。事前の予約や利用ルールは各店舗でご確認ください。</p>
+          </button>
+        </div>
+        <template id="about-detail-water">
+          <h2 class="about-modal-title">水タバコ</h2>
+          <p>シーシャ（水タバコ）は、中東・西アジア発祥の喫煙具です。専用の器具でフレーバー付きの葉を加熱し、その煙を水を通して吸うスタイルが特徴です。</p>
+          <p>ニコチンを含まないフレーバーだけのものや、果物・ハーブの香りを楽しむものが多く、煙は柔らかく香りが楽しめるため、カフェやラウンジでリラックスしながら味わう文化が広がっています。日本では「シーシャカフェ」「シーシャバー」として、ドリンクや軽食と一緒に楽しめるお店が増えています。</p>
+        </template>
+        <template id="about-detail-cafe">
+          <h2 class="about-modal-title">カフェ＆バー</h2>
+          <p>シーシャを提供するお店の多くは、昼はカフェ・夜はバーとして営業しています。ソファ席や個室で、ドリンクや軽食を頼みながら、何時間でもくつろげる空間が魅力です。</p>
+          <p>友人との会話やデート、一人での読書や作業にも利用でき、フレーバーの種類が豊富な店ではスタッフが好みに合わせてブレンドしてくれることもあります。ワンドリンク制やチャージ料を設けている店舗が多いので、利用前に各店のルールを確認することをおすすめします。</p>
+        </template>
+        <template id="about-detail-late">
+          <h2 class="about-modal-title">深夜まで営業</h2>
+          <p>シーシャ店の多くは夕方から深夜、なかには翌朝まで営業している店舗もあります。仕事帰りや週末の二次会、夜更かしのひとときに利用する方が多いです。</p>
+          <p>営業時間・定休日・予約の要否は店舗によって異なります。人気店は混雑する時間帯に予約が必要な場合もあるため、事前に公式サイトや電話で確認することをおすすめします。</p>
+        </template>
+      </div>
+    </section>
+
+    <section id="areas" class="section areas">
+      <div class="container">
+        <h2 class="section-title">エリアから探す</h2>
+        <p class="section-desc">エリアを選ぶと店舗検索ページに移動し、その地域の店舗を表示します。検索ページではキーワード・設備・サービスでも絞り込めます。</p>
+        <div class="area-grid">
+          <a href="search.html?area=tokyo" class="area-card">
+            <span class="area-name">東京</span>
+            <span class="area-count">渋谷・新宿・六本木・銀座ほか</span>
+          </a>
+          <a href="search.html?area=osaka" class="area-card">
+            <span class="area-name">大阪</span>
+            <span class="area-count">梅田・心斎橋・難波ほか</span>
+          </a>
+          <a href="search.html?area=nagoya" class="area-card">
+            <span class="area-name">名古屋</span>
+            <span class="area-count">栄・名駅周辺</span>
+          </a>
+          <a href="search.html?area=fukuoka" class="area-card">
+            <span class="area-name">福岡</span>
+            <span class="area-count">天神・中洲周辺</span>
+          </a>
+          <a href="search.html?area=other" class="area-card">
+            <span class="area-name">その他</span>
+            <span class="area-count">横浜・仙台・広島</span>
+          </a>
+        </div>
+        <p class="areas-cta">
+          <a href="search.html" class="hero-cta">すべての店舗を検索</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="spots" class="section spots">
+      <div class="container">
+        <h2 class="section-title">おすすめ店舗</h2>
+        <p class="section-desc">当サイトが厳選したおすすめ店舗をエリア別にご紹介します。営業時間・料金は各店舗の公式情報でご確認ください。</p>
+
+        <div id="spots-loading" class="spots-loading">店舗情報を読み込み中…</div>
+        <div id="spots-container"></div>
+      </div>
+    </section>
+
+    <section class="section notice">
+      <div class="container">
+        <h2 class="section-title">ご利用にあたって</h2>
+        <div class="notice-box">
+          <p>シーシャは煙を吸入するため、喫煙に該当します。各店舗では<strong>20歳未満のご入店をお断り</strong>している場合がほとんどです。</p>
+          <p>営業時間・料金・予約の要否は店舗により異なります。お出かけ前に必ず各店舗の公式情報をご確認ください。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-logo">SHISHA CAFE JAPAN</p>
+      <p class="footer-nav"><a href="search.html">店舗検索</a>｜<a href="flavors.html">シーシャガイド</a>｜<a href="sommelier.html">フレーバー相談</a>｜<a href="terms.html">利用規約</a></p>
+      <p class="footer-copy">掲載情報は参考です。詳細は各店舗へお問い合わせください。</p>
+    </div>
+  </footer>
+
+  <div id="about-detail-modal" class="about-detail-modal shop-modal" aria-hidden="true">
+    <div class="shop-modal-backdrop about-detail-backdrop"></div>
+    <div class="shop-modal-inner">
+      <button type="button" class="shop-modal-close about-detail-close" aria-label="閉じる">&times;</button>
+      <div class="shop-modal-content about-detail-content-inner" id="about-detail-body"></div>
+    </div>
+  </div>
+
+  <div id="shop-modal" class="shop-modal" aria-hidden="true">
+    <div class="shop-modal-backdrop"></div>
+    <div class="shop-modal-inner">
+      <button type="button" class="shop-modal-close" aria-label="閉じる">&times;</button>
+      <div class="shop-modal-content">
+        <p class="shop-modal-area" id="shop-modal-area"></p>
+        <h2 class="shop-modal-name" id="shop-modal-name"></h2>
+        <div class="shop-modal-section shop-modal-ai-desc">
+          <h3 class="shop-modal-section-title">AI紹介</h3>
+          <p class="shop-modal-desc" id="shop-modal-desc"></p>
+        </div>
+        <dl class="shop-modal-dl">
+          <dt>アクセス</dt>
+          <dd id="shop-modal-access"></dd>
+          <dt>住所</dt>
+          <dd id="shop-modal-address"></dd>
+          <dt>電話番号</dt>
+          <dd id="shop-modal-phone"></dd>
+          <dt>営業時間</dt>
+          <dd id="shop-modal-hours"></dd>
+          <dt>定休日</dt>
+          <dd id="shop-modal-closed"></dd>
+          <dt>料金の目安</dt>
+          <dd id="shop-modal-price"></dd>
+          <dt>予約</dt>
+          <dd id="shop-modal-reservation"></dd>
+          <dt>設備・サービス</dt>
+          <dd id="shop-modal-features"></dd>
+          <dt>支払い</dt>
+          <dd id="shop-modal-payment"></dd>
+          <dt>評価・口コミ</dt>
+          <dd id="shop-modal-review"></dd>
+          <dt>公式HP</dt>
+          <dd id="shop-modal-official"></dd>
+        </dl>
+        <div class="shop-modal-map-section" id="shop-modal-map"></div>
+        <div class="shop-modal-links" id="shop-modal-links"></div>
+        <p class="shop-modal-note">営業時間・料金・休業日・予約の有無は変わる場合があります。詳細は各店舗の公式情報でご確認ください。</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="area-normalize.js?v=20260223d"></script>
+  <script src="script.js?v=20260324b"></script>
+</body>
+</html>
