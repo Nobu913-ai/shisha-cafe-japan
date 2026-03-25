@@ -18,6 +18,7 @@ data/
 
 # Backup files
 shops_backup_*.json
+shops.json.bak_*
 
 # Internal docs
 docs/

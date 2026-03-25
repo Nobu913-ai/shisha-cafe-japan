@@ -268,6 +268,113 @@
     return window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
   }
 
+  /** 入力の実際にスクロールする祖先（オーバーレイの inner または document） */
+  function getSearchInputScrollParent(el) {
+    var node = el.parentElement;
+    while (node && node !== document.body && node !== document.documentElement) {
+      var st = window.getComputedStyle(node);
+      var oy = st.overflowY;
+      var canY = (oy === 'auto' || oy === 'scroll' || oy === 'overlay') && node.scrollHeight > node.clientHeight + 1;
+      if (canY) return node;
+      node = node.parentElement;
+    }
+    return document.scrollingElement || document.documentElement;
+  }
+
+  /** iOS Chrome / Android Chrome は Safari より visualViewport 高さが小さく出ることがあり、上方向へ過剰スクロールしやすい */
+  function isMobileChromeVisualViewportQuirk() {
+    var ua = navigator.userAgent || '';
+    if (/CriOS\//.test(ua)) return true;
+    if (/Android/.test(ua) && /Chrome\//.test(ua) && !/Edg\//.test(ua)) return true;
+    return false;
+  }
+
+  function applySearchInputScrollDelta(el, delta) {
+    var sp = getSearchInputScrollParent(el);
+    if (sp === document.documentElement || sp === document.body) {
+      window.scrollBy({ left: 0, top: delta, behavior: 'auto' });
+    } else {
+      sp.scrollTop += delta;
+    }
+  }
+
+  /**
+   * キーボード表示後の visualViewport 内に入力欄全体が収まるようスクロールする。
+   * 以前の「スクロール位置を戻す」処理はキーボード分の余白を打ち消すため行わない。
+   */
+  function alignSearchInputToKeyboard(el) {
+    if (!el || !isNarrowSearchViewport()) return;
+    var vv = window.visualViewport;
+    if (!vv) {
+      try {
+        el.scrollIntoView({ block: 'center', behavior: 'auto', inline: 'nearest' });
+      } catch (e) {}
+      return;
+    }
+    var chromeQuirk = isMobileChromeVisualViewportQuirk();
+    /* Chrome: vv 下端を実際より少し下に見なして、上スクロール量を抑える */
+    var slack = chromeQuirk ? Math.min(80, Math.round((window.innerHeight || 640) * 0.085)) : 0;
+    var pad = chromeQuirk ? 16 : 14;
+    var iter;
+    for (iter = 0; iter < 6; iter++) {
+      var rect = el.getBoundingClientRect();
+      var viewTop = vv.offsetTop;
+      var viewBottom = vv.offsetTop + vv.height + slack;
+      var delta = 0;
+      /* 上はみ出しを先に直す（過剰スクロール直後の状態に効く） */
+      if (rect.top < viewTop + pad) {
+        delta = rect.top - (viewTop + pad);
+      } else if (rect.bottom > viewBottom - pad) {
+        delta = rect.bottom - (viewBottom - pad);
+      }
+      if (Math.abs(delta) < 2) break;
+      applySearchInputScrollDelta(el, delta);
+    }
+  }
+
+  function bindSearchInputKeyboardAlign() {
+    var stationIn = document.getElementById('search-station-input');
+    var inputs = [searchKeyword, stationIn].filter(Boolean);
+    if (!inputs.length) return;
+
+    inputs.forEach(function (el) {
+      var vvResizeTimer = null;
+      var vvHandlers = null;
+
+      el.addEventListener('focusin', function () {
+        if (!isNarrowSearchViewport()) return;
+
+        function scheduleAlign() {
+          alignSearchInputToKeyboard(el);
+        }
+
+        scheduleAlign();
+        requestAnimationFrame(scheduleAlign);
+        [40, 120, 280, 450].forEach(function (ms) {
+          window.setTimeout(scheduleAlign, ms);
+        });
+
+        if (window.visualViewport) {
+          vvHandlers = function () {
+            if (vvResizeTimer) clearTimeout(vvResizeTimer);
+            vvResizeTimer = window.setTimeout(scheduleAlign, 20);
+          };
+          window.visualViewport.addEventListener('resize', vvHandlers);
+          window.visualViewport.addEventListener('scroll', vvHandlers);
+        }
+
+        el.addEventListener('focusout', function onBlur() {
+          if (vvResizeTimer) clearTimeout(vvResizeTimer);
+          if (window.visualViewport && vvHandlers) {
+            window.visualViewport.removeEventListener('resize', vvHandlers);
+            window.visualViewport.removeEventListener('scroll', vvHandlers);
+          }
+          el.removeEventListener('focusout', onBlur);
+        }, { once: true });
+      });
+    });
+  }
+
   /** 右カラムの表示を先頭へ（sticky バーではなくアンカーでウィンドウスクロール） */
   function scrollSearchResultsColumnToTop() {
     if (isNarrowSearchViewport()) return;
@@ -345,6 +452,9 @@
         var matchSubArea = !subArea || cardArea === subArea;
         if (!matchSubArea && subArea && filterState.regionId === 'tokyo' && TOKYO_23KU[subArea]) {
           matchSubArea = cardArea === '東京都' + subArea;
+        }
+        if (!matchSubArea && subArea && filterState.regionId === 'other') {
+          matchSubArea = cardArea.indexOf(subArea) === 0;
         }
         var matchKeyword = !keyword || searchable.indexOf(keyword) !== -1;
         var matchFeatures = featureTags.length === 0 || featureTags.every(function (t) { return cardTags.indexOf(t) !== -1; });
@@ -462,7 +572,7 @@
     '千代田区,中央区,港区,新宿区,文京区,台東区,墨田区,江東区,品川区,目黒区,大田区,世田谷区,渋谷区,中野区,杉並区,豊島区,北区,荒川区,板橋区,練馬区,足立区,葛飾区,江戸川区'.split(',').forEach(function (k) { TOKYO_23KU[k] = true; });
   }
 
-/** その他タブ: 47都道府県の並び（北海道→沖縄）。東京・大阪・福岡は専用タブ用のため通常グループから除外 */
+/** その他タブ: 都道府県の並び（北海道→沖縄）。データがある県・府はこの順で表示 */
   var OTHER_PREF_ORDER = [
     '北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県',
     '茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県',
@@ -472,8 +582,6 @@
     '徳島県', '香川県', '愛媛県', '高知県',
     '福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'
   ];
-  var OTHER_DEDICATED_TAB_PREF = { '東京都': true, '大阪府': true, '福岡県': true };
-
   function countTreeShops(node) {
     var c = 0;
     if (node.items) node.items.forEach(function (it) { c += it.count || 0; });
@@ -495,6 +603,52 @@
     return (m && m[1]) ? m[1] : area;
   }
 
+  /**
+   * その他タブ用: エリアキーを市区郡町村単位にまとめる（区の細分はまとめて1ボタン）。
+   * full は絞り込み用プレフィックス（例: 神奈川県横浜市）、display はボタン表記（例: 横浜市）。
+   */
+  function otherRegionCityBucket(pref, areaKey) {
+    if (!areaKey || !pref || areaKey.indexOf(pref) !== 0) {
+      return { filterPrefix: areaKey, display: stripPrefFromArea(areaKey) };
+    }
+    var rest = areaKey.slice(pref.length);
+    var m;
+    if (/^.+市市/.test(rest)) {
+      m = rest.match(/^(.+市市)/);
+    } else {
+      m = rest.match(/^(.+?市)/) || rest.match(/^(.+?郡)/) || rest.match(/^(.+?[町村])/);
+    }
+    if (!m) {
+      return { filterPrefix: areaKey, display: stripPrefFromArea(areaKey) };
+    }
+    return { filterPrefix: pref + m[1], display: m[1] };
+  }
+
+  function buildOtherPrefectureFlatCityTree(pref, list, counts) {
+    var bucket = {};
+    list.forEach(function (areaKey) {
+      var b = otherRegionCityBucket(pref, areaKey);
+      var fp = b.filterPrefix;
+      if (!bucket[fp]) {
+        bucket[fp] = { display: b.display, count: 0 };
+      }
+      bucket[fp].count += counts[areaKey] || 0;
+    });
+    var items = Object.keys(bucket).map(function (fp) {
+      return { full: fp, display: bucket[fp].display, count: bucket[fp].count };
+    });
+    sortByCount(items);
+    return { children: [], items: items };
+  }
+
+  function buildUnknownAreaFlatItems(list, counts) {
+    var items = list.map(function (a) {
+      return { full: a, display: stripPrefFromArea(a), count: counts[a] || 0 };
+    });
+    sortByCount(items);
+    return { children: [], items: items };
+  }
+
   function buildCityTree(areas, counts) {
     var cityMap = {};
     var flat = [];
@@ -511,12 +665,18 @@
     var node = { children: [], items: [] };
     Object.keys(cityMap).forEach(function (city) {
       var list = sortByCount(cityMap[city]);
-      if (list.length === 1) {
-        node.items.push({ full: list[0].full, display: stripPrefFromArea(list[0].full), count: list[0].count });
-      } else {
-        var sub = { items: list };
-        node.children.push({ label: stripPrefFromArea(city) + '（' + countTreeShops(sub) + '）', items: list, _shopCount: countTreeShops(sub) });
-      }
+      var sub = { items: list };
+      var sc = countTreeShops(sub);
+      /* 区が1つだけの市も「市名（件数）」見出しの下に置き、浜松・静岡・横浜などの階層を揃える */
+      node.children.push({
+        label: stripPrefFromArea(city) + '（' + sc + '）',
+        items: list,
+        _shopCount: sc
+      });
+    });
+    sortByCount(flat);
+    flat.forEach(function (item) {
+      node.items.push(item);
     });
     sortByCount(node.items);
     node.children.sort(function (a, b) { return (b._shopCount || 0) - (a._shopCount || 0); });
@@ -615,17 +775,11 @@
     }
     if (regionId === 'other') {
       var prefAreas = {};
-      var dedicatedTabAreas = [];
-      var nagoyaInOther = [];
       areas.forEach(function (a) {
         var pref = extractPrefecture(areaAddresses[a]);
         if (!pref) {
           if (!prefAreas.__unknown__) prefAreas.__unknown__ = [];
           prefAreas.__unknown__.push(a);
-        } else if (OTHER_DEDICATED_TAB_PREF[pref]) {
-          dedicatedTabAreas.push(a);
-        } else if (pref === '愛知県' && /^愛知県名古屋市/.test(a)) {
-          nagoyaInOther.push(a);
         } else {
           if (!prefAreas[pref]) prefAreas[pref] = [];
           prefAreas[pref].push(a);
@@ -633,23 +787,11 @@
       });
       var root = { children: [], items: [] };
       OTHER_PREF_ORDER.forEach(function (pref) {
-        if (OTHER_DEDICATED_TAB_PREF[pref]) return;
         var list = prefAreas[pref];
         if (!list || !list.length) return;
-        if (pref === '愛知県') {
-          var ctAi = buildCityTree(list, counts);
-          var scAi = countTreeShops({ children: ctAi.children, items: ctAi.items });
-          if (scAi === 0) return;
-          root.children.push({
-            label: '愛知県（名古屋市以外・' + scAi + '）',
-            children: ctAi.children,
-            items: ctAi.items,
-            _shopCount: scAi
-          });
-          return;
-        }
-        var ct = buildCityTree(list, counts);
-        var sc = countTreeShops({ children: ct.children, items: ct.items });
+        var ct = buildOtherPrefectureFlatCityTree(pref, list, counts);
+        var sc = countTreeShops(ct);
+        if (sc === 0) return;
         root.children.push({
           label: pref + '（' + sc + '）',
           children: ct.children,
@@ -657,28 +799,8 @@
           _shopCount: sc
         });
       });
-      if (nagoyaInOther.length) {
-        var ctNg = buildCityTree(nagoyaInOther, counts);
-        if (countTreeShops(ctNg) > 0) {
-          root.children.push({
-            label: '愛知県・名古屋市（名古屋タブ推奨）',
-            children: ctNg.children,
-            items: ctNg.items
-          });
-        }
-      }
-      if (dedicatedTabAreas.length) {
-        var ctD = buildCityTree(dedicatedTabAreas, counts);
-        if (countTreeShops(ctD) > 0) {
-          root.children.push({
-            label: '東京都・大阪府・福岡県（各タブ推奨）',
-            children: ctD.children,
-            items: ctD.items
-          });
-        }
-      }
       if (prefAreas.__unknown__ && prefAreas.__unknown__.length) {
-        var ctU = buildCityTree(prefAreas.__unknown__, counts);
+        var ctU = buildUnknownAreaFlatItems(prefAreas.__unknown__, counts);
         if (countTreeShops(ctU) > 0) {
           root.children.push({
             label: '住所不明（' + countTreeShops(ctU) + '）',
@@ -793,6 +915,9 @@
           if (!match && filterState.regionId === 'tokyo' && TOKYO_23KU[subArea]) {
             match = cardArea === '東京都' + subArea;
           }
+          if (!match && filterState.regionId === 'other') {
+            match = cardArea.indexOf(subArea) === 0;
+          }
           if (!match) return;
         }
         var st = card.getAttribute('data-station') || '';
@@ -875,6 +1000,8 @@
       }, 420);
     });
   }
+
+  bindSearchInputKeyboardAlign();
 
   if (searchJumpToFeatures) {
     searchJumpToFeatures.addEventListener('click', function (e) {
@@ -1153,6 +1280,7 @@
         else if (rid === 'osaka' && sk.indexOf('大阪府') === 0) filterState.subAreaLabel = sk.slice(3);
         else if (rid === 'nagoya' && sk.indexOf('愛知県') === 0) filterState.subAreaLabel = sk.slice(3);
         else if (rid === 'fukuoka' && sk.indexOf('福岡県') === 0) filterState.subAreaLabel = sk.slice(3);
+        else if (rid === 'other') filterState.subAreaLabel = stripPrefFromArea(sk) || sk;
         else filterState.subAreaLabel = sk;
       }
 

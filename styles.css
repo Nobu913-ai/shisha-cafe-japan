@@ -1412,6 +1412,9 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: 8px;
   box-sizing: border-box;
+  /* iOS の search 入力のネイティブ装飾がフォント計算に影響する場合がある */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .search-form-input:focus {
@@ -1422,6 +1425,28 @@ a:hover {
 
 .search-form-input::placeholder {
   color: var(--text-muted);
+}
+
+/*
+ * iOS Safari / iOS Chrome: フォーカス時の自動ズームは「最終的な computed font-size が 16px 未満」の入力で起きる。
+ * 上の .search-form-input { font-size: 0.9rem } より後に置かないと上書きされて効かない。
+ */
+@media (max-width: 900px) {
+  .search-form-input {
+    font-size: 16px;
+    /* フォーカス時の scrollIntoView がヘッダー・キーボードと干渉しにくい余白 */
+    scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 56px);
+    scroll-margin-bottom: min(38vh, 320px);
+  }
+}
+
+/* iPad 横向きなど幅が広くてもタッチ端末では 16px を維持 */
+@media (hover: none) and (pointer: coarse) {
+  .search-form-input {
+    font-size: 16px;
+    scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 56px);
+    scroll-margin-bottom: min(38vh, 320px);
+  }
 }
 
 .search-area-buttons {

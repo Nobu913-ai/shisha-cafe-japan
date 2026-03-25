@@ -140,6 +140,21 @@
   }
 
   /**
+   * その他タブ: 左上表示を絞り込みボタンと同じ「市・郡・町村」までにする（区名は出さない）。
+   * rest は都道府県名を除いた残り（例: 札幌市中央区 → 札幌市）。
+   */
+  function otherRegionDisplayCity(restAfterPref) {
+    if (!restAfterPref) return '';
+    var m;
+    if (/^.+市市/.test(restAfterPref)) {
+      m = restAfterPref.match(/^(.+市市)/);
+    } else {
+      m = restAfterPref.match(/^(.+?市)/) || restAfterPref.match(/^(.+?郡)/) || restAfterPref.match(/^(.+?[町村])/);
+    }
+    return m ? m[1] : restAfterPref;
+  }
+
+  /**
    * @param {object} shop
    * @param {string} regionId tokyo|osaka|nagoya|fukuoka|other
    * @returns {{ key: string, display: string }}
@@ -156,6 +171,23 @@
       return { key: k, display: d };
     }
 
+    /** 先頭の都道府県＋市／区／町村からタグ用ラベルを得る（「その他」と同ロジック） */
+    function tryParseAreaFromAddress(a) {
+      if (!a) return null;
+      var mm = a.match(/^(北海道|東京都|大阪府|京都府|.+?県)/);
+      if (!mm) return null;
+      var pref = mm[1];
+      var rest = a.slice(pref.length);
+      var mm2 =
+        rest.match(/^(.+?市[\u3040-\u30ff\u4e00-\u9fff]{1,6}区)/) ||
+        rest.match(/^(.+?市)/) ||
+        rest.match(/^(.+?[町村])/);
+      if (mm2 && mm2[1]) {
+        return ret(pref + mm2[1], mm2[1]);
+      }
+      return null;
+    }
+
     var m;
     if (regionId === 'tokyo') {
       m = addr.match(/東京都(.+?区)/);
@@ -166,6 +198,8 @@
       if (m && m[1]) {
         return ret('東京都' + m[1], m[1]);
       }
+      var genT = tryParseAreaFromAddress(addr);
+      if (genT) return genT;
       if (TOKYO_23KU[rawC]) {
         return ret('東京都' + rawC, rawC);
       }
@@ -217,6 +251,8 @@
       if (m && m[1]) {
         return ret('大阪府' + m[1], m[1]);
       }
+      var genO = tryParseAreaFromAddress(addr);
+      if (genO) return genO;
       if (rawC === '大阪' || rawC === '大阪市') {
         return ret('大阪府', '大阪府内');
       }
@@ -235,6 +271,8 @@
       if (m && m[1]) {
         return ret('愛知県' + m[1], m[1]);
       }
+      var genN = tryParseAreaFromAddress(addr);
+      if (genN) return genN;
       if (rawC && !isGarbageRawArea(rawC) && rawC.length <= 14) {
         return ret('愛知県' + rawC, rawC);
       }
@@ -254,6 +292,8 @@
       if (m && m[1]) {
         return ret('福岡県' + m[1], m[1]);
       }
+      var genF = tryParseAreaFromAddress(addr);
+      if (genF) return genF;
       if (rawC === '福岡' || rawC === '福岡市') {
         return ret('福岡県', '福岡県内');
       }
@@ -268,10 +308,21 @@
     if (m) {
       var pref = m[1];
       var rest = addr.slice(pref.length);
+      /* 東京都は「◯◯区」が都名の直後に続く（渋谷区・港区など。市名を挟まない） */
+      if (pref === '東京都') {
+        var mTokKu = rest.match(/^(.+?区)/);
+        if (mTokKu && mTokKu[1] && /^[^0-9０-９〒丁目番地のー\-−–—]{1,10}区$/.test(mTokKu[1])) {
+          return ret(pref + mTokKu[1], mTokKu[1]);
+        }
+        var mTokShi = rest.match(/^(.+?市)/);
+        if (mTokShi && mTokShi[1]) {
+          return ret(pref + mTokShi[1], mTokShi[1]);
+        }
+      }
       /* 区の直前が漢字・かなのみ（1〜6文字）の場合だけ区まで取得（「E区画」等の誤マッチを防ぐ） */
       var m2 = rest.match(/^(.+?市[\u3040-\u30ff\u4e00-\u9fff]{1,6}区)/) || rest.match(/^(.+?市)/) || rest.match(/^(.+?[町村])/);
       if (m2 && m2[1]) {
-        return ret(pref + m2[1], m2[1]);
+        return ret(pref + m2[1], otherRegionDisplayCity(m2[1]));
       }
     }
     if (rawC && !isGarbageRawArea(rawC)) {
