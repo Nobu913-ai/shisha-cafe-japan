@@ -20,6 +20,10 @@ data/
 shops_backup_*.json
 shops.json.bak_*
 
+# 作業用エクスポート（公開サイトで使うのは shops.json のみ）
+shops_*_access.json
+*_name_access_address.tsv
+
 # Internal docs
 docs/
 設計説明.md
