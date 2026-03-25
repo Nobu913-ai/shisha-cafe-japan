@@ -47,7 +47,6 @@
   var searchResultConditions = document.getElementById('search-result-conditions');
   var searchResultSummary = document.getElementById('search-result-summary');
   var searchResultsToolbar = document.getElementById('search-results-toolbar');
-  var keywordScrollTimer = null;
   var searchSubareaButtons = document.getElementById('search-subarea-buttons');
   var searchSubareaPanel = document.getElementById('search-subarea-group');
   var searchSubareaSummary = document.getElementById('search-subarea-summary');
@@ -268,6 +267,11 @@
     return window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
   }
 
+  /** マウス主体の PC ではキーボード用の visualViewport 調整をしない（誤スクロール防止） */
+  function shouldAlignSearchInputForTouchKeyboard() {
+    return isNarrowSearchViewport() && window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  }
+
   /** 入力の実際にスクロールする祖先（オーバーレイの inner または document） */
   function getSearchInputScrollParent(el) {
     var node = el.parentElement;
@@ -303,7 +307,7 @@
    * 以前の「スクロール位置を戻す」処理はキーボード分の余白を打ち消すため行わない。
    */
   function alignSearchInputToKeyboard(el) {
-    if (!el || !isNarrowSearchViewport()) return;
+    if (!el || !shouldAlignSearchInputForTouchKeyboard()) return;
     var vv = window.visualViewport;
     if (!vv) {
       try {
@@ -342,7 +346,7 @@
       var vvHandlers = null;
 
       el.addEventListener('focusin', function () {
-        if (!isNarrowSearchViewport()) return;
+        if (!shouldAlignSearchInputForTouchKeyboard()) return;
 
         function scheduleAlign() {
           alignSearchInputToKeyboard(el);
@@ -994,10 +998,6 @@
     searchKeyword.addEventListener('input', function () {
       filterState.keyword = this.value;
       applyFilters({ scrollToResults: false });
-      if (keywordScrollTimer) clearTimeout(keywordScrollTimer);
-      keywordScrollTimer = setTimeout(function () {
-        if (!isNarrowSearchViewport()) scrollSearchResultsToolbarIntoView();
-      }, 420);
     });
   }
 
