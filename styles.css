@@ -3039,6 +3039,75 @@ a:hover {
   margin-bottom: 14px;
 }
 
+.sommelier-recipe-simple-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px 12px;
+}
+
+.sommelier-recipe-simple-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.sommelier-recipe-simple-row .sommelier-recipe-flavor {
+  font-weight: 700;
+}
+
+.sommelier-recipe-simple-row .sommelier-recipe-ratio {
+  margin-left: auto;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.sommelier-recipe-details {
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.sommelier-recipe-details-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 9px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sommelier-recipe-details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.sommelier-recipe-details-summary::before {
+  content: "▶";
+  font-size: 0.65rem;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.sommelier-recipe-details[open] > .sommelier-recipe-details-summary::before {
+  transform: rotate(90deg);
+}
+
+.sommelier-recipe-details[open] > .sommelier-recipe-details-summary {
+  border-bottom: 1px dashed var(--border);
+}
+
+.sommelier-recipe-details .sommelier-recipe-items {
+  margin: 0;
+  padding: 10px 12px 12px;
+}
+
 .sommelier-recipe-row {
   display: flex;
   align-items: center;
@@ -3075,6 +3144,11 @@ a:hover {
 .sommelier-leaf-blonde {
   background: rgba(234, 179, 8, 0.2);
   color: #d4a017;
+}
+
+.sommelier-leaf-herbal {
+  background: rgba(72, 153, 86, 0.22);
+  color: #6fbf7a;
 }
 
 .sommelier-recipe-ratio {

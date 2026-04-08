@@ -54,14 +54,28 @@
       ]
     },
     {
-      id: "dark_leaf",
-      bot: "ダークリーフのお好みをお伺いします。\nダークリーフはタバコ感・ニコチン感が強く、深みのある喫味が特徴です。",
-      choices: [
-        { id: "dark_main", label: "ダークリーフメインで組みたい" },
-        { id: "dark_accent", label: "ダークリーフを少しアクセントに" },
-        { id: "blonde_only", label: "ブロンドリーフのみで" },
-        { id: "either", label: "おまかせ" }
-      ]
+      id: "leaf_type",
+      bot: function (answers) {
+        if (answers.experience === "beginner") {
+          return "ノンニコチンのシーシャをご希望ですか。\n（ノンニコチンは、タバコ葉を使わないハーブ系のフレーバーです）";
+        }
+        return "お使いになる葉のタイプのご希望はございますか。\nダークリーフはタバコ感・ニコチン感が強く、深みのある喫味が特徴です。";
+      },
+      choices: function (answers) {
+        if (answers.experience === "beginner") {
+          return [
+            { id: "non_nicotine", label: "ノンニコチンを希望" },
+            { id: "either", label: "特にこだわらない / おまかせ" }
+          ];
+        }
+        return [
+          { id: "dark_main", label: "ダークリーフ メインで（濃厚・深め）" },
+          { id: "dark_accent", label: "ダークリーフ を少しアクセントに" },
+          { id: "blonde_only", label: "ブロンドリーフ のみ（マイルド）" },
+          { id: "non_nicotine", label: "ノンニコチン希望" },
+          { id: "either", label: "おまかせ" }
+        ];
+      }
     },
     {
       id: "mood",
@@ -75,11 +89,23 @@
     }
   ];
 
+  /** ステップ定義の bot / choices が関数形式でも静的でも扱えるようにする */
+  function resolveStepBot(step) {
+    return typeof step.bot === "function" ? step.bot(state.answers) : step.bot;
+  }
+  function resolveStepChoices(step) {
+    return typeof step.choices === "function" ? step.choices(state.answers) : step.choices;
+  }
+
   /* ─── フレーバーデータベース ─── */
   var recipes = [
     // ── フルーツ × ミント（初心者〜中級者向け） ──
     {
       name: "ストロベリーミント",
+      simple: [
+        { flavor: "ストロベリー", ratio: 60 },
+        { flavor: "ミント", ratio: 40 }
+      ],
       items: [
         { flavor: "ストロベリージャム", brand: "Fumari", leaf: "blonde", ratio: 60 },
         { flavor: "スーパーミント", brand: "Darkside", leaf: "dark", ratio: 40 }
@@ -89,6 +115,11 @@
     },
     {
       name: "トロピカルパラダイス",
+      simple: [
+        { flavor: "マンゴー", ratio: 50 },
+        { flavor: "パッションフルーツ", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "アロハマンゴー", brand: "Fumari", leaf: "blonde", ratio: 50 },
         { flavor: "ダークパッション", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -99,6 +130,11 @@
     },
     {
       name: "ピーチアイスティー",
+      simple: [
+        { flavor: "ピーチ", ratio: 40 },
+        { flavor: "アールグレイ（紅茶）", ratio: 30 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "ピーチアイスドティー", brand: "Tangiers Birquq", leaf: "dark", ratio: 70 },
         { flavor: "スウィートミント", brand: "Al Fakher", leaf: "blonde", ratio: 30 }
@@ -108,6 +144,11 @@
     },
     {
       name: "ベリーミックスフロスト",
+      simple: [
+        { flavor: "ミックスベリー", ratio: 50 },
+        { flavor: "ブルーベリー", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "ワイルドベリー", brand: "Darkside", leaf: "dark", ratio: 40 },
         { flavor: "ブルーベリー", brand: "Al Fakher", leaf: "blonde", ratio: 40 },
@@ -118,6 +159,10 @@
     },
     {
       name: "ウォーターメロンチル",
+      simple: [
+        { flavor: "スイカ", ratio: 60 },
+        { flavor: "ミント", ratio: 40 }
+      ],
       items: [
         { flavor: "ウォーターメロン", brand: "Fumari", leaf: "blonde", ratio: 50 },
         { flavor: "トゥワイスザアイス", brand: "Trifecta", leaf: "blonde", ratio: 30 },
@@ -128,6 +173,10 @@
     },
     {
       name: "グレープソムリエ",
+      simple: [
+        { flavor: "グレープ", ratio: 70 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "グレープコア", brand: "Darkside", leaf: "dark", ratio: 50 },
         { flavor: "グレープ", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
@@ -138,6 +187,11 @@
     },
     {
       name: "マンゴーラッシー",
+      simple: [
+        { flavor: "マンゴー", ratio: 60 },
+        { flavor: "ミルク（練乳）", ratio: 20 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "マンゴーラッシー", brand: "Darkside", leaf: "dark", ratio: 60 },
         { flavor: "キラーミルク", brand: "Darkside", leaf: "dark", ratio: 20 },
@@ -150,6 +204,11 @@
     // ── シトラス・フローラル ──
     {
       name: "シトラスブリーズ",
+      simple: [
+        { flavor: "レモン", ratio: 40 },
+        { flavor: "グレープフルーツ", ratio: 30 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "レモンライム", brand: "Tangiers Birquq", leaf: "dark", ratio: 40 },
         { flavor: "カリーグレープフルーツ", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -160,6 +219,11 @@
     },
     {
       name: "ライチローズ",
+      simple: [
+        { flavor: "ライチ", ratio: 60 },
+        { flavor: "ローズ", ratio: 20 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "スペースライチ", brand: "Darkside", leaf: "dark", ratio: 50 },
         { flavor: "ウィンターローズ", brand: "Azure", leaf: "blonde", ratio: 30 },
@@ -170,6 +234,11 @@
     },
     {
       name: "グレフルジンジャー",
+      simple: [
+        { flavor: "グレープフルーツ", ratio: 50 },
+        { flavor: "ジンジャー", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "グレープフルーツ＆ポメロ", brand: "Element Earth", leaf: "dark", ratio: 50 },
         { flavor: "スパイスドチャイ", brand: "Fumari", leaf: "blonde", ratio: 30 },
@@ -182,6 +251,11 @@
     // ── デザート・スイーツ ──
     {
       name: "バニラチョコムース",
+      simple: [
+        { flavor: "チョコミント", ratio: 40 },
+        { flavor: "バニラ", ratio: 30 },
+        { flavor: "キャラメル", ratio: 30 }
+      ],
       items: [
         { flavor: "ミントチョコレートチル", brand: "Fumari", leaf: "blonde", ratio: 40 },
         { flavor: "ポーラークリーム", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -192,6 +266,11 @@
     },
     {
       name: "チーズケーキベリー",
+      simple: [
+        { flavor: "ブルーベリー", ratio: 40 },
+        { flavor: "ヨーグルト", ratio: 30 },
+        { flavor: "ラズベリー", ratio: 30 }
+      ],
       items: [
         { flavor: "ブルーベリーマフィン", brand: "Fumari", leaf: "blonde", ratio: 40 },
         { flavor: "ガーネットヨーグルト", brand: "Element Earth", leaf: "dark", ratio: 30 },
@@ -202,6 +281,11 @@
     },
     {
       name: "アールグレイミルク",
+      simple: [
+        { flavor: "アールグレイ", ratio: 50 },
+        { flavor: "ミルク（練乳）", ratio: 30 },
+        { flavor: "ハニー", ratio: 20 }
+      ],
       items: [
         { flavor: "レッドティー", brand: "Darkside", leaf: "dark", ratio: 40 },
         { flavor: "キラーミルク", brand: "Darkside", leaf: "dark", ratio: 25 },
@@ -213,6 +297,11 @@
     },
     {
       name: "キャラメルナッツ",
+      simple: [
+        { flavor: "キャラメル", ratio: 40 },
+        { flavor: "シナモン", ratio: 30 },
+        { flavor: "バニラ", ratio: 30 }
+      ],
       items: [
         { flavor: "ソルティキャラメル", brand: "Element Water", leaf: "dark", ratio: 40 },
         { flavor: "シナモンクッキー", brand: "Azure", leaf: "blonde", ratio: 30 },
@@ -223,6 +312,11 @@
     },
     {
       name: "ワッフルアラモード",
+      simple: [
+        { flavor: "バニラ", ratio: 40 },
+        { flavor: "ピーチ", ratio: 30 },
+        { flavor: "キャラメル", ratio: 30 }
+      ],
       items: [
         { flavor: "ワッフルシャッフル", brand: "Darkside", leaf: "dark", ratio: 40 },
         { flavor: "ダークアイスクリーム", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -235,6 +329,10 @@
     // ── ミント・ハーブ ──
     {
       name: "アルティメットミント",
+      simple: [
+        { flavor: "ミント", ratio: 60 },
+        { flavor: "ペパーミント", ratio: 40 }
+      ],
       items: [
         { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 40 },
         { flavor: "スーパーミント", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -245,6 +343,11 @@
     },
     {
       name: "ハーバルフォレスト",
+      simple: [
+        { flavor: "モミの木", ratio: 40 },
+        { flavor: "シダー（針葉樹）", ratio: 30 },
+        { flavor: "バジル", ratio: 30 }
+      ],
       items: [
         { flavor: "ファー", brand: "COBRA Virgin", leaf: "blonde", ratio: 40 },
         { flavor: "ニードルズ", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -255,6 +358,10 @@
     },
     {
       name: "ミントレモネード",
+      simple: [
+        { flavor: "レモン", ratio: 60 },
+        { flavor: "ミント", ratio: 40 }
+      ],
       items: [
         { flavor: "レモンミント", brand: "Al Fakher", leaf: "blonde", ratio: 40 },
         { flavor: "レモンブラスト", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -267,6 +374,11 @@
     // ── ドリンク系 ──
     {
       name: "コーラフロート",
+      simple: [
+        { flavor: "コーラ", ratio: 60 },
+        { flavor: "バニラ", ratio: 20 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "ダークサイドコーラ", brand: "Darkside", leaf: "dark", ratio: 40 },
         { flavor: "ポーラークリーム", brand: "Darkside", leaf: "dark", ratio: 25 },
@@ -278,6 +390,11 @@
     },
     {
       name: "クラフトコーラ",
+      simple: [
+        { flavor: "コーラ", ratio: 50 },
+        { flavor: "オレンジ", ratio: 30 },
+        { flavor: "シナモン", ratio: 20 }
+      ],
       items: [
         { flavor: "コーラ", brand: "Element Earth", leaf: "dark", ratio: 50 },
         { flavor: "オレンジ", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
@@ -288,6 +405,11 @@
     },
     {
       name: "アイスティーブリーズ",
+      simple: [
+        { flavor: "アールグレイ（紅茶）", ratio: 50 },
+        { flavor: "ピーチ", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "グリッチアイスティー", brand: "Darkside", leaf: "dark", ratio: 50 },
         { flavor: "キャロライナピーチ", brand: "Azure", leaf: "blonde", ratio: 30 },
@@ -300,6 +422,10 @@
     // ── 定番・クラシック ──
     {
       name: "ロイヤルダブルアップル",
+      simple: [
+        { flavor: "ダブルアップル", ratio: 80 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "ツーアップル", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
         { flavor: "ダブルアップル", brand: "Fumari", leaf: "blonde", ratio: 30 },
@@ -310,6 +436,10 @@
     },
     {
       name: "ダブルアップル × ダーク",
+      simple: [
+        { flavor: "ダブルアップル", ratio: 70 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "ツーアップル", brand: "Al Fakher", leaf: "blonde", ratio: 40 },
         { flavor: "フォーリングスター", brand: "Darkside", leaf: "dark", ratio: 40 },
@@ -320,6 +450,11 @@
     },
     {
       name: "パンラズ クラシック",
+      simple: [
+        { flavor: "パンラズ", ratio: 60 },
+        { flavor: "ミント", ratio: 25 },
+        { flavor: "オレンジ", ratio: 15 }
+      ],
       items: [
         { flavor: "パンラズ", brand: "AFZAL", leaf: "blonde", ratio: 60 },
         { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 25 },
@@ -332,6 +467,12 @@
     // ── スパイス・ウッド ──
     {
       name: "オリエンタルスパイス",
+      simple: [
+        { flavor: "チャイ（シナモン・カルダモン）", ratio: 35 },
+        { flavor: "ハニー", ratio: 30 },
+        { flavor: "アニス", ratio: 25 },
+        { flavor: "ウッディ系", ratio: 10 }
+      ],
       items: [
         { flavor: "スパイスドチャイ", brand: "Fumari", leaf: "blonde", ratio: 30 },
         { flavor: "ハニーダスト", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -343,6 +484,11 @@
     },
     {
       name: "フォレストウッド",
+      simple: [
+        { flavor: "モミの木", ratio: 35 },
+        { flavor: "シダー（針葉樹）", ratio: 35 },
+        { flavor: "チェリー", ratio: 30 }
+      ],
       items: [
         { flavor: "ファー", brand: "COBRA Virgin", leaf: "blonde", ratio: 35 },
         { flavor: "ニードルズ", brand: "Darkside", leaf: "dark", ratio: 35 },
@@ -355,6 +501,11 @@
     // ── ダークリーフ本格派 ──
     {
       name: "トリプルダークナイト",
+      simple: [
+        { flavor: "ザクロ", ratio: 35 },
+        { flavor: "スイカ", ratio: 30 },
+        { flavor: "ミント", ratio: 35 }
+      ],
       items: [
         { flavor: "スーパーノヴァ", brand: "Darkside", leaf: "dark", ratio: 30 },
         { flavor: "レッドアラート", brand: "Darkside", leaf: "dark", ratio: 30 },
@@ -366,6 +517,11 @@
     },
     {
       name: "ダークサイド スモーキーベリー",
+      simple: [
+        { flavor: "ラズベリー", ratio: 35 },
+        { flavor: "ブルーベリー", ratio: 35 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "ジェネリスラズベリー", brand: "Darkside", leaf: "dark", ratio: 35 },
         { flavor: "ワイルドフォレスト", brand: "Darkside", leaf: "dark", ratio: 35 },
@@ -376,6 +532,11 @@
     },
     {
       name: "Tangiers クラシックセッション",
+      simple: [
+        { flavor: "オレンジ", ratio: 35 },
+        { flavor: "ライム", ratio: 35 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 30 },
         { flavor: "オレンジソーダ", brand: "Tangiers Noir", leaf: "dark", ratio: 35 },
@@ -386,6 +547,12 @@
     },
     {
       name: "Element アースセッション",
+      simple: [
+        { flavor: "マンゴー", ratio: 30 },
+        { flavor: "パイナップル", ratio: 30 },
+        { flavor: "ミント", ratio: 20 },
+        { flavor: "レモングラス", ratio: 20 }
+      ],
       items: [
         { flavor: "マンゴー", brand: "Element Earth", leaf: "dark", ratio: 30 },
         { flavor: "パイナップル", brand: "Element Earth", leaf: "dark", ratio: 30 },
@@ -397,6 +564,11 @@
     },
     {
       name: "SEBERO ダークベリー",
+      simple: [
+        { flavor: "ブルーベリー", ratio: 40 },
+        { flavor: "ラズベリー", ratio: 30 },
+        { flavor: "キウイ", ratio: 30 }
+      ],
       items: [
         { flavor: "ビルベリー", brand: "SEBERO Black", leaf: "dark", ratio: 40 },
         { flavor: "フェイベリー", brand: "SEBERO Black", leaf: "dark", ratio: 30 },
@@ -409,6 +581,12 @@
     // ── アダリヤ系（入門〜中級） ──
     {
       name: "Love 66 トロピカル",
+      simple: [
+        { flavor: "パッションフルーツ", ratio: 30 },
+        { flavor: "メロン", ratio: 25 },
+        { flavor: "マンゴー", ratio: 25 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "ラブ66", brand: "Adalya", leaf: "blonde", ratio: 50 },
         { flavor: "アロハマンゴー", brand: "Fumari", leaf: "blonde", ratio: 30 },
@@ -419,6 +597,11 @@
     },
     {
       name: "レディーキラー",
+      simple: [
+        { flavor: "メロン", ratio: 50 },
+        { flavor: "ストロベリー", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "レディーキラー", brand: "Adalya", leaf: "blonde", ratio: 50 },
         { flavor: "ストロベリーグアバ", brand: "Azure", leaf: "blonde", ratio: 30 },
@@ -431,6 +614,11 @@
     // ── ブロンドリーフのみ構成 ──
     {
       name: "Fumari オレンジクリーム",
+      simple: [
+        { flavor: "オレンジ", ratio: 50 },
+        { flavor: "バニラ", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
       items: [
         { flavor: "オレンジクリーム", brand: "Fumari", leaf: "blonde", ratio: 50 },
         { flavor: "ホワイトグミベア", brand: "Fumari", leaf: "blonde", ratio: 30 },
@@ -441,6 +629,11 @@
     },
     {
       name: "Azure モスクワナイト",
+      simple: [
+        { flavor: "グレープフルーツ", ratio: 40 },
+        { flavor: "ラズベリー", ratio: 30 },
+        { flavor: "ミント", ratio: 30 }
+      ],
       items: [
         { flavor: "モスクワネバースリープス", brand: "Azure", leaf: "blonde", ratio: 40 },
         { flavor: "コスモス", brand: "Azure", leaf: "blonde", ratio: 30 },
@@ -448,6 +641,124 @@
       ],
       desc: "Azureのモスクワネバースリープス（フルーツ＋ミント）に、コスモス（グレフル＋ラズベリー）のほろ苦いベリー感と、アラスカンアイスのメンソール。夜更けに吸いたくなるスタイリッシュなブレンド。",
       tags: { taste: ["fresh", "both"], category: ["fruit", "mint"], mint: ["strong"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh", "adventure"] }
+    },
+
+    // ── 初心者向けシンプルレシピ（銘柄指定なし・店員さんに伝えやすい） ──
+    {
+      name: "ピーチミント",
+      items: [
+        { flavor: "ピーチ", leaf: "blonde", ratio: 70 },
+        { flavor: "ミント", leaf: "blonde", ratio: 30 }
+      ],
+      desc: "桃の優しい甘さとミントの爽やかさだけを組み合わせたシンプルなレシピ。シーシャ初体験の方でもクセがなく楽しめる、もっとも親しみやすい一杯。「ピーチとミントを7：3で」と伝えればOKです。",
+      tags: { taste: ["sweet", "both"], category: ["fruit"], mint: ["light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "レモンスカッシュ",
+      items: [
+        { flavor: "レモン", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", leaf: "blonde", ratio: 30 },
+        { flavor: "ミント", leaf: "blonde", ratio: 20 }
+      ],
+      desc: "レモンとライムの酸味にミントを少しだけ効かせた、レモンスカッシュのような爽やかブレンド。柑橘の鮮やかさを楽しみたい方や、リフレッシュしたい気分の日にぴったり。3つのフレーバーだけで簡単に注文できます。",
+      tags: { taste: ["fresh"], category: ["citrus"], mint: ["light", "strong"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["refresh"] }
+    },
+    {
+      name: "メロンクリームソーダ",
+      items: [
+        { flavor: "メロン", leaf: "blonde", ratio: 60 },
+        { flavor: "バニラ", leaf: "blonde", ratio: 25 },
+        { flavor: "ミント", leaf: "blonde", ratio: 15 }
+      ],
+      desc: "甘いメロンにバニラのクリーミーさを重ね、ミントで軽やかに仕上げた、まるでメロンクリームソーダのようなデザートブレンド。甘いものが好きな方や女性に特に人気の組み合わせ。シンプルで店員さんにも伝えやすい構成。",
+      tags: { taste: ["sweet"], category: ["fruit", "dessert"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "グレープティー",
+      items: [
+        { flavor: "グレープ", leaf: "blonde", ratio: 50 },
+        { flavor: "アールグレイ（紅茶）", leaf: "blonde", ratio: 35 },
+        { flavor: "ミント", leaf: "blonde", ratio: 15 }
+      ],
+      desc: "葡萄の甘酸っぱさとアールグレイ紅茶の華やかな香りを合わせた、上品なドリンク系ブレンド。読書やゆったりした会話を楽しみたいリラックスタイムにおすすめ。3つの定番フレーバーだけで再現できる飲みやすい一杯。",
+      tags: { taste: ["sweet", "both"], category: ["fruit", "drink"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ハニーアップル",
+      items: [
+        { flavor: "アップル", leaf: "blonde", ratio: 60 },
+        { flavor: "ハニー", leaf: "blonde", ratio: 25 },
+        { flavor: "シナモン", leaf: "blonde", ratio: 15 }
+      ],
+      desc: "りんごの甘酸っぱさにハニーの濃厚な甘さとシナモンの温かみを足した、アップルパイを思わせる温かみのあるブレンド。秋冬や、ゆったりと甘さを楽しみたい時間にぴったり。シンプルな3要素で店員さんにもすぐ伝わります。",
+      tags: { taste: ["sweet"], category: ["fruit", "spice", "dessert"], mint: ["none"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "南国ミックスジュース",
+      items: [
+        { flavor: "マンゴー", leaf: "blonde", ratio: 40 },
+        { flavor: "パイナップル", leaf: "blonde", ratio: 30 },
+        { flavor: "オレンジ", leaf: "blonde", ratio: 20 },
+        { flavor: "ミント", leaf: "blonde", ratio: 10 }
+      ],
+      desc: "南国フルーツのマンゴー・パイナップル・オレンジを集めて、ミントを少しだけ加えたフレッシュジュースのようなブレンド。トロピカルで甘い味が好きな方におすすめ。フルーツ4種を伝えるだけで簡単に注文できます。",
+      tags: { taste: ["sweet", "both"], category: ["fruit", "citrus"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "refresh"] }
+    },
+
+    // ── ノンニコチン ──
+    {
+      name: "ノンニコチン フルーツミックス",
+      nonNicotine: true,
+      items: [
+        { flavor: "ミックスベリー", leaf: "herbal", ratio: 50 },
+        { flavor: "ピーチ", leaf: "herbal", ratio: 30 },
+        { flavor: "ミント", leaf: "herbal", ratio: 20 }
+      ],
+      desc: "ノンニコチンのハーブベースで、ベリーの甘酸っぱさと桃のジューシーさをミントで爽やかにまとめた定番ブレンド。ニコチンが苦手な方でも安心して楽しめ、お酒やお茶と合わせてゆったりしたいシーンにぴったりです。",
+      tags: { taste: ["sweet", "both"], category: ["fruit"], mint: ["light"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ノンニコチン シトラスクール",
+      nonNicotine: true,
+      items: [
+        { flavor: "レモン", leaf: "herbal", ratio: 40 },
+        { flavor: "グレープフルーツ", leaf: "herbal", ratio: 30 },
+        { flavor: "ペパーミント", leaf: "herbal", ratio: 30 }
+      ],
+      desc: "ノンニコチンで楽しむキリッとした柑橘系ブレンド。レモンとグレープフルーツの酸味にペパーミントの清涼感を重ね、食後のリフレッシュや気分転換にぴったり。ニコチン感なしでもしっかり爽快。",
+      tags: { taste: ["fresh"], category: ["citrus", "mint"], mint: ["strong"], exp: ["beginner", "sometimes", "regular"], mood: ["refresh"] }
+    },
+    {
+      name: "ノンニコチン ピーチティー",
+      nonNicotine: true,
+      items: [
+        { flavor: "ピーチ", leaf: "herbal", ratio: 60 },
+        { flavor: "アールグレイ", leaf: "herbal", ratio: 30 },
+        { flavor: "ミント", leaf: "herbal", ratio: 10 }
+      ],
+      desc: "桃と紅茶の優しい甘さにミントをほんの少し効かせた、ノンニコチンの紅茶系ブレンド。甘さ控えめでまろやかな味わい、読書やおしゃべりを楽しむリラックスタイムにおすすめの一杯。",
+      tags: { taste: ["sweet", "both"], category: ["fruit", "drink"], mint: ["none", "light"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ノンニコチン トロピカルクール",
+      nonNicotine: true,
+      items: [
+        { flavor: "マンゴー", leaf: "herbal", ratio: 45 },
+        { flavor: "パッションフルーツ", leaf: "herbal", ratio: 30 },
+        { flavor: "ミント", leaf: "herbal", ratio: 25 }
+      ],
+      desc: "ノンニコチンで楽しむ南国フルーツブレンド。マンゴーの濃厚な甘さとパッションフルーツの爽やかな酸味をミントで引き締めた、夏場やリフレッシュしたい気分の日にぴったりの一杯。",
+      tags: { taste: ["sweet", "both"], category: ["fruit"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], mood: ["refresh", "relax"] }
+    },
+    {
+      name: "ノンニコチン アップルミント",
+      nonNicotine: true,
+      items: [
+        { flavor: "アップル", leaf: "herbal", ratio: 60 },
+        { flavor: "ミント", leaf: "herbal", ratio: 40 }
+      ],
+      desc: "ノンニコチンで楽しむ定番のダブルアップル風ブレンド。りんごの甘酸っぱさとミントの爽やかさのシンプルな組み合わせで、シーシャ初体験の方やノンニコチン入門にもおすすめ。",
+      tags: { taste: ["both", "fresh"], category: ["fruit"], mint: ["light", "strong"], exp: ["beginner", "sometimes"], mood: ["classic", "refresh"] }
     }
   ];
 
@@ -554,6 +865,24 @@
     var t = recipe.tags;
     var score = 0;
 
+    /* リーフタイプ／ノンニコチンの絞り込み */
+    if (a.leaf_type === "non_nicotine") {
+      if (!recipe.nonNicotine) return -100; /* ノンニコチン希望時はタバコ葉レシピを除外 */
+      score += 10;
+    } else if (a.leaf_type && a.leaf_type !== "either") {
+      if (recipe.nonNicotine) return -100; /* 特定リーフ指定時はノンニコチンを除外 */
+      if (t.dark) {
+        if (t.dark.indexOf(a.leaf_type) !== -1) score += 3;
+        else score -= 4;
+      }
+    } else if (a.experience === "beginner" && (a.leaf_type === "either" || !a.leaf_type)) {
+      /* 初心者がおまかせを選んだ場合、ダークリーフを含むレシピは提案から除外 */
+      if (recipe.nonNicotine) return -100; /* ノンニコチンも除外（明示的に希望していないため） */
+      var hasDarkLeaf = recipe.items && recipe.items.some(function (it) { return it.leaf === "dark"; });
+      if (hasDarkLeaf) return -100;
+    }
+    /* "either" / 未選択 はリーフでのフィルタをかけない（初心者以外） */
+
     if (a.taste && t.taste && t.taste.indexOf(a.taste) !== -1) score += 3;
     if (a.category && t.category && t.category.indexOf(a.category) !== -1) score += 4;
     if (a.mint_level && t.mint) {
@@ -561,10 +890,6 @@
       else if (a.mint_level === "none" && t.mint.indexOf("none") === -1) score -= 3;
     }
     if (a.experience && t.exp && t.exp.indexOf(a.experience) !== -1) score += 2;
-    if (a.dark_leaf && t.dark) {
-      if (t.dark.indexOf(a.dark_leaf) !== -1) score += 3;
-      else score -= 4;
-    }
     if (a.mood && t.mood && t.mood.indexOf(a.mood) !== -1) score += 2;
 
     return score;
@@ -575,9 +900,23 @@
       return { recipe: r, score: scoreRecipe(r) };
     });
     scored.sort(function (a, b) { return b.score - a.score; });
-    var top = scored.filter(function (s) { return s.score > 0; }).slice(0, 3);
-    if (top.length < 3) top = scored.slice(0, 3);
+    /* ハード除外されたもの（score <= -50）を取り除いてから上位3件を選ぶ */
+    var eligible = scored.filter(function (s) { return s.score > -50; });
+    var top = eligible.filter(function (s) { return s.score > 0; }).slice(0, 3);
+    if (top.length < 3) top = eligible.slice(0, 3);
     return top.map(function (s) { return s.recipe; });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function leafBadgeInfo(leaf) {
+    if (leaf === "dark") return { cls: "sommelier-leaf-dark", label: "ダーク" };
+    if (leaf === "herbal") return { cls: "sommelier-leaf-herbal", label: "ノンニコチン" };
+    return { cls: "sommelier-leaf-blonde", label: "ブロンド" };
   }
 
   function buildRecipeCard(r, idx) {
@@ -590,19 +929,49 @@
     header.textContent = "【" + (idx + 1) + "】 " + r.name;
     card.appendChild(header);
 
+    /* メイン表示：銘柄入りのレシピ詳細（タイトル・説明と整合） */
+    var hasBrand = r.items.some(function (it) { return !!it.brand; });
+    /* 銘柄なし＆全ブロンドの「純粋シンプル」レシピは leaf badge も省略してクリーンに表示 */
+    var hideLeafBadges = !hasBrand && r.items.every(function (it) { return it.leaf === "blonde"; });
+
     var itemsWrap = document.createElement("div");
     itemsWrap.className = "sommelier-recipe-items";
     r.items.forEach(function (item) {
       var row = document.createElement("div");
       row.className = "sommelier-recipe-row";
-      var leafCls = item.leaf === "dark" ? "sommelier-leaf-dark" : "sommelier-leaf-blonde";
-      row.innerHTML = '<span class="sommelier-recipe-flavor">' + item.flavor + '</span>' +
-        '<span class="sommelier-recipe-brand">（' + item.brand + '）</span>' +
-        '<span class="sommelier-recipe-leaf ' + leafCls + '">' + (item.leaf === "dark" ? "ダーク" : "ブロンド") + '</span>' +
+      var leafInfo = leafBadgeInfo(item.leaf);
+      var brandHtml = item.brand ? '<span class="sommelier-recipe-brand">（' + escapeHtml(item.brand) + '）</span>' : '';
+      var leafHtml = hideLeafBadges ? '' : '<span class="sommelier-recipe-leaf ' + leafInfo.cls + '">' + leafInfo.label + '</span>';
+      row.innerHTML = '<span class="sommelier-recipe-flavor">' + escapeHtml(item.flavor) + '</span>' +
+        brandHtml +
+        leafHtml +
         '<span class="sommelier-recipe-ratio">' + item.ratio + '%</span>';
       itemsWrap.appendChild(row);
     });
     card.appendChild(itemsWrap);
+
+    /* 簡易版（折りたたみ）：銘柄を指定しない場合の代替フレーバー */
+    var hasSimple = Array.isArray(r.simple) && r.simple.length > 0;
+    if (hasBrand && hasSimple) {
+      var details = document.createElement("details");
+      details.className = "sommelier-recipe-details";
+      var summary = document.createElement("summary");
+      summary.className = "sommelier-recipe-details-summary";
+      summary.textContent = "店員さんに伝えやすい簡易版";
+      details.appendChild(summary);
+
+      var simpleItems = document.createElement("div");
+      simpleItems.className = "sommelier-recipe-simple-items";
+      r.simple.forEach(function (item) {
+        var row = document.createElement("div");
+        row.className = "sommelier-recipe-simple-row";
+        row.innerHTML = '<span class="sommelier-recipe-flavor">' + escapeHtml(item.flavor) + '</span>' +
+          '<span class="sommelier-recipe-ratio">' + item.ratio + '%</span>';
+        simpleItems.appendChild(row);
+      });
+      details.appendChild(simpleItems);
+      card.appendChild(details);
+    }
 
     var note = document.createElement("div");
     note.className = "sommelier-recipe-note";
@@ -762,8 +1131,9 @@
   function getAnswerLabel(stepId, answerId) {
     for (var i = 0; i < steps.length; i++) {
       if (steps[i].id === stepId) {
-        for (var j = 0; j < steps[i].choices.length; j++) {
-          if (steps[i].choices[j].id === answerId) return steps[i].choices[j].label;
+        var choices = resolveStepChoices(steps[i]);
+        for (var j = 0; j < choices.length; j++) {
+          if (choices[j].id === answerId) return choices[j].label;
         }
       }
     }
@@ -783,12 +1153,12 @@
       category: "系統",
       mint_level: "ミント",
       experience: "経験",
-      dark_leaf: "ダークリーフ",
+      leaf_type: "リーフ",
       mood: "気分"
     };
     var items = document.createElement("div");
     items.className = "sommelier-answer-items";
-    var answered = ["taste", "category", "mint_level", "experience", "dark_leaf", "mood"];
+    var answered = ["taste", "category", "mint_level", "experience", "leaf_type", "mood"];
     answered.forEach(function (key) {
       if (!state.answers[key]) return;
       var tag = document.createElement("span");
@@ -865,8 +1235,8 @@
     showTyping();
     setTimeout(function () {
       removeTyping();
-      addMessage(true, s.bot, function () {
-        showChoices(s.choices);
+      addMessage(true, resolveStepBot(s), function () {
+        showChoices(resolveStepChoices(s));
       });
     }, 500);
   }
@@ -875,14 +1245,15 @@
     var step = steps[state.step];
     if (!step) return;
     state.answers[step.id] = choiceId;
-    var chosen = step.choices.filter(function (c) {
+    var choices = resolveStepChoices(step);
+    var chosen = choices.filter(function (c) {
       return c.id === choiceId;
     })[0];
     hideChoices();
     if (chosen) addMessage(false, chosen.label);
 
-    if (step.id === "experience" && choiceId === "beginner") {
-      state.answers.dark_leaf = "blonde_only";
+    /* 初心者はリーフタイプ回答後、気分を自動セットして結果へ */
+    if (step.id === "leaf_type" && state.answers.experience === "beginner") {
       state.answers.mood = "classic";
       showTyping();
       setTimeout(function () { removeTyping(); showResult(); }, 600);
