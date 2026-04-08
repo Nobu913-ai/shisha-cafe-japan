@@ -1058,6 +1058,111 @@
   var shopModal = document.getElementById('shop-modal');
   var shopModalClose = document.querySelector('.shop-modal-close');
   var shopModalBackdrop = document.querySelector('.shop-modal-backdrop');
+  var shopModalShareBtn = document.getElementById('shop-modal-share-btn');
+  var shopModalShareFeedback = document.getElementById('shop-modal-share-feedback');
+  var currentShopForShare = null;
+  var shareFeedbackTimer = null;
+
+  /** DJB2ハッシュで店舗IDを算出（名前+エリアから安定した短いIDを生成） */
+  function computeShopId(name, area) {
+    var input = (name || '') + '|' + (area || '');
+    var hash = 5381;
+    for (var i = 0; i < input.length; i++) {
+      hash = ((hash << 5) + hash + input.charCodeAt(i)) | 0;
+    }
+    return (hash >>> 0).toString(36);
+  }
+
+  /** クリップボードへコピー（Clipboard API優先、フォールバックあり） */
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error('execCommand copy failed'));
+      } catch (e) { reject(e); }
+    });
+  }
+
+  function showShareFeedback(message, isError) {
+    if (!shopModalShareFeedback) return;
+    shopModalShareFeedback.textContent = message;
+    shopModalShareFeedback.classList.toggle('is-error', !!isError);
+    shopModalShareFeedback.classList.add('is-visible');
+    if (shareFeedbackTimer) clearTimeout(shareFeedbackTimer);
+    shareFeedbackTimer = setTimeout(function () {
+      if (shopModalShareFeedback) {
+        shopModalShareFeedback.classList.remove('is-visible');
+      }
+    }, 2000);
+  }
+
+  function hideShareFeedback() {
+    if (!shopModalShareFeedback) return;
+    shopModalShareFeedback.classList.remove('is-visible');
+    shopModalShareFeedback.classList.remove('is-error');
+    shopModalShareFeedback.textContent = '';
+    if (shareFeedbackTimer) {
+      clearTimeout(shareFeedbackTimer);
+      shareFeedbackTimer = null;
+    }
+  }
+
+  /** モーダル開閉に合わせてURLの `shop` パラメータを更新（他のパラメータは保持） */
+  function updateUrlShopParam(shopId) {
+    if (!window.history || !window.history.replaceState) return;
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (shopId) {
+        params.set('shop', shopId);
+      } else {
+        params.delete('shop');
+      }
+      var query = params.toString();
+      var newUrl = window.location.pathname + (query ? '?' + query : '') + window.location.hash;
+      window.history.replaceState(null, '', newUrl);
+    } catch (e) {}
+  }
+
+  /** 共有用のクリーンなURL（フィルタ条件を含まず、`?shop=<id>` のみ）を生成 */
+  function buildShareUrlForShop(shop) {
+    var id = computeShopId(shop.name, shop.area);
+    return window.location.origin + window.location.pathname + '?shop=' + id;
+  }
+
+  /** URLに `?shop=<id>` があれば該当カードの店舗データを探してモーダルを開く */
+  function tryOpenShopFromUrl() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var targetId = params.get('shop');
+      if (!targetId) return;
+      var cards = document.querySelectorAll('.spot-card[data-shop]');
+      for (var i = 0; i < cards.length; i++) {
+        var raw = cards[i].getAttribute('data-shop');
+        if (!raw) continue;
+        try {
+          var shop = JSON.parse(raw);
+          if (computeShopId(shop.name, shop.area) === targetId) {
+            openShopModal(shop);
+            return;
+          }
+        } catch (e) {}
+      }
+    } catch (e) {}
+  }
 
   function openShopModal(shop) {
     if (!shopModal || !shop) return;
@@ -1184,6 +1289,10 @@
     var linksEl = document.getElementById('shop-modal-links');
     linksEl.innerHTML = '';
 
+    currentShopForShare = shop;
+    hideShareFeedback();
+    updateUrlShopParam(computeShopId(shop.name, shop.area));
+
     shopModal.classList.add('is-open');
     shopModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -1194,6 +1303,29 @@
     shopModal.classList.remove('is-open');
     shopModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    currentShopForShare = null;
+    hideShareFeedback();
+    updateUrlShopParam(null);
+  }
+
+  if (shopModalShareBtn) {
+    shopModalShareBtn.addEventListener('click', function () {
+      if (!currentShopForShare) return;
+      var shareUrl = buildShareUrlForShop(currentShopForShare);
+      copyTextToClipboard(shareUrl).then(function () {
+        showShareFeedback('URLをコピーしました');
+        if (typeof gtag === 'function') {
+          try {
+            gtag('event', 'share_shop', {
+              shop_name: currentShopForShare.name || '',
+              shop_id: computeShopId(currentShopForShare.name, currentShopForShare.area)
+            });
+          } catch (e) {}
+        }
+      }).catch(function () {
+        showShareFeedback('コピーに失敗しました', true);
+      });
+    });
   }
 
   if (shopModalClose) shopModalClose.addEventListener('click', closeShopModal);
@@ -1290,6 +1422,9 @@
       });
       renderStationButtons('');
       applyFilters({ scrollToResults: false });
+
+      // URLの `shop` パラメータがあれば対応する店舗モーダルを自動で開く
+      tryOpenShopFromUrl();
     })
     .catch(function () {
       if (searchLoading) {

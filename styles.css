@@ -1100,6 +1100,59 @@ a:hover {
   text-align: right;
 }
 
+.shop-modal-share {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0 14px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.shop-modal-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+
+.shop-modal-share-btn:hover {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+.shop-modal-share-btn:active {
+  transform: translateY(1px);
+}
+
+.shop-modal-share-feedback {
+  font-size: 0.82rem;
+  color: #a3a3a3;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+.shop-modal-share-feedback.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--accent);
+}
+
+.shop-modal-share-feedback.is-visible.is-error {
+  color: #f87171;
+}
+
 .shop-modal-note {
   font-size: 0.78rem;
   color: #78716c;
