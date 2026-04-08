@@ -643,6 +643,341 @@
       tags: { taste: ["fresh", "both"], category: ["fruit", "mint"], mint: ["strong"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh", "adventure"] }
     },
 
+    // ── 玄人向けセッション（ダーク系・レイヤード技法） ──
+    {
+      name: "レイヤードグレープフルーツ",
+      items: [
+        { flavor: "グレープフルーツ", brand: "Al Fakher", leaf: "blonde", ratio: 60 },
+        { flavor: "グレープフルーツ＆ポメロ", brand: "Element Earth", leaf: "dark", ratio: 25 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 15 }
+      ],
+      simple: [
+        { flavor: "グレープフルーツ", ratio: 60 },
+        { flavor: "グレープフルーツ（ダークリーフ）", ratio: 25 },
+        { flavor: "ミント", ratio: 15 }
+      ],
+      desc: "ブロンドのグレープフルーツをベースに、ダークリーフのグレープフルーツを少量重ねる“レイヤード”技法。同じ柑橘でも葉の種類で表情が変わり、ほろ苦さと厚みが加わって奥行きのある一服に。玄人ならではの楽しみ方。",
+      tags: { taste: ["fresh", "both"], category: ["citrus", "fruit"], mint: ["light"], exp: ["expert"], dark: ["dark_accent"], mood: ["adventure", "relax"] }
+    },
+    {
+      name: "ダークチョコレートセッション",
+      items: [
+        { flavor: "ダークチョコレート", brand: "Darkside", leaf: "dark", ratio: 45 },
+        { flavor: "ソルティキャラメル", brand: "Element Water", leaf: "dark", ratio: 30 },
+        { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "ダークチョコレート", ratio: 45 },
+        { flavor: "ソルティキャラメル", ratio: 30 },
+        { flavor: "ミント", ratio: 25 }
+      ],
+      desc: "Darksideのビターなダークチョコレートを軸に、Elementの塩キャラメルで甘じょっぱさを足し、Tangiers Noirのケインミントで引き締める。濃厚なのに後味はクリア、じっくり長く楽しめる玄人向けの深夜セッション。",
+      tags: { taste: ["sweet", "both"], category: ["dessert"], mint: ["light"], exp: ["expert"], dark: ["dark_main"], mood: ["relax", "adventure"] }
+    },
+    {
+      name: "ダークコーヒーブリュレ",
+      items: [
+        { flavor: "コーヒー", brand: "Element Earth", leaf: "dark", ratio: 45 },
+        { flavor: "ソルティキャラメル", brand: "Element Water", leaf: "dark", ratio: 30 },
+        { flavor: "キラーミルク", brand: "Darkside", leaf: "dark", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "コーヒー", ratio: 45 },
+        { flavor: "塩キャラメル", ratio: 30 },
+        { flavor: "ミルク", ratio: 25 }
+      ],
+      desc: "Element Earthのコーヒーに塩キャラメルとDarksideのミルクを重ねた、濃厚ダークのクレームブリュレ風。香ばしいコーヒーの苦味とミルクの厚みが層になって広がる、ヘビーユーザー向けのデザートセッション。",
+      tags: { taste: ["sweet", "both"], category: ["dessert", "drink"], mint: ["none"], exp: ["expert"], dark: ["dark_main"], mood: ["relax"] }
+    },
+    {
+      name: "レイヤードピーチ",
+      items: [
+        { flavor: "ピーチ", brand: "Al Fakher", leaf: "blonde", ratio: 55 },
+        { flavor: "ピーチアイスドティー", brand: "Tangiers Birquq", leaf: "dark", ratio: 30 },
+        { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 15 }
+      ],
+      simple: [
+        { flavor: "ピーチ", ratio: 55 },
+        { flavor: "ピーチティー（ダークリーフ）", ratio: 30 },
+        { flavor: "ミント", ratio: 15 }
+      ],
+      desc: "ブロンドのジューシーなピーチを主役にして、Tangiersのピーチアイスドティーで紅茶のタンニンと凝縮感をレイヤー。同じ果実を葉違いで重ねる玄人技法で、果汁感と余韻の長さを両立させた一服。",
+      tags: { taste: ["sweet", "fresh"], category: ["fruit"], mint: ["light"], exp: ["expert"], dark: ["dark_accent"], mood: ["relax", "adventure"] }
+    },
+    {
+      name: "Noir カシミールセッション",
+      items: [
+        { flavor: "カシミールピーチ", brand: "Tangiers Noir", leaf: "dark", ratio: 45 },
+        { flavor: "ココアジャヴァ", brand: "Tangiers Noir", leaf: "dark", ratio: 30 },
+        { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "カシミールピーチ", ratio: 45 },
+        { flavor: "ココアコーヒー", ratio: 30 },
+        { flavor: "ミント", ratio: 25 }
+      ],
+      desc: "Tangiers Noirのみで組む重厚セッション。カシミールのスパイシーなピーチに、ココアジャヴァの香ばしさ、ケインミントの清涼感を重ねた、熱管理とセットアップにこだわりたい玄人向けの一服。",
+      tags: { taste: ["both"], category: ["spice", "fruit", "dessert"], mint: ["light"], exp: ["expert"], dark: ["dark_main"], mood: ["adventure", "classic"] }
+    },
+    {
+      name: "ディープベリー（レイヤード）",
+      items: [
+        { flavor: "ワイルドベリー", brand: "Darkside", leaf: "dark", ratio: 40 },
+        { flavor: "ブルーベリー", brand: "Al Fakher", leaf: "blonde", ratio: 35 },
+        { flavor: "ジェネリスラズベリー", brand: "Darkside", leaf: "dark", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "ワイルドベリー（ダークリーフ）", ratio: 40 },
+        { flavor: "ブルーベリー", ratio: 35 },
+        { flavor: "ラズベリー（ダークリーフ）", ratio: 25 }
+      ],
+      desc: "Darksideのワイルドベリーとラズベリーのダーク感に、Al Fakherのブルーベリーで果汁感を補強。濃厚でジャミーなベリーをダーク主体でじっくり味わう、玄人向けのリッチなベリーセッション。",
+      tags: { taste: ["sweet"], category: ["fruit"], mint: ["none"], exp: ["expert"], dark: ["dark_main"], mood: ["relax"] }
+    },
+    {
+      name: "シトラスブラスト ダーク",
+      items: [
+        { flavor: "カリーグレープフルーツ", brand: "Darkside", leaf: "dark", ratio: 40 },
+        { flavor: "オレンジソーダ", brand: "Tangiers Noir", leaf: "dark", ratio: 30 },
+        { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 30 }
+      ],
+      simple: [
+        { flavor: "グレープフルーツ（ダークリーフ）", ratio: 40 },
+        { flavor: "オレンジソーダ（ダークリーフ）", ratio: 30 },
+        { flavor: "ミント", ratio: 30 }
+      ],
+      desc: "Darksideのカリーグレープフルーツのほろ苦い柑橘に、Tangiers Noirのオレンジソーダで弾けるようなシトラス感を重ね、ケインミントで締める。ダーク主体でも爽快に攻めたい玄人向けのシトラスセッション。",
+      tags: { taste: ["fresh"], category: ["citrus"], mint: ["strong"], exp: ["expert"], dark: ["dark_main"], mood: ["refresh", "adventure"] }
+    },
+
+    // ── 定番フレーバーの組み合わせ（フルーツ・スイーツ・ドリンク系） ──
+    {
+      name: "キウイストロベリー",
+      items: [
+        { flavor: "キウイ", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
+        { flavor: "ストロベリー", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "キウイ", ratio: 50 },
+        { flavor: "ストロベリー", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
+      desc: "キウイの爽やかな酸味とストロベリーの甘さを合わせ、ミントで後味を整えたフレッシュなフルーツミックス。Al Fakherの定番3種だけで組めるので、初めてのお店でも頼みやすい構成です。",
+      tags: { taste: ["sweet", "both", "fresh"], category: ["fruit"], mint: ["light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["refresh", "classic"] }
+    },
+    {
+      name: "ピニャコラーダ",
+      items: [
+        { flavor: "パイナップル", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
+        { flavor: "ココナッツ", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "パイナップル", ratio: 50 },
+        { flavor: "ココナッツ", ratio: 30 },
+        { flavor: "バニラ", ratio: 20 }
+      ],
+      desc: "パイナップルとココナッツにバニラのまろやかさを重ねた、有名なトロピカルカクテル「ピニャコラーダ」を再現したブレンド。リゾート気分を味わいたい時や、夏の夜の一服におすすめ。",
+      tags: { taste: ["sweet"], category: ["fruit", "dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "adventure"] }
+    },
+    {
+      name: "アサイーボウル",
+      items: [
+        { flavor: "アサイー", brand: "Adalya", leaf: "blonde", ratio: 45 },
+        { flavor: "ブルーベリー", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ヨーグルト", brand: "Adalya", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "アサイー", ratio: 45 },
+        { flavor: "ブルーベリー", ratio: 30 },
+        { flavor: "ヨーグルト", ratio: 25 }
+      ],
+      desc: "アサイーとブルーベリーのほろ酸っぱさにヨーグルトのまろやかさを重ねた、ハワイ発のヘルシーデザート「アサイーボウル」をイメージしたブレンド。朝のシーシャやデート向きの上品な甘さ。",
+      tags: { taste: ["sweet", "both"], category: ["fruit", "dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "adventure"] }
+    },
+    {
+      name: "洋梨のタルト",
+      items: [
+        { flavor: "洋梨", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "シナモン", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "洋梨", ratio: 50 },
+        { flavor: "バニラ", ratio: 30 },
+        { flavor: "シナモン", ratio: 20 }
+      ],
+      desc: "洋梨のジューシーな甘さにバニラのクリーミーさとシナモンの温かみを合わせた、焼き立ての洋梨タルトのようなデザートブレンド。秋冬の夜長やゆったりした午後にぴったりの上品な一杯。",
+      tags: { taste: ["sweet"], category: ["fruit", "dessert", "spice"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ブルーヘブンソーダ",
+      items: [
+        { flavor: "ブルーヘブン", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ブルーヘブン", ratio: 50 },
+        { flavor: "ライム", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
+      desc: "Adalyaの人気フレーバー「ブルーヘブン」のシトラス＆ベリー感に、ライムの酸味とミントの清涼感を加えた青空のような爽快ブレンド。SNS映えする色味も魅力で、女性人気の高い一杯。",
+      tags: { taste: ["fresh", "both"], category: ["fruit", "citrus"], mint: ["light", "strong"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh", "adventure"] }
+    },
+    {
+      name: "グァバライムフィズ",
+      items: [
+        { flavor: "グァバ", brand: "Starbuzz", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "グァバ", ratio: 50 },
+        { flavor: "ライム", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
+      desc: "Starbuzzの南国フルーツ「グァバ」の甘酸っぱさに、ライムとミントを合わせたフレッシュフィズ。リフレッシュしたい昼下がりや、暑い季節にぴったりのトロピカルな爽快ブレンド。",
+      tags: { taste: ["fresh", "both"], category: ["fruit", "citrus"], mint: ["light"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh"] }
+    },
+    {
+      name: "カシスオレンジ",
+      items: [
+        { flavor: "カシス", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "オレンジ", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "カシス", ratio: 50 },
+        { flavor: "オレンジ", ratio: 30 },
+        { flavor: "ライム", ratio: 20 }
+      ],
+      desc: "カシスの濃厚な甘酸っぱさとオレンジのジューシーさ、ライムの酸味でキリッと締めた、カクテル「カシスオレンジ」のようなブレンド。お酒を飲まない夜の代わりにも、女性人気の高い一杯。",
+      tags: { taste: ["sweet", "both"], category: ["fruit", "citrus"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "refresh"] }
+    },
+    {
+      name: "グリーンアップルクーラー",
+      items: [
+        { flavor: "グリーンアップル", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 25 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "グリーンアップル", ratio: 50 },
+        { flavor: "ライム", ratio: 25 },
+        { flavor: "ミント", ratio: 25 }
+      ],
+      desc: "青リンゴのシャキッとした酸味とライムの柑橘感、ミントの清涼感を組み合わせた緑系の爽快ブレンド。ダブルアップルの甘さが苦手な方や、さっぱり系を求める方におすすめ。",
+      tags: { taste: ["fresh", "both"], category: ["fruit"], mint: ["light", "strong"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["refresh", "classic"] }
+    },
+    {
+      name: "ピーチヨーグルト",
+      items: [
+        { flavor: "ピーチ", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
+        { flavor: "ヨーグルト", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "ハニー", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ピーチ", ratio: 50 },
+        { flavor: "ヨーグルト", ratio: 30 },
+        { flavor: "ハニー", ratio: 20 }
+      ],
+      desc: "桃のジューシーな甘さにヨーグルトのまろやかな酸味とハニーの自然な甘さを重ねた、まるで朝食のフルーツヨーグルトのような優しいブレンド。シーシャ初心者にもおすすめのデザート系。",
+      tags: { taste: ["sweet"], category: ["fruit", "dessert"], mint: ["none"], exp: ["beginner", "sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ベルガモットアップル",
+      items: [
+        { flavor: "アップル", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
+        { flavor: "ベルガモット", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "シナモン", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "アップル", ratio: 50 },
+        { flavor: "ベルガモット", ratio: 30 },
+        { flavor: "シナモン", ratio: 20 }
+      ],
+      desc: "りんごの甘酸っぱさとベルガモットの華やかなアールグレイ的香り、シナモンの温かみを合わせた、アップルパイとアールグレイを同時に楽しむような上品なブレンド。",
+      tags: { taste: ["sweet", "both"], category: ["fruit", "drink", "spice"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ロイヤルミルクティー",
+      items: [
+        { flavor: "ロイヤルティー", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ロイヤルティー", ratio: 50 },
+        { flavor: "ミルク", ratio: 30 },
+        { flavor: "バニラ", ratio: 20 }
+      ],
+      desc: "ロイヤルティーの華やかな紅茶感にミルクのコクとバニラの甘さを重ねた、英国式ロイヤルミルクティーをそのまま再現したブレンド。読書やゆったりした午後にぴったりの定番ドリンク系。",
+      tags: { taste: ["sweet"], category: ["drink", "dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ジャスミンライチ",
+      items: [
+        { flavor: "ジャスミン", brand: "Adalya", leaf: "blonde", ratio: 45 },
+        { flavor: "ライチ", brand: "Adalya", leaf: "blonde", ratio: 35 },
+        { flavor: "ローズ", brand: "Azure", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ジャスミン", ratio: 45 },
+        { flavor: "ライチ", ratio: 35 },
+        { flavor: "ローズ", ratio: 20 }
+      ],
+      desc: "ジャスミンとローズのフローラルな香りに、ライチの繊細な甘みを合わせた、中華料理店のジャスミン茶を思わせる華やかなブレンド。エレガントな雰囲気を楽しみたい時にぴったり。",
+      tags: { taste: ["sweet", "both"], category: ["citrus", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "adventure"] }
+    },
+    {
+      name: "ティラミスマキアート",
+      items: [
+        { flavor: "ティラミス", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "チョコレート", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ティラミス", ratio: 50 },
+        { flavor: "チョコレート", ratio: 30 },
+        { flavor: "ミルク", ratio: 20 }
+      ],
+      desc: "Adalyaの濃厚なティラミスにチョコレートのビターさとミルクのまろやかさを重ねた、イタリアンカフェのようなデザートブレンド。甘いもの好きや、食後のシーシャにぴったりの一杯。",
+      tags: { taste: ["sweet"], category: ["dessert", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "チョコキャラメル",
+      items: [
+        { flavor: "チョコレート", brand: "Adalya", leaf: "blonde", ratio: 45 },
+        { flavor: "キャラメル", brand: "Fumari", leaf: "blonde", ratio: 30 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "チョコレート", ratio: 45 },
+        { flavor: "キャラメル", ratio: 30 },
+        { flavor: "バニラ", ratio: 25 }
+      ],
+      desc: "濃厚チョコレートに塩キャラメルの甘さとバニラのまろやかさを重ねた、王道のスイーツ系ブレンド。デザートシーシャの定番として、甘いもの好きの方や寒い夜のリラックスタイムにおすすめ。",
+      tags: { taste: ["sweet"], category: ["dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+
+    {
+      name: "クレームブリュレ",
+      items: [
+        { flavor: "キャラメル", brand: "Fumari", leaf: "blonde", ratio: 45 },
+        { flavor: "バニラ", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "キャラメル", ratio: 45 },
+        { flavor: "バニラ", ratio: 30 },
+        { flavor: "ミルク", ratio: 25 }
+      ],
+      desc: "焦がしキャラメルの香ばしい甘さに、バニラとミルクのまろやかさを重ねた、フレンチデザート「クレームブリュレ」のような濃厚スイーツブレンド。食後のシーシャや、甘いもの好きの方にぴったり。",
+      tags: { taste: ["sweet"], category: ["dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+
     // ── 初心者向けベーシックレシピ（定番ブランド構成・簡易版でも注文可） ──
     {
       name: "ピーチミント",
@@ -735,6 +1070,219 @@
       tags: { taste: ["sweet", "both"], category: ["fruit", "citrus"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "refresh"] }
     },
 
+    // ── 和テイスト（日本のカフェ・スイーツをイメージした和ブレンド） ──
+    {
+      name: "抹茶ラテ",
+      items: [
+        { flavor: "抹茶", brand: "Chabacco", leaf: "blonde", ratio: 50 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 30 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "抹茶", ratio: 50 },
+        { flavor: "ミルク", ratio: 30 },
+        { flavor: "バニラ", ratio: 20 }
+      ],
+      desc: "ほろ苦い抹茶にまろやかなミルクとバニラの甘さを重ねた、和カフェの抹茶ラテをそのまま再現した一杯。Chabaccoの本格的な抹茶感が魅力で、和スイーツ好きの方やデートにもぴったり。",
+      tags: { taste: ["sweet", "both"], category: ["drink", "dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ゆず煎茶",
+      items: [
+        { flavor: "ゆず", brand: "Chabacco", leaf: "blonde", ratio: 50 },
+        { flavor: "緑茶", brand: "Chabacco", leaf: "blonde", ratio: 30 },
+        { flavor: "ハニー", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ゆず", ratio: 50 },
+        { flavor: "緑茶", ratio: 30 },
+        { flavor: "ハニー", ratio: 20 }
+      ],
+      desc: "ゆずの爽やかな酸味と緑茶の渋み、ハニーの優しい甘さを合わせた、お茶屋さんの一服のような上品な和ブレンド。冬の柚子湯やお茶の時間を思い起こさせる、落ち着いた大人向けの一杯。",
+      tags: { taste: ["fresh", "both"], category: ["citrus", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "桜ミルクティー",
+      items: [
+        { flavor: "桜", brand: "Chabacco", leaf: "blonde", ratio: 45 },
+        { flavor: "ロイヤルティー", brand: "Adalya", leaf: "blonde", ratio: 35 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "桜", ratio: 45 },
+        { flavor: "ロイヤルティー", ratio: 35 },
+        { flavor: "ミルク", ratio: 20 }
+      ],
+      desc: "桜のほんのり華やかな香りとロイヤルティーの紅茶感、ミルクのまろやかさが合わさった、春を感じる和スイーツのような一杯。お花見気分や春のデートシーズンに特におすすめ。",
+      tags: { taste: ["sweet"], category: ["dessert", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ほうじ茶キャラメル",
+      items: [
+        { flavor: "ほうじ茶", brand: "Chabacco", leaf: "blonde", ratio: 50 },
+        { flavor: "キャラメル", brand: "Fumari", leaf: "blonde", ratio: 30 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ほうじ茶", ratio: 50 },
+        { flavor: "キャラメル", ratio: 30 },
+        { flavor: "ミルク", ratio: 20 }
+      ],
+      desc: "ほうじ茶の香ばしさにキャラメルの濃厚な甘さとミルクのコクを合わせた、秋冬にぴったりの温かみのある和ブレンド。和カフェのほうじ茶ラテのようなくつろぎ感が魅力。",
+      tags: { taste: ["sweet"], category: ["dessert", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "梅ジャスミン",
+      items: [
+        { flavor: "梅", brand: "Chabacco", leaf: "blonde", ratio: 45 },
+        { flavor: "ジャスミン", brand: "Adalya", leaf: "blonde", ratio: 35 },
+        { flavor: "ハニー", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "梅", ratio: 45 },
+        { flavor: "ジャスミン", ratio: 35 },
+        { flavor: "ハニー", ratio: 20 }
+      ],
+      desc: "梅の甘酸っぱさとジャスミンの華やかな香り、ハニーの自然な甘さを合わせた、和カフェやお茶屋さんの一服のような上品なブレンド。さっぱりしながらも深みのある、大人向けの和テイスト。",
+      tags: { taste: ["fresh", "both"], category: ["fruit", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "黒糖ミルク",
+      items: [
+        { flavor: "黒糖", brand: "Chabacco", leaf: "blonde", ratio: 45 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 35 },
+        { flavor: "シナモン", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "黒糖", ratio: 45 },
+        { flavor: "ミルク", ratio: 35 },
+        { flavor: "シナモン", ratio: 20 }
+      ],
+      desc: "沖縄の黒糖を思わせる深い甘さに、ミルクのコクとシナモンのスパイシーさを足した、温かみのある和スイーツ系ブレンド。寒い夜や、コーヒーブレイクの代わりに楽しみたい一杯。",
+      tags: { taste: ["sweet"], category: ["dessert", "spice"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "和栗モンブラン",
+      items: [
+        { flavor: "栗", brand: "Chabacco", leaf: "blonde", ratio: 45 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "栗", ratio: 45 },
+        { flavor: "バニラ", ratio: 30 },
+        { flavor: "ミルク", ratio: 25 }
+      ],
+      desc: "栗の素朴な甘さにバニラとミルクのクリーミーさを重ねた、和栗モンブランをそのままシーシャにしたようなデザートブレンド。秋の味覚を楽しみたい方や、女性に特に喜ばれる一杯。",
+      tags: { taste: ["sweet"], category: ["dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ラムネソーダ",
+      items: [
+        { flavor: "ラムネ", brand: "Chabacco", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 25 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "ラムネ", ratio: 50 },
+        { flavor: "ライム", ratio: 25 },
+        { flavor: "ミント", ratio: 25 }
+      ],
+      desc: "夏祭りのラムネ瓶を思わせる懐かしい炭酸感に、ライムの爽やかさとミントの清涼感を合わせた、夏の縁側のような爽快ブレンド。爽やか系が好きな方や、夏のリフレッシュにおすすめ。",
+      tags: { taste: ["fresh", "both"], category: ["fruit", "drink"], mint: ["light", "strong"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["refresh", "classic"] }
+    },
+
+    {
+      name: "いちごミルク",
+      items: [
+        { flavor: "ストロベリー", brand: "Al Fakher", leaf: "blonde", ratio: 60 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 25 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 15 }
+      ],
+      simple: [
+        { flavor: "ストロベリー", ratio: 60 },
+        { flavor: "ミルク", ratio: 25 },
+        { flavor: "バニラ", ratio: 15 }
+      ],
+      desc: "いちごとミルクの黄金コンビにバニラの甘い香りを重ねた、和カフェの定番ドリンク「いちごミルク」をそのまま再現したブレンド。甘党や女性、初心者にも特に人気の親しみやすい一杯。",
+      tags: { taste: ["sweet"], category: ["dessert", "fruit"], mint: ["none"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "抹茶あずき",
+      items: [
+        { flavor: "抹茶", brand: "Chabacco", leaf: "blonde", ratio: 50 },
+        { flavor: "あずき", brand: "Chabacco", leaf: "blonde", ratio: 30 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "抹茶", ratio: 50 },
+        { flavor: "あずき", ratio: 30 },
+        { flavor: "ミルク", ratio: 20 }
+      ],
+      desc: "ほろ苦い抹茶にあずきの素朴な甘さ、ミルクのまろやかさを重ねた、和カフェの抹茶あずきパフェのような濃厚な和スイーツブレンド。和菓子好きの方や、落ち着いた時間に特におすすめ。",
+      tags: { taste: ["sweet"], category: ["dessert", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "カルピスフィズ",
+      items: [
+        { flavor: "ヨーグルト", brand: "Adalya", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ハニー", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "ヨーグルト", ratio: 50 },
+        { flavor: "ライム", ratio: 30 },
+        { flavor: "ハニー", ratio: 20 }
+      ],
+      desc: "ヨーグルトのまろやかな酸味とライムの爽やかさ、ハニーの優しい甘さを合わせた、日本の乳酸菌飲料「カルピスソーダ」を思わせる爽やか系ブレンド。夏の暑い日や、甘さ控えめを求める方にぴったり。",
+      tags: { taste: ["sweet", "fresh", "both"], category: ["drink", "fruit"], mint: ["none"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["refresh", "classic"] }
+    },
+    {
+      name: "きな粉黒蜜",
+      items: [
+        { flavor: "きな粉", brand: "Chabacco", leaf: "blonde", ratio: 45 },
+        { flavor: "黒糖", brand: "Chabacco", leaf: "blonde", ratio: 30 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "きな粉", ratio: 45 },
+        { flavor: "黒糖", ratio: 30 },
+        { flavor: "バニラ", ratio: 25 }
+      ],
+      desc: "きな粉の香ばしさに黒蜜の濃い甘さ、バニラのやさしさを重ねた、和パフェやわらび餅のような和スイーツブレンド。日本らしい素朴な甘さを楽しみたい時や、和菓子好きの方におすすめの一杯。",
+      tags: { taste: ["sweet"], category: ["dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "みたらし団子",
+      items: [
+        { flavor: "キャラメル", brand: "Fumari", leaf: "blonde", ratio: 40 },
+        { flavor: "黒糖", brand: "Chabacco", leaf: "blonde", ratio: 35 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 25 }
+      ],
+      simple: [
+        { flavor: "キャラメル", ratio: 40 },
+        { flavor: "黒糖", ratio: 35 },
+        { flavor: "ミルク", ratio: 25 }
+      ],
+      desc: "キャラメルの香ばしさと黒糖のコクある甘さ、ミルクのまろやかさが醤油ダレを思わせる、和菓子「みたらし団子」をイメージしたブレンド。お団子屋さんの縁側で食べるような懐かしい味わい。",
+      tags: { taste: ["sweet"], category: ["dessert"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "抹茶チョコパフェ",
+      items: [
+        { flavor: "抹茶", brand: "Chabacco", leaf: "blonde", ratio: 45 },
+        { flavor: "チョコレート", brand: "Adalya", leaf: "blonde", ratio: 35 },
+        { flavor: "ミルク", brand: "Adalya", leaf: "blonde", ratio: 20 }
+      ],
+      simple: [
+        { flavor: "抹茶", ratio: 45 },
+        { flavor: "チョコレート", ratio: 35 },
+        { flavor: "ミルク", ratio: 20 }
+      ],
+      desc: "抹茶のほろ苦さに濃厚チョコレートとミルクのまろやかさを重ねた、和カフェの「抹茶チョコパフェ」のような濃厚デザートブレンド。抹茶スイーツ好きにはたまらない、贅沢な一杯。",
+      tags: { taste: ["sweet"], category: ["dessert", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+
     // ── ノンニコチン ──
     {
       name: "ノンニコチン フルーツミックス",
@@ -789,6 +1337,39 @@
       ],
       desc: "ノンニコチンで楽しむ定番のダブルアップル風ブレンド。りんごの甘酸っぱさとミントの爽やかさのシンプルな組み合わせで、シーシャ初体験の方やノンニコチン入門にもおすすめ。",
       tags: { taste: ["both", "fresh"], category: ["fruit"], mint: ["light", "strong"], exp: ["beginner", "sometimes"], mood: ["classic", "refresh"] }
+    },
+    {
+      name: "ノンニコチン グレープライム",
+      nonNicotine: true,
+      items: [
+        { flavor: "グレープ", leaf: "herbal", ratio: 50 },
+        { flavor: "ライム", leaf: "herbal", ratio: 30 },
+        { flavor: "ミント", leaf: "herbal", ratio: 20 }
+      ],
+      desc: "ノンニコチンで楽しむ葡萄とライムの爽やかフルーツブレンド。グレープの甘さにライムの酸味とミントの清涼感を添えた、夏場やリフレッシュしたい日に嬉しい軽やかな一杯。",
+      tags: { taste: ["fresh", "both"], category: ["fruit", "citrus"], mint: ["light"], exp: ["beginner", "sometimes", "regular"], mood: ["refresh", "classic"] }
+    },
+    {
+      name: "ノンニコチン ベリーヨーグルト",
+      nonNicotine: true,
+      items: [
+        { flavor: "ブルーベリー", leaf: "herbal", ratio: 50 },
+        { flavor: "ヨーグルト", leaf: "herbal", ratio: 30 },
+        { flavor: "ハニー", leaf: "herbal", ratio: 20 }
+      ],
+      desc: "ノンニコチンで楽しむブルーベリーとヨーグルトの優しい組み合わせにハニーの甘さを添えた、朝食にも似合うヘルシーなデザートブレンド。甘さ控えめでまろやかな味わい。",
+      tags: { taste: ["sweet"], category: ["fruit", "dessert"], mint: ["none"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ノンニコチン アップルシナモン",
+      nonNicotine: true,
+      items: [
+        { flavor: "アップル", leaf: "herbal", ratio: 60 },
+        { flavor: "シナモン", leaf: "herbal", ratio: 25 },
+        { flavor: "ハニー", leaf: "herbal", ratio: 15 }
+      ],
+      desc: "ノンニコチンで楽しむアップルパイ風ブレンド。りんごの甘酸っぱさとシナモンの温かみ、ハニーの自然な甘さが調和した、秋冬やゆったりしたリラックスタイムにぴったりの一杯。",
+      tags: { taste: ["sweet"], category: ["fruit", "spice", "dessert"], mint: ["none"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
     }
   ];
 
