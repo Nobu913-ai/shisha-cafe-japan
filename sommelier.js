@@ -643,65 +643,95 @@
       tags: { taste: ["fresh", "both"], category: ["fruit", "mint"], mint: ["strong"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh", "adventure"] }
     },
 
-    // ── 初心者向けシンプルレシピ（銘柄指定なし・店員さんに伝えやすい） ──
+    // ── 初心者向けベーシックレシピ（定番ブランド構成・簡易版でも注文可） ──
     {
       name: "ピーチミント",
       items: [
-        { flavor: "ピーチ", leaf: "blonde", ratio: 70 },
-        { flavor: "ミント", leaf: "blonde", ratio: 30 }
+        { flavor: "ピーチ", brand: "Al Fakher", leaf: "blonde", ratio: 70 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 30 }
       ],
-      desc: "桃の優しい甘さとミントの爽やかさだけを組み合わせたシンプルなレシピ。シーシャ初体験の方でもクセがなく楽しめる、もっとも親しみやすい一杯。「ピーチとミントを7：3で」と伝えればOKです。",
+      simple: [
+        { flavor: "ピーチ", ratio: 70 },
+        { flavor: "ミント", ratio: 30 }
+      ],
+      desc: "桃の優しい甘さとミントの爽やかさだけを組み合わせた、シーシャ初体験の方でもクセなく楽しめる親しみやすい一杯。Al Fakherの定番2種で構成されているので、ほとんどのお店で頼めます。銘柄指定なしでもシンプルに注文できます。",
       tags: { taste: ["sweet", "both"], category: ["fruit"], mint: ["light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
     },
     {
       name: "レモンスカッシュ",
       items: [
-        { flavor: "レモン", leaf: "blonde", ratio: 50 },
-        { flavor: "ライム", leaf: "blonde", ratio: 30 },
-        { flavor: "ミント", leaf: "blonde", ratio: 20 }
+        { flavor: "レモン", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
+        { flavor: "ライム", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 20 }
       ],
-      desc: "レモンとライムの酸味にミントを少しだけ効かせた、レモンスカッシュのような爽やかブレンド。柑橘の鮮やかさを楽しみたい方や、リフレッシュしたい気分の日にぴったり。3つのフレーバーだけで簡単に注文できます。",
+      simple: [
+        { flavor: "レモン", ratio: 50 },
+        { flavor: "ライム", ratio: 30 },
+        { flavor: "ミント", ratio: 20 }
+      ],
+      desc: "レモンとライムの酸味にミントを少しだけ効かせた、レモンスカッシュのような爽やかブレンド。柑橘の鮮やかさを楽しみたい方や、リフレッシュしたい気分の日にぴったり。Al Fakherの定番フレーバーだけで組めるので、初めてのお店でも注文しやすい構成です。",
       tags: { taste: ["fresh"], category: ["citrus"], mint: ["light", "strong"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["refresh"] }
     },
     {
       name: "メロンクリームソーダ",
       items: [
-        { flavor: "メロン", leaf: "blonde", ratio: 60 },
-        { flavor: "バニラ", leaf: "blonde", ratio: 25 },
-        { flavor: "ミント", leaf: "blonde", ratio: 15 }
+        { flavor: "メロン", brand: "Al Fakher", leaf: "blonde", ratio: 60 },
+        { flavor: "バニラ", brand: "Al Fakher", leaf: "blonde", ratio: 25 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 15 }
       ],
-      desc: "甘いメロンにバニラのクリーミーさを重ね、ミントで軽やかに仕上げた、まるでメロンクリームソーダのようなデザートブレンド。甘いものが好きな方や女性に特に人気の組み合わせ。シンプルで店員さんにも伝えやすい構成。",
+      simple: [
+        { flavor: "メロン", ratio: 60 },
+        { flavor: "バニラ", ratio: 25 },
+        { flavor: "ミント", ratio: 15 }
+      ],
+      desc: "甘いメロンにバニラのクリーミーさを重ね、ミントで軽やかに仕上げた、まるでメロンクリームソーダのようなデザートブレンド。甘いものが好きな方や女性に特に人気の組み合わせ。Al Fakherの定番3種で再現でき、店員さんにも伝えやすい構成です。",
       tags: { taste: ["sweet"], category: ["fruit", "dessert"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
     },
     {
       name: "グレープティー",
       items: [
-        { flavor: "グレープ", leaf: "blonde", ratio: 50 },
-        { flavor: "アールグレイ（紅茶）", leaf: "blonde", ratio: 35 },
-        { flavor: "ミント", leaf: "blonde", ratio: 15 }
+        { flavor: "グレープ", brand: "Al Fakher", leaf: "blonde", ratio: 50 },
+        { flavor: "アールグレイ", brand: "Fumari", leaf: "blonde", ratio: 35 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 15 }
       ],
-      desc: "葡萄の甘酸っぱさとアールグレイ紅茶の華やかな香りを合わせた、上品なドリンク系ブレンド。読書やゆったりした会話を楽しみたいリラックスタイムにおすすめ。3つの定番フレーバーだけで再現できる飲みやすい一杯。",
+      simple: [
+        { flavor: "グレープ", ratio: 50 },
+        { flavor: "アールグレイ（紅茶）", ratio: 35 },
+        { flavor: "ミント", ratio: 15 }
+      ],
+      desc: "葡萄の甘酸っぱさと紅茶の華やかな香りを合わせた、上品なドリンク系ブレンド。読書やゆったりした会話を楽しみたいリラックスタイムにおすすめ。定番のAl FakherとFumariの紅茶フレーバーで組める飲みやすい一杯。",
       tags: { taste: ["sweet", "both"], category: ["fruit", "drink"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
     },
     {
       name: "ハニーアップル",
       items: [
-        { flavor: "アップル", leaf: "blonde", ratio: 60 },
-        { flavor: "ハニー", leaf: "blonde", ratio: 25 },
-        { flavor: "シナモン", leaf: "blonde", ratio: 15 }
+        { flavor: "アップル", brand: "Al Fakher", leaf: "blonde", ratio: 60 },
+        { flavor: "ハニー", brand: "Al Fakher", leaf: "blonde", ratio: 25 },
+        { flavor: "シナモン", brand: "Al Fakher", leaf: "blonde", ratio: 15 }
       ],
-      desc: "りんごの甘酸っぱさにハニーの濃厚な甘さとシナモンの温かみを足した、アップルパイを思わせる温かみのあるブレンド。秋冬や、ゆったりと甘さを楽しみたい時間にぴったり。シンプルな3要素で店員さんにもすぐ伝わります。",
+      simple: [
+        { flavor: "アップル", ratio: 60 },
+        { flavor: "ハニー", ratio: 25 },
+        { flavor: "シナモン", ratio: 15 }
+      ],
+      desc: "りんごの甘酸っぱさにハニーの濃厚な甘さとシナモンの温かみを足した、アップルパイを思わせる温かみのあるブレンド。秋冬や、ゆったりと甘さを楽しみたい時間にぴったり。Al Fakherの定番3種だけで組めるシンプル構成です。",
       tags: { taste: ["sweet"], category: ["fruit", "spice", "dessert"], mint: ["none"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
     },
     {
       name: "南国ミックスジュース",
       items: [
-        { flavor: "マンゴー", leaf: "blonde", ratio: 40 },
-        { flavor: "パイナップル", leaf: "blonde", ratio: 30 },
-        { flavor: "オレンジ", leaf: "blonde", ratio: 20 },
-        { flavor: "ミント", leaf: "blonde", ratio: 10 }
+        { flavor: "マンゴー", brand: "Al Fakher", leaf: "blonde", ratio: 40 },
+        { flavor: "パイナップル", brand: "Al Fakher", leaf: "blonde", ratio: 30 },
+        { flavor: "オレンジ", brand: "Al Fakher", leaf: "blonde", ratio: 20 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 10 }
       ],
-      desc: "南国フルーツのマンゴー・パイナップル・オレンジを集めて、ミントを少しだけ加えたフレッシュジュースのようなブレンド。トロピカルで甘い味が好きな方におすすめ。フルーツ4種を伝えるだけで簡単に注文できます。",
+      simple: [
+        { flavor: "マンゴー", ratio: 40 },
+        { flavor: "パイナップル", ratio: 30 },
+        { flavor: "オレンジ", ratio: 20 },
+        { flavor: "ミント", ratio: 10 }
+      ],
+      desc: "南国フルーツのマンゴー・パイナップル・オレンジを集めて、ミントを少しだけ加えたフレッシュジュースのようなブレンド。トロピカルで甘い味が好きな方におすすめ。Al Fakherの定番フルーツ4種だけで組めます。",
       tags: { taste: ["sweet", "both"], category: ["fruit", "citrus"], mint: ["none", "light"], exp: ["beginner", "sometimes"], dark: ["blonde_only", "either"], mood: ["relax", "refresh"] }
     },
 
