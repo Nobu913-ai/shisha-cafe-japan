@@ -713,10 +713,11 @@ a:hover {
 
 .spot-card-header {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 6px 8px;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
 .spot-area {
@@ -726,6 +727,16 @@ a:hover {
   letter-spacing: 0.03em;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.spot-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.06);
 }
 
 .spot-tag {
@@ -739,6 +750,13 @@ a:hover {
   flex-shrink: 0;
 }
 
+.spot-tag--matched {
+  color: var(--accent);
+  background: rgba(217, 119, 6, 0.12);
+  border-color: rgba(217, 119, 6, 0.35);
+  font-weight: 600;
+}
+
 .spot-tag--more {
   color: var(--accent);
   background: rgba(217, 119, 6, 0.08);
@@ -749,15 +767,8 @@ a:hover {
   font-size: 1.05rem;
   font-weight: 700;
   margin: 0 0 6px;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.spot-name-text {
-  flex: 1;
-  min-width: 0;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .spot-rating {

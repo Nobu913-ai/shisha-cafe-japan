@@ -133,6 +133,8 @@
       if (ib === -1) ib = TAG_ORDER.length;
       return ia - ib;
     });
+    // 絞り込みで選択中のタグはフッターで先頭に寄せる（applyFilters からも再描画）
+    var selectedFeatureTags = (filterState.featureTags || []).slice();
     var searchable = [shop.name, na.display, na.key, shop.area, shop.description].concat(allTags).join(' ').toLowerCase();
 
     var card = document.createElement('article');
@@ -145,32 +147,13 @@
     card.setAttribute('data-shop', JSON.stringify(shopData));
     card.style.cursor = 'pointer';
 
+    // ヘッダー: 左=エリア / 右=評価（店舗名より上段）
     var header = document.createElement('div');
     header.className = 'spot-card-header';
     var areaSpan = document.createElement('span');
     areaSpan.className = 'spot-area';
     areaSpan.textContent = na.display;
     header.appendChild(areaSpan);
-    var MAX_VISIBLE_TAGS = 3;
-    allTags.slice(0, MAX_VISIBLE_TAGS).forEach(function (tag) {
-      var tagSpan = document.createElement('span');
-      tagSpan.className = 'spot-tag';
-      tagSpan.textContent = tag;
-      header.appendChild(tagSpan);
-    });
-    if (allTags.length > MAX_VISIBLE_TAGS) {
-      var moreSpan = document.createElement('span');
-      moreSpan.className = 'spot-tag spot-tag--more';
-      moreSpan.textContent = '+' + (allTags.length - MAX_VISIBLE_TAGS);
-      header.appendChild(moreSpan);
-    }
-    card.appendChild(header);
-    var nameEl = document.createElement('h4');
-    nameEl.className = 'spot-name';
-    var nameText = document.createElement('span');
-    nameText.className = 'spot-name-text';
-    nameText.textContent = shop.name || '';
-    nameEl.appendChild(nameText);
     if (shop.rating != null) {
       var ratingEl = document.createElement('span');
       ratingEl.className = 'spot-rating';
@@ -187,8 +170,14 @@
         countEl.textContent = '（' + Number(shop.ratingCount).toLocaleString() + '件）';
         ratingEl.appendChild(countEl);
       }
-      nameEl.appendChild(ratingEl);
+      header.appendChild(ratingEl);
     }
+    card.appendChild(header);
+
+    // 店舗名: ヘッダー直下にフル幅で独立表示
+    var nameEl = document.createElement('h4');
+    nameEl.className = 'spot-name';
+    nameEl.textContent = shop.name || '';
     card.appendChild(nameEl);
     if (shop.description) {
       var descWrap = document.createElement('div');
@@ -222,7 +211,96 @@
       card.appendChild(meta);
     }
 
+    // フッター: 設備タグ（選択中を先頭に最大3件 + 残数）
+    if (allTags.length) {
+      var footer = document.createElement('div');
+      footer.className = 'spot-card-footer';
+      card.appendChild(footer);
+      renderCardTagFooter(footer, allTags, selectedFeatureTags);
+    }
+
     return card;
+  }
+
+  /** カード下部のタグ行を描画（選択中タグを先頭に、全件追加した後で 1 行に収まるよう自動フィット） */
+  function renderCardTagFooter(footerEl, allTags, selectedTags) {
+    if (!footerEl) return;
+    footerEl.innerHTML = '';
+    var selected = selectedTags || [];
+    var ordered = allTags.slice().sort(function (a, b) {
+      var sa = selected.indexOf(a) !== -1 ? 0 : 1;
+      var sb = selected.indexOf(b) !== -1 ? 0 : 1;
+      return sa - sb;
+    });
+    if (ordered.length === 0) return;
+    ordered.forEach(function (tag) {
+      var tagSpan = document.createElement('span');
+      tagSpan.className = 'spot-tag';
+      if (selected.indexOf(tag) !== -1) {
+        tagSpan.classList.add('spot-tag--matched');
+      }
+      tagSpan.textContent = tag;
+      footerEl.appendChild(tagSpan);
+    });
+    // レイアウトが取得できるならすぐフィット。できなければ applyFilters からの再描画時に適用される
+    if (footerEl.offsetWidth > 0) {
+      fitFooterTagsToOneRow(footerEl);
+    }
+  }
+
+  /** 表示中の全カードのタグフッターを再フィット（カード幅変動時に使用） */
+  function refitAllVisibleCardFooters() {
+    if (!searchResultsContainer) return;
+    var cards = searchResultsContainer.querySelectorAll('.spot-card:not(.spot-card--hidden)');
+    var featureTags = filterState.featureTags || [];
+    cards.forEach(function (card) {
+      var footer = card.querySelector('.spot-card-footer');
+      if (!footer) return;
+      var cardTags = (card.getAttribute('data-tags') || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+      renderCardTagFooter(footer, cardTags, featureTags);
+    });
+  }
+
+  var refitTimer = null;
+  window.addEventListener('resize', function () {
+    if (refitTimer) clearTimeout(refitTimer);
+    refitTimer = setTimeout(refitAllVisibleCardFooters, 150);
+  });
+
+  /** フッター内の .spot-tag を 1 行に収まる分だけ残し、残りは +N バッジに置き換える */
+  function fitFooterTagsToOneRow(footerEl) {
+    if (!footerEl) return;
+    // 既存の +N は一旦除去
+    var existingMore = footerEl.querySelector('.spot-tag--more');
+    if (existingMore) footerEl.removeChild(existingMore);
+    var children = Array.prototype.slice.call(footerEl.children);
+    if (children.length === 0) return;
+    var firstTop = children[0].offsetTop;
+    // 最初に 2 行目に回ったタグの index を探す
+    var overflowIdx = -1;
+    for (var i = 1; i < children.length; i++) {
+      if (children[i].offsetTop > firstTop) {
+        overflowIdx = i;
+        break;
+      }
+    }
+    if (overflowIdx === -1) return; // すべて 1 行に収まっている
+    // overflowIdx 以降を削除
+    for (var j = children.length - 1; j >= overflowIdx; j--) {
+      footerEl.removeChild(children[j]);
+    }
+    var hiddenCount = children.length - overflowIdx;
+    var moreSpan = document.createElement('span');
+    moreSpan.className = 'spot-tag spot-tag--more';
+    moreSpan.textContent = '+' + hiddenCount;
+    footerEl.appendChild(moreSpan);
+    // +N 自体が 2 行目に押し出された場合、直前のタグを 1 つずつ削る
+    while (moreSpan.offsetTop > firstTop && footerEl.children.length > 1) {
+      var target = footerEl.children[footerEl.children.length - 2];
+      footerEl.removeChild(target);
+      hiddenCount++;
+      moreSpan.textContent = '+' + hiddenCount;
+    }
   }
 
   function buildFilterConditionsText() {
@@ -465,7 +543,14 @@
         var matchStation = !filterState.station || card.getAttribute('data-station') === filterState.station;
         var show = matchSubArea && matchKeyword && matchFeatures && matchStation;
         card.classList.toggle('spot-card--hidden', !show);
-        if (show) visibleCount++;
+        if (show) {
+          visibleCount++;
+          // 選択中タグが先頭に来るようフッターを再描画
+          var footerEl = card.querySelector('.spot-card-footer');
+          if (footerEl) {
+            renderCardTagFooter(footerEl, cardTags.filter(Boolean), featureTags);
+          }
+        }
       });
     });
 
