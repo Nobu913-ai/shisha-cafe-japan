@@ -1228,14 +1228,18 @@
     var reviewEl = document.getElementById('shop-modal-review');
     if (reviewEl) {
       reviewEl.innerHTML = '';
-      var googleQuery = name + (address ? ' ' + address : '');
-      var googleSearchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(googleQuery + ' 口コミ');
+      // shop.url は Google Maps の cid 付きプレイスURL。直接開けば口コミ欄が表示される
+      var reviewUrl = url;
+      if (!reviewUrl) {
+        var googleQuery = name + (address ? ' ' + address : '');
+        reviewUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(googleQuery);
+      }
       var reviewLink = document.createElement('a');
-      reviewLink.href = googleSearchUrl;
+      reviewLink.href = reviewUrl;
       reviewLink.target = '_blank';
       reviewLink.rel = 'noopener noreferrer';
       reviewLink.className = 'shop-modal-inline-link';
-      reviewLink.textContent = rating != null && ratingCount != null ? '★' + rating + '（' + ratingCount + '件）・Googleで口コミを見る' : 'Googleで評価・口コミを見る';
+      reviewLink.textContent = rating != null && ratingCount != null ? '★' + rating + '（' + ratingCount + '件）・Googleマップで口コミを見る' : 'Googleマップで評価・口コミを見る';
       reviewEl.appendChild(reviewLink);
     }
 
