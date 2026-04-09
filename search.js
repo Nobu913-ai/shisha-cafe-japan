@@ -82,7 +82,7 @@
     { id: 'other', name: 'その他' }
   ];
 
-  var TAG_ORDER = ['Wi-Fi', '電源', 'クレカ可', '個室', '駐車場', 'テラス席', 'アルコール', 'フリードリンク', 'ノンニコチン', 'シェア台'];
+  var TAG_ORDER = ['Wi-Fi', '電源', 'クレカ可', '個室', '駐車場', 'テラス席', 'アルコール', 'フリードリンク', 'ノンニコチン', 'シェア台', '24時間営業', '深夜営業'];
 
   function shopScore(shop) {
     var r = Number(shop.rating) || 0;
@@ -99,7 +99,7 @@
 
   var FEATURE_CATEGORIES = [
     { label: '設備', tags: ['Wi-Fi', '電源', 'クレカ可', '個室', '駐車場', 'テラス席'] },
-    { label: 'サービス', tags: ['アルコール', 'フリードリンク', 'ノンニコチン', 'シェア台'] }
+    { label: 'サービス', tags: ['アルコール', 'フリードリンク', 'ノンニコチン', 'シェア台', '24時間営業', '深夜営業'] }
   ];
 
   function buildShopCard(shop, regionIdForArea) {
