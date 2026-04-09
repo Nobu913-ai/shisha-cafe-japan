@@ -28,6 +28,9 @@ shops_*_access.json
 docs/
 設計説明.md
 
+# Private notes (monetization, business strategy, etc.)
+.private/
+
 # Original large images (only -sm versions are used)
 images/coming-soon.png
 images/sommelier-avatar.png
