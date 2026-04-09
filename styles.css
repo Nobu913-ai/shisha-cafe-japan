@@ -1846,11 +1846,11 @@ a:hover {
 }
 
 /* ========== フレーバー紹介ページ ========== */
-.flavors-main {
+.guide-main {
   padding: 100px 0 80px;
 }
 
-.flavors-layout {
+.guide-layout {
   display: flex;
   gap: 40px;
   max-width: 1280px;
@@ -1859,27 +1859,27 @@ a:hover {
   align-items: flex-start;
 }
 
-.flavors-sidebar {
+.guide-sidebar {
   flex-shrink: 0;
   width: 200px;
   position: sticky;
   top: 100px;
 }
 
-.flavors-content {
+.guide-content {
   flex: 1;
   min-width: 0;
 }
 
-.flavors-page-header {
+.guide-page-header {
   margin-bottom: 32px;
 }
 
-.flavors-content .flavors-section:first-of-type {
+.guide-content .guide-section:first-of-type {
   padding-top: 36px;
 }
 
-.flavors-page-title {
+.guide-page-title {
   font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 600;
@@ -1887,27 +1887,27 @@ a:hover {
   color: var(--text);
 }
 
-.flavors-page-desc {
+.guide-page-desc {
   margin: 0;
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.7;
 }
 
-.flavors-section {
+.guide-section {
   padding: 48px 0;
   border-top: 1px solid var(--border);
 }
 
-.flavors-section:first-of-type {
+.guide-section:first-of-type {
   border-top: none;
 }
 
-.flavors-section .section-title {
+.guide-section .section-title {
   margin-bottom: 24px;
 }
 
-.flavors-section[id] {
+.guide-section[id] {
   scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 88px);
 }
 
@@ -1922,7 +1922,7 @@ a:hover {
   flex-shrink: 0;
 }
 
-.flavors-subtitle {
+.guide-subtitle {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text);
@@ -1932,11 +1932,11 @@ a:hover {
   gap: 8px;
 }
 
-.flavors-subtitle-icon {
+.guide-subtitle-icon {
   font-size: 1.2rem;
 }
 
-.flavors-grid {
+.guide-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
@@ -1997,23 +1997,23 @@ a:hover {
   line-height: 1.5;
 }
 
-.flavors-tips {
+.guide-tips {
   padding: 48px 0;
   border-top: 1px solid var(--border);
   margin-top: 0;
 }
 
-.flavors-tips .section-title {
+.guide-tips .section-title {
   margin-bottom: 24px;
 }
 
-.flavors-tips-content {
+.guide-tips-content {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.flavors-tips-block {
+.guide-tips-block {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -2021,38 +2021,38 @@ a:hover {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.flavors-tips-block:hover {
+.guide-tips-block:hover {
   border-color: rgba(255, 255, 255, 0.08);
 }
 
-.flavors-tips-heading {
+.guide-tips-heading {
   font-size: 1rem;
   font-weight: 700;
   color: var(--text);
   margin: 0 0 10px;
 }
 
-.flavors-tips-block p {
+.guide-tips-block p {
   margin: 0;
   font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.75;
 }
 
-.flavors-fee-structure {
+.guide-fee-structure {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.flavors-fee-total {
+.guide-fee-total {
   padding: 16px 18px;
   background: rgba(217, 119, 6, 0.08);
   border: 1px solid rgba(217, 119, 6, 0.25);
   border-radius: var(--radius);
 }
 
-.flavors-fee-total-label {
+.guide-fee-total-label {
   margin: 0 0 8px;
   font-size: 0.8rem;
   font-weight: 700;
@@ -2061,14 +2061,14 @@ a:hover {
   letter-spacing: 0.06em;
 }
 
-.flavors-fee-total-body {
+.guide-fee-total-body {
   margin: 0;
   font-size: 0.95rem;
   color: var(--text);
   line-height: 1.7;
 }
 
-.flavors-fee-breakdown-label {
+.guide-fee-breakdown-label {
   margin: 0 0 10px;
   font-size: 0.85rem;
   font-weight: 700;
@@ -2076,16 +2076,16 @@ a:hover {
   letter-spacing: 0.02em;
 }
 
-.flavors-fee-breakdown-list {
+.guide-fee-breakdown-list {
   margin: 0;
 }
 
-.flavors-fee-notes {
+.guide-fee-notes {
   padding-top: 4px;
   border-top: 1px dashed var(--border);
 }
 
-.flavors-fee-notes-label {
+.guide-fee-notes-label {
   margin: 16px 0 10px;
   font-size: 0.85rem;
   font-weight: 700;
@@ -2093,17 +2093,17 @@ a:hover {
   letter-spacing: 0.02em;
 }
 
-.flavors-fee-notes-list {
+.guide-fee-notes-list {
   margin: 0;
 }
 
-.flavors-faq {
+.guide-faq {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.flavors-faq-item {
+.guide-faq-item {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -2111,11 +2111,11 @@ a:hover {
   transition: border-color 0.2s;
 }
 
-.flavors-faq-item[open] {
+.guide-faq-item[open] {
   border-color: var(--accent);
 }
 
-.flavors-faq-q {
+.guide-faq-q {
   padding: 16px 20px;
   font-size: 0.95rem;
   font-weight: 600;
@@ -2129,20 +2129,20 @@ a:hover {
 }
 
 /* 閉じているときは通常色（フォーカス残りでハイライトに見えないよう） */
-.flavors-faq-item:not([open]) > .flavors-faq-q {
+.guide-faq-item:not([open]) > .guide-faq-q {
   color: var(--text);
 }
 
 /* 開いている質問だけアクセント（閉じたら必ず戻る） */
-.flavors-faq-item[open] > .flavors-faq-q {
+.guide-faq-item[open] > .guide-faq-q {
   color: var(--accent);
 }
 
-.flavors-faq-q::-webkit-details-marker {
+.guide-faq-q::-webkit-details-marker {
   display: none;
 }
 
-.flavors-faq-q::before {
+.guide-faq-q::before {
   content: "▸";
   font-size: 0.75rem;
   color: var(--accent);
@@ -2150,24 +2150,24 @@ a:hover {
   transition: transform 0.2s;
 }
 
-.flavors-faq-item[open] > .flavors-faq-q::before {
+.guide-faq-item[open] > .guide-faq-q::before {
   transform: rotate(90deg);
 }
 
-.flavors-faq-q:hover {
+.guide-faq-q:hover {
   color: var(--accent);
 }
 
-.flavors-faq-q:focus {
+.guide-faq-q:focus {
   outline: none;
 }
 
-.flavors-faq-q:focus-visible {
+.guide-faq-q:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.flavors-faq-a {
+.guide-faq-a {
   padding: 0 20px 16px;
   margin: 0;
   font-size: 0.9rem;
@@ -2175,44 +2175,44 @@ a:hover {
   line-height: 1.75;
 }
 
-.flavors-main .notice-box {
+.guide-main .notice-box {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px 24px;
 }
 
-.flavors-main .notice-box p {
+.guide-main .notice-box p {
   margin: 0 0 12px;
   font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.65;
 }
 
-.flavors-main .notice-box p:last-child {
+.guide-main .notice-box p:last-child {
   margin-bottom: 0;
 }
 
-.flavors-main .notice-box strong {
+.guide-main .notice-box strong {
   color: var(--text);
 }
 
 /* フレーバーページ：左サイド目次 */
-.flavors-toc {
+.guide-toc {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
 }
 
-.flavors-toc-head {
+.guide-toc-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
 
-.flavors-toc-title {
+.guide-toc-title {
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--accent);
@@ -2224,15 +2224,15 @@ a:hover {
   min-width: 0;
 }
 
-.flavors-toc-current {
+.guide-toc-current {
   display: none;
 }
 
-.flavors-toc-body {
+.guide-toc-body {
   margin-top: 11px;
 }
 
-.flavors-toc-toggle {
+.guide-toc-toggle {
   display: none;
   flex-shrink: 0;
   align-items: center;
@@ -2248,24 +2248,24 @@ a:hover {
   transition: background 0.2s, border-color 0.2s;
 }
 
-.flavors-toc-toggle:hover {
+.guide-toc-toggle:hover {
   background: rgba(217, 119, 6, 0.12);
   border-color: var(--accent-soft);
 }
 
-.flavors-toc-toggle:focus-visible {
+.guide-toc-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.flavors-toc-toggle-icon {
+.guide-toc-toggle-icon {
   display: block;
   width: 14px;
   height: 14px;
   position: relative;
 }
 
-.flavors-toc-toggle-icon::before {
+.guide-toc-toggle-icon::before {
   content: "";
   position: absolute;
   left: 3px;
@@ -2278,22 +2278,22 @@ a:hover {
   transition: transform 0.2s ease;
 }
 
-.flavors-toc--collapsed .flavors-toc-toggle-icon::before {
+.guide-toc--collapsed .guide-toc-toggle-icon::before {
   transform: rotate(-135deg);
   top: 6px;
 }
 
-.flavors-toc-list {
+.guide-toc-list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.flavors-toc-list li {
+.guide-toc-list li {
   margin: 0;
 }
 
-.flavors-toc-list a {
+.guide-toc-list a {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -2305,27 +2305,27 @@ a:hover {
   transition: background 0.2s, color 0.2s;
 }
 
-.flavors-toc-list a:hover {
+.guide-toc-list a:hover {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   text-decoration: none;
 }
 
-.flavors-toc-list a.is-active {
+.guide-toc-list a.is-active {
   background: rgba(217, 119, 6, 0.1);
   color: var(--accent);
   font-weight: 600;
 }
 
 /* リード文・注釈 */
-.flavors-lead {
+.guide-lead {
   margin: 0 0 24px;
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.75;
 }
 
-.flavors-note {
+.guide-note {
   margin: 16px 0 0;
   font-size: 0.85rem;
   color: var(--text-muted);
@@ -2333,20 +2333,20 @@ a:hover {
 }
 
 /* 比較表 */
-.flavors-compare-table-wrap {
+.guide-compare-table-wrap {
   overflow-x: auto;
   margin: 16px 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
 
-.flavors-th-icon {
+.guide-th-icon {
   margin-right: 6px;
   font-size: 1.1rem;
 }
 
 /* 比較表：項目列＋違いがわかる強調 */
-.flavors-table--compare .flavors-table-col-label {
+.guide-table--compare .guide-table-col-label {
   width: 100px;
   background: var(--bg-elevated);
   color: var(--text);
@@ -2355,31 +2355,31 @@ a:hover {
   vertical-align: middle;
 }
 
-.flavors-table--compare .flavors-diff-low {
+.guide-table--compare .guide-diff-low {
   font-weight: 700;
   color: var(--text);
 }
 
-.flavors-table--compare .flavors-diff-high {
+.guide-table--compare .guide-diff-high {
   font-weight: 700;
   color: var(--text);
 }
 
-.flavors-table {
+.guide-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
 
-.flavors-table th,
-.flavors-table td {
+.guide-table th,
+.guide-table td {
   padding: 14px 16px;
   text-align: left;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
 
-.flavors-table th {
+.guide-table th {
   background: var(--bg-elevated);
   color: var(--text);
   font-weight: 600;
@@ -2387,17 +2387,17 @@ a:hover {
   width: 100px;
 }
 
-.flavors-table td {
+.guide-table td {
   color: var(--text-muted);
   line-height: 1.6;
 }
 
-.flavors-table tbody tr:last-child td {
+.guide-table tbody tr:last-child td {
   border-bottom: none;
 }
 
 /* ダークリーフセクション */
-.flavors-section--dark .flavor-cards--dark {
+.guide-section--dark .flavor-cards--dark {
   margin-bottom: 24px;
 }
 
@@ -2449,7 +2449,7 @@ a:hover {
   gap: 6px;
 }
 
-.flavors-notice-spaced {
+.guide-notice-spaced {
   margin-top: 32px;
 }
 
@@ -2475,18 +2475,18 @@ a:hover {
 }
 
 /* 銘柄グリッド */
-.flavors-grid--brands {
+.guide-grid--brands {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 @media (max-width: 900px) {
-  .flavors-layout {
+  .guide-layout {
     flex-direction: column;
     padding: 0 24px;
   }
 
   /* スクロールしても目次が画面上部に留まる（固定ヘッダー直下） */
-  .flavors-sidebar {
+  .guide-sidebar {
     width: 100%;
     position: sticky;
     top: calc(env(safe-area-inset-top, 0px) + 54px);
@@ -2494,12 +2494,12 @@ a:hover {
     align-self: flex-start;
   }
 
-  /* スティッキー目次の実高に応じたアンカーずらしは JS が --flavors-sticky-overlap を設定 */
-  .flavors-section[id] {
-    scroll-margin-top: var(--flavors-sticky-overlap, calc(env(safe-area-inset-top, 0px) + 130px));
+  /* スティッキー目次の実高に応じたアンカーずらしは JS が --guide-sticky-overlap を設定 */
+  .guide-section[id] {
+    scroll-margin-top: var(--guide-sticky-overlap, calc(env(safe-area-inset-top, 0px) + 130px));
   }
 
-  .flavors-toc {
+  .guide-toc {
     margin-bottom: 6px;
     padding: 0;
     border-radius: 10px;
@@ -2507,21 +2507,21 @@ a:hover {
     overflow: hidden;
   }
 
-  .flavors-toc-head {
+  .guide-toc-head {
     gap: 0;
     cursor: pointer;
     padding: 10px 14px;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .flavors-toc-title {
+  .guide-toc-title {
     font-size: 0.68rem;
     letter-spacing: 0.04em;
     flex: 0 0 auto;
     margin-right: 8px;
   }
 
-  .flavors-toc-current {
+  .guide-toc-current {
     display: block;
     flex: 1;
     min-width: 0;
@@ -2533,7 +2533,7 @@ a:hover {
     text-overflow: ellipsis;
   }
 
-  .flavors-toc-toggle {
+  .guide-toc-toggle {
     display: inline-flex;
     width: 28px;
     height: 28px;
@@ -2542,14 +2542,14 @@ a:hover {
     background: transparent;
   }
 
-  .flavors-toc-toggle-icon::before {
+  .guide-toc-toggle-icon::before {
     width: 7px;
     height: 7px;
     left: 4px;
     top: 3px;
   }
 
-  .flavors-toc-body {
+  .guide-toc-body {
     margin-top: 0;
     max-height: 300px;
     overflow: hidden;
@@ -2558,23 +2558,23 @@ a:hover {
     padding: 0 14px 12px;
   }
 
-  .flavors-toc--collapsed .flavors-toc-body {
+  .guide-toc--collapsed .guide-toc-body {
     max-height: 0;
     opacity: 0;
     padding-bottom: 0;
   }
 
-  .flavors-toc-list {
+  .guide-toc-list {
     display: flex;
     flex-wrap: wrap;
     gap: 6px 7px;
   }
 
-  .flavors-toc-list li {
+  .guide-toc-list li {
     margin: 0;
   }
 
-  .flavors-toc-list a {
+  .guide-toc-list a {
     padding: 6px 10px;
     font-size: 0.76rem;
     background: rgba(255, 255, 255, 0.03);
@@ -2584,26 +2584,26 @@ a:hover {
     transition: background 0.2s, color 0.2s, border-color 0.2s;
   }
 
-  .flavors-toc-list a.is-active {
+  .guide-toc-list a.is-active {
     background: rgba(217, 119, 6, 0.1);
     border-color: var(--accent-soft);
     color: var(--accent);
     font-weight: 600;
   }
 
-  .flavors-section {
+  .guide-section {
     padding: 36px 0;
   }
 
-  .flavors-tips {
+  .guide-tips {
     padding: 36px 0;
   }
 
-  .flavors-page-header {
+  .guide-page-header {
     margin-bottom: 24px;
   }
 
-  .flavors-page-title {
+  .guide-page-title {
     font-size: 1.35rem;
   }
 
@@ -2611,11 +2611,11 @@ a:hover {
     font-size: 1.15rem;
   }
 
-  .flavors-compare-table-wrap {
+  .guide-compare-table-wrap {
     position: relative;
   }
 
-  .flavors-compare-table-wrap::after {
+  .guide-compare-table-wrap::after {
     content: "";
     position: absolute;
     top: 0;
@@ -2644,41 +2644,41 @@ a:hover {
     line-height: 1.75;
   }
 
-  .flavors-faq-q {
+  .guide-faq-q {
     padding: 16px 18px;
     font-size: 0.9rem;
     min-height: 48px;
   }
 
-  .flavors-faq-a {
+  .guide-faq-a {
     padding: 0 18px 16px;
     font-size: 0.85rem;
   }
 
-  .flavors-tips-block {
+  .guide-tips-block {
     padding: 16px 18px;
   }
 
-  .flavors-tips-heading {
+  .guide-tips-heading {
     font-size: 0.95rem;
   }
 
-  .flavors-tips-block p {
+  .guide-tips-block p {
     font-size: 0.88rem;
   }
 
-  .flavors-lead {
+  .guide-lead {
     font-size: 0.9rem;
   }
 
 }
 
 @media (min-width: 901px) {
-  .flavors-toc-toggle {
+  .guide-toc-toggle {
     display: none !important;
   }
 
-  .flavors-toc--collapsed .flavors-toc-body {
+  .guide-toc--collapsed .guide-toc-body {
     display: block !important;
   }
 }
@@ -3640,24 +3640,24 @@ a:hover {
   }
 
   /* ── フレーバーページ ── */
-  .flavors-main {
+  .guide-main {
     padding: 80px 0 48px;
   }
 
-  .flavors-layout {
+  .guide-layout {
     padding: 0 16px;
   }
 
-  .flavors-page-title {
+  .guide-page-title {
     font-size: 1.4rem;
   }
 
-  .flavors-grid {
+  .guide-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
-  .flavors-grid--brands {
+  .guide-grid--brands {
     grid-template-columns: 1fr;
   }
 
@@ -3665,17 +3665,17 @@ a:hover {
     padding: 18px;
   }
 
-  .flavors-tips-block {
+  .guide-tips-block {
     padding: 16px;
   }
 
-  .flavors-table th,
-  .flavors-table td {
+  .guide-table th,
+  .guide-table td {
     padding: 10px 12px;
     font-size: 0.82rem;
   }
 
-  .flavors-toc-list a {
+  .guide-toc-list a {
     font-size: 0.72rem;
     padding: 4px 7px;
   }
