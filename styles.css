@@ -866,6 +866,8 @@ a:hover {
   padding: 20px;
   transition: border-color 0.2s;
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 220px;
 }
 
 .spot-card:hover {
