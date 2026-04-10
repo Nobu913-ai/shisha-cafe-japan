@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>エリア別ランキング｜シーシャカフェ人気TOP5｜SHISHA CAFE JAPAN</title>
+  <meta name="description" content="Googleマップの評価と口コミ件数をもとにスコアを算出し、東京・大阪・名古屋・福岡のシーシャカフェTOP5をエリアごとに掲載しています。">
+  <link rel="canonical" href="https://shisha-cafe.jp/ranking.html">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#1a140e">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SHISHA CAFE JAPAN">
+  <meta property="og:title" content="エリア別ランキング｜シーシャカフェ人気TOP5">
+  <meta property="og:description" content="Googleマップの評価と口コミ件数をもとにスコアを算出し、東京・大阪・名古屋・福岡のシーシャカフェTOP5をエリアごとに掲載。">
+  <meta property="og:url" content="https://shisha-cafe.jp/ranking.html">
+  <meta property="og:image" content="https://shisha-cafe.jp/images/ogp.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="エリア別ランキング｜シーシャカフェ人気TOP5">
+  <meta name="twitter:description" content="Googleマップの評価と口コミ件数をもとにスコアを算出し、東京・大阪・名古屋・福岡のシーシャカフェTOP5を掲載。">
+  <meta name="twitter:image" content="https://shisha-cafe.jp/images/ogp.png">
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "トップ", "item": "https://shisha-cafe.jp/" },
+      { "@type": "ListItem", "position": 2, "name": "エリア別ランキング", "item": "https://shisha-cafe.jp/ranking.html" }
+    ]
+  }
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-THHM4DJRV2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-THHM4DJRV2');
+  </script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260410c">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SHISHA CAFE <span>JAPAN</span></a>
+      <nav class="nav">
+        <a href="index.html">トップ</a>
+        <a href="search.html">店舗検索</a>
+        <a href="guide.html">シーシャガイド</a>
+        <a href="sommelier.html">フレーバー相談</a>
+      </nav>
+      <button class="menu-btn" aria-label="メニュー" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main class="ranking-main">
+    <section class="section ranking-hero">
+      <div class="container">
+        <h1 class="section-title">エリア別ランキング</h1>
+        <p class="section-desc">Googleマップの評価と口コミ件数をもとにスコアを算出し、エリアごとにTOP5を掲載しています。</p>
+        <div id="ranking-loading" class="spots-loading">ランキングを読み込み中…</div>
+        <div id="ranking-container"></div>
+      </div>
+    </section>
+
+    <section class="section notice">
+      <div class="container">
+        <div class="notice-box">
+          <p>ランキングはGoogleマップの評価（★）と口コミ件数をもとに独自スコアで算出しています。掲載情報は定期的に更新していますが、最新の営業情報は各店舗の公式サイトでご確認ください。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-logo">SHISHA CAFE JAPAN</p>
+      <p class="footer-nav"><a href="index.html">トップ</a>｜<a href="search.html">店舗検索</a>｜<a href="guide.html">シーシャガイド</a>｜<a href="sommelier.html">フレーバー相談</a>｜<a href="terms.html">利用規約</a></p>
+      <p class="footer-copy">掲載情報は参考です。詳細は各店舗へお問い合わせください。</p>
+    </div>
+  </footer>
+
+  <div id="shop-modal" class="shop-modal" aria-hidden="true">
+    <div class="shop-modal-backdrop"></div>
+    <div class="shop-modal-inner">
+      <button type="button" class="shop-modal-close" aria-label="閉じる">&times;</button>
+      <div class="shop-modal-content">
+        <p class="shop-modal-area" id="shop-modal-area"></p>
+        <h2 class="shop-modal-name" id="shop-modal-name"></h2>
+        <div class="shop-modal-section shop-modal-ai-desc">
+          <h3 class="shop-modal-section-title">AI紹介</h3>
+          <p class="shop-modal-desc" id="shop-modal-desc"></p>
+        </div>
+        <dl class="shop-modal-dl">
+          <dt>アクセス</dt>
+          <dd id="shop-modal-access"></dd>
+          <dt>住所</dt>
+          <dd id="shop-modal-address"></dd>
+          <dt>電話番号</dt>
+          <dd id="shop-modal-phone"></dd>
+          <dt>営業時間</dt>
+          <dd id="shop-modal-hours"></dd>
+          <dt>定休日</dt>
+          <dd id="shop-modal-closed"></dd>
+          <dt>料金の目安</dt>
+          <dd id="shop-modal-price"></dd>
+          <dt>予約</dt>
+          <dd id="shop-modal-reservation"></dd>
+          <dt>設備・サービス</dt>
+          <dd id="shop-modal-features"></dd>
+          <dt>支払い</dt>
+          <dd id="shop-modal-payment"></dd>
+          <dt>評価・口コミ</dt>
+          <dd id="shop-modal-review"></dd>
+          <dt>公式HP</dt>
+          <dd id="shop-modal-official"></dd>
+        </dl>
+        <div class="shop-modal-map-section" id="shop-modal-map"></div>
+        <div class="shop-modal-links" id="shop-modal-links"></div>
+        <p class="shop-modal-note">営業時間・料金・休業日・予約の有無は変わる場合があります。詳細は各店舗の公式情報でご確認ください。</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="area-normalize.js?v=20260325a"></script>
+  <script src="script.js?v=20260410c"></script>
+</body>
+</html>

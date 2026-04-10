@@ -475,27 +475,55 @@ a:hover {
 }
 
 /* ── エリア別ランキング ── */
-.rank-block {
-  margin-bottom: 48px;
-}
-.rank-block:last-child {
-  margin-bottom: 0;
-}
-.rank-block-header {
+.rank-tabs {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.rank-block-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-}
-.rank-block-count {
-  font-size: 0.85rem;
+.rank-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.rank-tab:hover {
+  color: var(--text);
+}
+.rank-tab.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.rank-tab-count {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+.rank-tab-count::before {
+  content: "(";
+}
+.rank-tab-count::after {
+  content: ")";
+}
+.rank-panel {
+  display: none;
+}
+.rank-panel.is-active {
+  display: block;
 }
 .rank-list {
   display: flex;
@@ -3583,6 +3611,13 @@ a:hover {
   }
 
   /* ── ランキング ── */
+  .rank-tabs {
+    gap: 0;
+  }
+  .rank-tab {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
   .rank-card {
     padding: 12px 14px;
     gap: 10px;
@@ -3594,9 +3629,6 @@ a:hover {
   }
   .rank-name {
     font-size: 0.92rem;
-  }
-  .rank-block-title {
-    font-size: 1.1rem;
   }
 
   /* ── 注意書き ── */
@@ -4065,6 +4097,25 @@ a:hover {
   }
 
   .terms-title {
+    font-size: 1.35rem;
+  }
+}
+
+/* ========== ランキングページ ========== */
+.ranking-main {
+  padding: 100px 0 0;
+}
+
+.ranking-main .section-title {
+  font-size: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .ranking-main {
+    padding: 80px 0 0;
+  }
+
+  .ranking-main .section-title {
     font-size: 1.35rem;
   }
 }
