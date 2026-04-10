@@ -95,9 +95,6 @@
     if (e.key === 'Escape' && aboutDetailModal && aboutDetailModal.classList.contains('is-open')) closeAboutDetail();
   });
 
-  var spotsContainer = document.getElementById('spots-container');
-  var spotsLoading = document.getElementById('spots-loading');
-
   var shopModal = document.getElementById('shop-modal');
   var shopModalBackdrop = shopModal ? shopModal.querySelector('.shop-modal-backdrop') : null;
   var shopModalClose = shopModal ? shopModal.querySelector('.shop-modal-close') : null;
@@ -245,19 +242,6 @@
     if (e.key === 'Escape' && shopModal && shopModal.classList.contains('is-open')) closeShopModal();
   });
 
-  if (spotsContainer) {
-    spotsContainer.addEventListener('click', function (e) {
-      var card = e.target.closest('.spot-card');
-      if (!card) return;
-      var raw = card.getAttribute('data-shop');
-      if (!raw) return;
-      try {
-        var shop = JSON.parse(raw);
-        openShopModal(shop);
-      } catch (err) {}
-    });
-  }
-
   function buildShopCard(shop, regionIdForArea) {
     var na = typeof normalizeShopArea === 'function'
       ? normalizeShopArea(shop, regionIdForArea || '')
@@ -319,52 +303,6 @@
     return card;
   }
 
-  if (spotsContainer && spotsLoading) {
-    var url = new URL('shops.json', window.location.href).href;
-    fetch(url)
-      .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('読み込み失敗')); })
-      .then(function (data) {
-        spotsLoading.classList.add('is-hidden');
-        var regions = data.regions || [];
-        var hasAny = false;
-        regions.forEach(function (region) {
-          var recommendedShops = (region.shops || []).filter(function (shop) { return shop.recommended === true; });
-          if (recommendedShops.length === 0) return;
-          hasAny = true;
-          var block = document.createElement('div');
-          block.id = region.id;
-          block.className = 'spot-block';
-          block.setAttribute('data-region', region.id);
-          var title = document.createElement('h3');
-          title.className = 'spot-block-title';
-          title.textContent = region.name + 'のおすすめ';
-          block.appendChild(title);
-          var grid = document.createElement('div');
-          grid.className = 'spot-grid';
-          recommendedShops.slice().sort(function (a, b) {
-            return shopScore(b) - shopScore(a);
-          }).forEach(function (shop) {
-            grid.appendChild(buildShopCard(shop, region.id));
-          });
-          block.appendChild(grid);
-          spotsContainer.appendChild(block);
-        });
-        if (!hasAny) {
-          var placeholder = document.createElement('div');
-          placeholder.className = 'spots-coming-soon';
-          placeholder.innerHTML =
-            '<img src="images/coming-soon-sm.png" alt="" class="spots-coming-soon-img" loading="lazy">' +
-            '<p class="spots-coming-soon-title">調査中</p>' +
-            '<p class="spots-coming-soon-desc">現在、各エリアのおすすめ店舗を調査しています。<br>掲載まで今しばらくお待ちください。</p>' +
-            '<a href="search.html" class="spots-coming-soon-link">店舗検索から探す →</a>';
-          spotsContainer.appendChild(placeholder);
-        }
-      })
-      .catch(function () {
-        if (spotsLoading) {
-          spotsLoading.textContent = '店舗情報の読み込みに失敗しました。しばらくしてから再読み込みしてください。';
-          spotsLoading.classList.remove('is-hidden');
-        }
-      });
-  }
+  // NOTE: shopScore, buildShopCard, openShopModal は
+  // ランキング機能で再利用予定のため残している。
 })();

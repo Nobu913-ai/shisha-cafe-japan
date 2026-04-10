@@ -69,7 +69,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260324e">
+  <link rel="stylesheet" href="styles.css?v=20260410a">
 </head>
 <body>
   <header class="header">
@@ -169,9 +169,15 @@
       <div class="container">
         <h2 class="section-title">おすすめ店舗</h2>
         <p class="section-desc">当サイトが厳選したおすすめ店舗をエリア別にご紹介します。営業時間・料金は各店舗の公式情報でご確認ください。</p>
-
-        <div id="spots-loading" class="spots-loading">店舗情報を読み込み中…</div>
-        <div id="spots-container"></div>
+        <div class="spots-coming-soon">
+          <picture>
+            <source srcset="images/coming-soon-sm.webp" type="image/webp">
+            <img src="images/coming-soon-sm.png" alt="" class="spots-coming-soon-img" loading="lazy" width="600" height="400" decoding="async">
+          </picture>
+          <p class="spots-coming-soon-title">調査中</p>
+          <p class="spots-coming-soon-desc">現在、各エリアのおすすめ店舗を調査しています。<br>掲載まで今しばらくお待ちください。</p>
+          <a href="search.html" class="spots-coming-soon-link">店舗検索から探す →</a>
+        </div>
       </div>
     </section>
 
@@ -245,6 +251,6 @@
   </div>
 
   <script src="area-normalize.js?v=20260325a"></script>
-  <script src="script.js?v=20260324b"></script>
+  <script src="script.js?v=20260410a"></script>
 </body>
 </html>
