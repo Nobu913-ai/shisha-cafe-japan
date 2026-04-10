@@ -578,10 +578,12 @@
         card.classList.toggle('spot-card--hidden', !show);
         if (show) {
           visibleCount++;
-          // 選択中タグが先頭に来るようフッターを再描画
-          var footerEl = card.querySelector('.spot-card-footer');
-          if (footerEl) {
-            renderCardTagFooter(footerEl, cardTags.filter(Boolean), featureTags);
+          // 選択中タグが先頭に来るようフッターを再描画（タグ選択時のみ）
+          if (featureTags.length > 0) {
+            var footerEl = card.querySelector('.spot-card-footer');
+            if (footerEl) {
+              renderCardTagFooter(footerEl, cardTags.filter(Boolean), featureTags);
+            }
           }
         }
       });
@@ -1606,10 +1608,11 @@
     filterState.nearbyMode = false;
     filterState.userLat = null;
     filterState.userLng = null;
+    // UIを即座に更新（ボタン・オプション非表示）
     if (nearbyBtn) nearbyBtn.classList.remove('is-active');
     if (nearbyStatus) { nearbyStatus.textContent = ''; nearbyStatus.classList.remove('is-error'); }
     if (nearbyOptionsWrap) nearbyOptionsWrap.classList.remove('is-visible');
-    // 通常ブロックを復元
+    // nearby結果を消し、通常ブロックを復元
     if (nearbyResultsBlock) {
       nearbyResultsBlock.style.display = 'none';
     }
@@ -1622,7 +1625,9 @@
     nearbyBtn.addEventListener('click', function () {
       if (filterState.nearbyMode) {
         deactivateNearbyMode();
-        applyFilters({ scrollToResults: false });
+        requestAnimationFrame(function () {
+          applyFilters({ scrollToResults: false });
+        });
         return;
       }
       if (!navigator.geolocation) {
