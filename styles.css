@@ -916,6 +916,7 @@ a:hover {
   color: var(--text-muted);
   white-space: nowrap;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .spot-rating-star {
@@ -2038,6 +2039,48 @@ a:hover {
 
 .search-nearby-status.is-error {
   color: #ef4444;
+}
+
+.search-nearby-radius {
+  display: none;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.search-nearby-radius.is-visible {
+  display: flex;
+}
+
+.search-nearby-radius-btn {
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.search-nearby-radius-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.search-nearby-radius-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.search-nearby-empty {
+  text-align: center;
+  padding: 40px 16px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.7;
 }
 
 .spot-distance {

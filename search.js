@@ -66,7 +66,8 @@
     station: null,
     nearbyMode: false,
     userLat: null,
-    userLng: null
+    userLng: null,
+    nearbyRadius: 5
   };
 
   /** 全店舗データ（fetch 後に格納、現在地検索で使用） */
@@ -328,7 +329,8 @@
   function buildFilterConditionsText() {
     var parts = [];
     if (filterState.nearbyMode) {
-      parts.push('現在地から近い順');
+      var rLabel = filterState.nearbyRadius ? '現在地から' + filterState.nearbyRadius + 'km以内' : '現在地から近い順';
+      parts.push(rLabel);
     }
     if (filterState.regionId && filterState.regionName) {
       parts.push('地域：' + filterState.regionName);
@@ -1470,17 +1472,25 @@
 
   var nearbyBtn = document.getElementById('search-nearby-btn');
   var nearbyStatus = document.getElementById('search-nearby-status');
+  var nearbyRadiusWrap = document.getElementById('search-nearby-radius');
   var nearbyResultsBlock = null;
   var NEARBY_MAX = 50;
 
   function buildNearbyCard(entry) {
     var card = buildShopCard(entry.shop, entry.regionId);
-    var header = card.querySelector('.spot-card-header');
-    if (header && entry.distance != null) {
-      var badge = document.createElement('span');
-      badge.className = 'spot-distance';
-      badge.textContent = formatDistance(entry.distance);
-      header.appendChild(badge);
+    if (entry.distance != null) {
+      var header = card.querySelector('.spot-card-header');
+      if (header) {
+        var badge = document.createElement('span');
+        badge.className = 'spot-distance';
+        badge.textContent = formatDistance(entry.distance);
+        var areaEl = header.querySelector('.spot-area');
+        if (areaEl) {
+          areaEl.insertAdjacentElement('afterend', badge);
+        } else {
+          header.insertBefore(badge, header.firstChild);
+        }
+      }
     }
     return card;
   }
@@ -1499,6 +1509,18 @@
     }
     nearbyResultsBlock.innerHTML = '';
     nearbyResultsBlock.style.display = '';
+
+    if (entries.length === 0) {
+      var empty = document.createElement('p');
+      empty.className = 'search-nearby-empty';
+      var radiusKm = filterState.nearbyRadius;
+      empty.textContent = radiusKm
+        ? '半径' + radiusKm + 'km以内にシーシャカフェが見つかりませんでした。距離を広げて検索してみてください。'
+        : '条件に一致するシーシャカフェが見つかりませんでした。';
+      nearbyResultsBlock.appendChild(empty);
+      updateSearchResultToolbar(0);
+      return;
+    }
 
     var grid = document.createElement('div');
     grid.className = 'spot-grid';
@@ -1530,6 +1552,11 @@
     });
     filtered.sort(function (a, b) { return a.distance - b.distance; });
 
+    var radiusKm = filterState.nearbyRadius;
+    if (radiusKm) {
+      filtered = filtered.filter(function (e) { return e.distance <= radiusKm; });
+    }
+
     renderNearbyResults(filtered.slice(0, NEARBY_MAX));
   }
 
@@ -1549,6 +1576,7 @@
     renderSubareaButtons(null);
     if (nearbyBtn) nearbyBtn.classList.add('is-active');
     if (nearbyStatus) { nearbyStatus.textContent = ''; nearbyStatus.classList.remove('is-error'); }
+    if (nearbyRadiusWrap) nearbyRadiusWrap.classList.add('is-visible');
     applyNearbyFilters();
   }
 
@@ -1559,6 +1587,7 @@
     filterState.userLng = null;
     if (nearbyBtn) nearbyBtn.classList.remove('is-active');
     if (nearbyStatus) { nearbyStatus.textContent = ''; nearbyStatus.classList.remove('is-error'); }
+    if (nearbyRadiusWrap) nearbyRadiusWrap.classList.remove('is-visible');
     // 通常ブロックを復元
     if (nearbyResultsBlock) {
       nearbyResultsBlock.style.display = 'none';
@@ -1604,6 +1633,19 @@
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
+    });
+  }
+
+  if (nearbyRadiusWrap) {
+    nearbyRadiusWrap.addEventListener('click', function (e) {
+      var btn = e.target.closest('.search-nearby-radius-btn');
+      if (!btn) return;
+      var r = Number(btn.getAttribute('data-radius'));
+      filterState.nearbyRadius = r;
+      nearbyRadiusWrap.querySelectorAll('.search-nearby-radius-btn').forEach(function (b) {
+        b.classList.toggle('is-active', b === btn);
+      });
+      applyNearbyFilters();
     });
   }
 
