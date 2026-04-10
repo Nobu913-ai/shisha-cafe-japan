@@ -421,6 +421,74 @@ a:hover {
   color: var(--text-muted);
 }
 
+/* Flavor snippet */
+.flavor-snippet-example-label {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.flavor-snippet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.flavor-snippet-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.flavor-snippet-header {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.flavor-snippet-items {
+  margin-bottom: 14px;
+}
+
+.flavor-snippet-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  padding: 2px 0;
+}
+
+.flavor-snippet-flavor {
+  font-weight: 700;
+}
+
+.flavor-snippet-ratio {
+  margin-left: auto;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.flavor-snippet-note {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.flavor-snippet-caption {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+
 /* Spots */
 .spots .section-desc {
   margin-bottom: 12px;
