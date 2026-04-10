@@ -242,9 +242,9 @@
     if (e.key === 'Escape' && shopModal && shopModal.classList.contains('is-open')) closeShopModal();
   });
 
-  function buildShopCard(shop, regionIdForArea) {
+  function buildRankingCard(shop, rank, regionId) {
     var na = typeof normalizeShopArea === 'function'
-      ? normalizeShopArea(shop, regionIdForArea || '')
+      ? normalizeShopArea(shop, regionId || '')
       : { key: shop.area || '', display: shop.area || '' };
     var shopData = {
       name: shop.name || '',
@@ -253,56 +253,124 @@
       hoursNote: shop.hoursNote || '',
       tags: shop.tags || [],
       access: shop.access || '',
-      address: shop.address || shop.住所 || '',
+      address: shop.address || '',
       priceNote: shop.priceNote || '',
       reservation: shop.reservation || '',
       features: shop.features || [],
       payment: shop.payment || '',
-      closedDay: shop.closedDay || shop.定休日 || '',
+      closedDay: shop.closedDay || '',
       url: shop.url || '',
       phone: shop.phone || '',
-      officialUrl: shop.officialUrl || shop.official || '',
+      officialUrl: shop.officialUrl || '',
       rating: shop.rating,
       ratingCount: shop.ratingCount
     };
+
     var card = document.createElement('article');
-    card.className = 'spot-card';
-    var header = document.createElement('div');
-    header.className = 'spot-card-header';
-    var areaSpan = document.createElement('span');
-    areaSpan.className = 'spot-area';
-    areaSpan.textContent = na.display;
-    header.appendChild(areaSpan);
-    (shop.tags || []).slice().sort(function (a, b) {
-      var ia = TAG_ORDER.indexOf(a);
-      var ib = TAG_ORDER.indexOf(b);
-      if (ia === -1) ia = TAG_ORDER.length;
-      if (ib === -1) ib = TAG_ORDER.length;
-      return ia - ib;
-    }).forEach(function (tag) {
-      var tagSpan = document.createElement('span');
-      tagSpan.className = 'spot-tag';
-      tagSpan.textContent = tag;
-      header.appendChild(tagSpan);
-    });
-    card.appendChild(header);
-    var nameEl = document.createElement('h4');
-    nameEl.className = 'spot-name';
-    nameEl.textContent = shop.name || '';
-    card.appendChild(nameEl);
-    var desc = document.createElement('p');
-    desc.className = 'spot-desc';
-    desc.textContent = shop.description || '';
-    card.appendChild(desc);
-    var time = document.createElement('p');
-    time.className = 'spot-time';
-    time.textContent = shop.hoursNote ? '営業：\n' + formatHoursMultiline(shop.hoursNote) : '';
-    card.appendChild(time);
+    card.className = 'rank-card';
     card.setAttribute('data-shop', JSON.stringify(shopData));
     card.style.cursor = 'pointer';
+
+    // 順位バッジ
+    var badge = document.createElement('span');
+    badge.className = 'rank-badge' + (rank <= 3 ? ' rank-badge--top' + rank : '');
+    badge.textContent = rank;
+    card.appendChild(badge);
+
+    // 本文エリア
+    var body = document.createElement('div');
+    body.className = 'rank-body';
+
+    // 1行目: 店名
+    var nameEl = document.createElement('h4');
+    nameEl.className = 'rank-name';
+    nameEl.textContent = shop.name || '';
+    body.appendChild(nameEl);
+
+    // 2行目: エリア + 評価
+    var meta = document.createElement('p');
+    meta.className = 'rank-meta';
+    var r = Number(shop.rating) || 0;
+    var rc = Number(shop.ratingCount) || 0;
+    var metaText = na.display;
+    if (r) metaText += '　★' + r.toFixed(1) + '（' + rc.toLocaleString() + '件）';
+    meta.textContent = metaText;
+    body.appendChild(meta);
+
+    // 3行目: 紹介文（省略）
+    if (shop.description) {
+      var desc = document.createElement('p');
+      desc.className = 'rank-desc';
+      var text = shop.description;
+      desc.textContent = text.length > 80 ? text.slice(0, 80) + '…' : text;
+      body.appendChild(desc);
+    }
+
+    card.appendChild(body);
     return card;
   }
 
-  // NOTE: shopScore, buildShopCard, openShopModal は
-  // ランキング機能で再利用予定のため残している。
+  // ── ランキング描画 ──
+  var rankContainer = document.getElementById('ranking-container');
+  var rankLoading = document.getElementById('ranking-loading');
+
+  if (rankContainer && rankLoading) {
+    fetch(new URL('top-shops.json', window.location.href).href)
+      .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('読み込み失敗')); })
+      .then(function (data) {
+        rankLoading.classList.add('is-hidden');
+        var regions = data.regions || [];
+        regions.forEach(function (region) {
+          var block = document.createElement('div');
+          block.className = 'rank-block';
+
+          var header = document.createElement('div');
+          header.className = 'rank-block-header';
+          var title = document.createElement('h3');
+          title.className = 'rank-block-title';
+          title.textContent = region.name;
+          header.appendChild(title);
+          if (region.shopCount) {
+            var count = document.createElement('span');
+            count.className = 'rank-block-count';
+            count.textContent = region.shopCount.toLocaleString() + '店舗';
+            header.appendChild(count);
+          }
+          block.appendChild(header);
+
+          var list = document.createElement('div');
+          list.className = 'rank-list';
+          (region.shops || []).forEach(function (shop, i) {
+            list.appendChild(buildRankingCard(shop, i + 1, region.id));
+          });
+          block.appendChild(list);
+
+          var more = document.createElement('p');
+          more.className = 'rank-block-more';
+          var moreLink = document.createElement('a');
+          moreLink.href = 'search.html?area=' + region.id;
+          moreLink.className = 'rank-block-more-link';
+          moreLink.textContent = region.name + 'の全店舗を見る →';
+          more.appendChild(moreLink);
+          block.appendChild(more);
+
+          rankContainer.appendChild(block);
+        });
+
+        // カードクリック → モーダル
+        rankContainer.addEventListener('click', function (e) {
+          var card = e.target.closest('.rank-card');
+          if (!card) return;
+          var raw = card.getAttribute('data-shop');
+          if (!raw) return;
+          try { openShopModal(JSON.parse(raw)); } catch (err) {}
+        });
+      })
+      .catch(function () {
+        if (rankLoading) {
+          rankLoading.textContent = 'ランキングの読み込みに失敗しました。';
+          rankLoading.classList.remove('is-hidden');
+        }
+      });
+  }
 })();

@@ -474,6 +474,117 @@ a:hover {
   transform: translateY(-1px);
 }
 
+/* ── エリア別ランキング ── */
+.rank-block {
+  margin-bottom: 48px;
+}
+.rank-block:last-child {
+  margin-bottom: 0;
+}
+.rank-block-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.rank-block-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+.rank-block-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rank-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.rank-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(217, 119, 6, 0.10);
+}
+.rank-badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  margin-top: 2px;
+}
+.rank-badge--top1 {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+.rank-badge--top2 {
+  color: #a8a29e;
+  background: rgba(168, 162, 158, 0.12);
+  border-color: rgba(168, 162, 158, 0.3);
+}
+.rank-badge--top3 {
+  color: #cd7f32;
+  background: rgba(205, 127, 50, 0.12);
+  border-color: rgba(205, 127, 50, 0.3);
+}
+.rank-body {
+  flex: 1;
+  min-width: 0;
+}
+.rank-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 4px;
+  word-break: break-word;
+}
+.rank-meta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0 0 6px;
+}
+.rank-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.rank-block-more {
+  margin: 14px 0 0;
+  text-align: right;
+}
+.rank-block-more-link {
+  font-size: 0.88rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+.rank-block-more-link:hover {
+  text-decoration: underline;
+}
+
 .search-panel {
   margin-top: 24px;
   margin-bottom: 24px;
@@ -3469,6 +3580,23 @@ a:hover {
 
   .spots-coming-soon-title {
     font-size: 1.2rem;
+  }
+
+  /* ── ランキング ── */
+  .rank-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 0.82rem;
+  }
+  .rank-name {
+    font-size: 0.92rem;
+  }
+  .rank-block-title {
+    font-size: 1.1rem;
   }
 
   /* ── 注意書き ── */
