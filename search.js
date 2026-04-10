@@ -1495,7 +1495,7 @@
     return card;
   }
 
-  function renderNearbyResults(entries) {
+  function renderNearbyResults(entries, capped) {
     // 通常ブロックを隠す
     searchResultsContainer.querySelectorAll('.spot-block').forEach(function (b) {
       b.style.display = 'none';
@@ -1529,6 +1529,13 @@
     });
     nearbyResultsBlock.appendChild(grid);
 
+    if (capped) {
+      var note = document.createElement('p');
+      note.className = 'search-nearby-cap-note';
+      note.textContent = '近い順に' + NEARBY_MAX + '件を表示しています。距離を指定すると範囲内の全店舗を表示できます。';
+      nearbyResultsBlock.appendChild(note);
+    }
+
     updateSearchResultToolbar(entries.length);
   }
 
@@ -1555,9 +1562,11 @@
     var radiusKm = filterState.nearbyRadius;
     if (radiusKm) {
       filtered = filtered.filter(function (e) { return e.distance <= radiusKm; });
+      renderNearbyResults(filtered);
+    } else {
+      var capped = filtered.length > NEARBY_MAX;
+      renderNearbyResults(filtered.slice(0, NEARBY_MAX), capped);
     }
-
-    renderNearbyResults(filtered.slice(0, NEARBY_MAX));
   }
 
   function activateNearbyMode(lat, lng) {

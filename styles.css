@@ -2083,6 +2083,13 @@ a:hover {
   line-height: 1.7;
 }
 
+.search-nearby-cap-note {
+  text-align: center;
+  padding: 20px 16px 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 .spot-distance {
   display: inline-block;
   padding: 2px 8px;
