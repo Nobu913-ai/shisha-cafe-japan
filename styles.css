@@ -2041,14 +2041,34 @@ a:hover {
   color: #ef4444;
 }
 
-.search-nearby-radius {
+.search-nearby-options {
   display: none;
-  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
   margin-top: 10px;
 }
 
-.search-nearby-radius.is-visible {
+.search-nearby-options.is-visible {
   display: flex;
+}
+
+.search-nearby-radius,
+.search-nearby-sort {
+  display: flex;
+  gap: 6px;
+}
+
+.search-nearby-sort {
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+@media (max-width: 480px) {
+  .search-nearby-sort {
+    padding-left: 0;
+    border-left: none;
+  }
 }
 
 .search-nearby-radius-btn {
@@ -2064,15 +2084,30 @@ a:hover {
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.search-nearby-radius-btn:hover {
+.search-nearby-radius-btn:hover,
+.search-nearby-sort-btn:hover {
   border-color: var(--accent);
   color: var(--text);
 }
 
-.search-nearby-radius-btn.is-active {
+.search-nearby-radius-btn.is-active,
+.search-nearby-sort-btn.is-active {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
+}
+
+.search-nearby-sort-btn {
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .search-nearby-empty {
