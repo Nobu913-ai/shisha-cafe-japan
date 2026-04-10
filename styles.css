@@ -1983,6 +1983,75 @@ a:hover {
   margin-bottom: 0;
 }
 
+/* ========== 現在地から探す ========== */
+.search-nearby-wrap {
+  margin-bottom: 16px;
+}
+
+.search-nearby-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.search-nearby-btn:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+}
+
+.search-nearby-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.search-nearby-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.search-nearby-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.search-nearby-status {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.search-nearby-status:empty {
+  display: none;
+}
+
+.search-nearby-status.is-error {
+  color: #ef4444;
+}
+
+.spot-distance {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(217, 119, 6, 0.12);
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* ========== フレーバー紹介ページ ========== */
 .guide-main {
   padding: 100px 0 80px;

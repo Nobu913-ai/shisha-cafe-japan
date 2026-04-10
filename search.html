@@ -51,7 +51,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260409f">
+  <link rel="stylesheet" href="styles.css?v=20260410e">
 </head>
 <body class="search-page">
   <header class="header">
@@ -130,6 +130,13 @@
         <!-- 店舗リスト（一覧先頭への scroll 用アンカー） -->
         <div class="search-content">
           <div id="search-results-top-anchor" class="search-results-top-anchor" aria-hidden="true"></div>
+          <div class="search-nearby-wrap" id="search-nearby-wrap">
+            <button type="button" class="search-nearby-btn" id="search-nearby-btn">
+              <svg class="search-nearby-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              現在地から探す
+            </button>
+            <p class="search-nearby-status" id="search-nearby-status"></p>
+          </div>
           <div id="search-loading" class="search-loading">店舗情報を読み込み中…</div>
           <div id="search-results-container" class="search-results-list"></div>
         </div>
@@ -194,7 +201,7 @@
   </div>
 
   <script src="area-normalize.js?v=20260325g"></script>
-  <script src="search.js?v=20260409g"></script>
+  <script src="search.js?v=20260410e"></script>
   <script>
     (function () {
       var toggle = document.getElementById('search-sidebar-toggle');

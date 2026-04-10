@@ -310,7 +310,7 @@
     return card;
   }
 
-  // ── ランキング描画 ──
+  // ── ランキング描画（タブ切り替え） ──
   var rankContainer = document.getElementById('ranking-container');
   var rankLoading = document.getElementById('ranking-loading');
 
@@ -320,30 +320,46 @@
       .then(function (data) {
         rankLoading.classList.add('is-hidden');
         var regions = data.regions || [];
-        regions.forEach(function (region) {
-          var block = document.createElement('div');
-          block.className = 'rank-block';
+        if (!regions.length) return;
 
-          var header = document.createElement('div');
-          header.className = 'rank-block-header';
-          var title = document.createElement('h3');
-          title.className = 'rank-block-title';
-          title.textContent = region.name;
-          header.appendChild(title);
+        // タブバー
+        var tabBar = document.createElement('div');
+        tabBar.className = 'rank-tabs';
+        tabBar.setAttribute('role', 'tablist');
+
+        // パネル群
+        var panels = [];
+
+        regions.forEach(function (region, idx) {
+          // タブボタン
+          var tab = document.createElement('button');
+          tab.className = 'rank-tab' + (idx === 0 ? ' is-active' : '');
+          tab.setAttribute('role', 'tab');
+          tab.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+          tab.setAttribute('aria-controls', 'rank-panel-' + region.id);
+          tab.setAttribute('data-region', region.id);
+          tab.textContent = region.name;
           if (region.shopCount) {
-            var count = document.createElement('span');
-            count.className = 'rank-block-count';
-            count.textContent = region.shopCount.toLocaleString() + '店舗';
-            header.appendChild(count);
+            var countSpan = document.createElement('span');
+            countSpan.className = 'rank-tab-count';
+            countSpan.textContent = region.shopCount.toLocaleString();
+            tab.appendChild(countSpan);
           }
-          block.appendChild(header);
+          tabBar.appendChild(tab);
+
+          // パネル
+          var panel = document.createElement('div');
+          panel.className = 'rank-panel' + (idx === 0 ? ' is-active' : '');
+          panel.id = 'rank-panel-' + region.id;
+          panel.setAttribute('role', 'tabpanel');
+          if (idx !== 0) panel.hidden = true;
 
           var list = document.createElement('div');
           list.className = 'rank-list';
           (region.shops || []).forEach(function (shop, i) {
             list.appendChild(buildRankingCard(shop, i + 1, region.id));
           });
-          block.appendChild(list);
+          panel.appendChild(list);
 
           var more = document.createElement('p');
           more.className = 'rank-block-more';
@@ -352,9 +368,29 @@
           moreLink.className = 'rank-block-more-link';
           moreLink.textContent = region.name + 'の全店舗を見る →';
           more.appendChild(moreLink);
-          block.appendChild(more);
+          panel.appendChild(more);
 
-          rankContainer.appendChild(block);
+          panels.push(panel);
+        });
+
+        rankContainer.appendChild(tabBar);
+        panels.forEach(function (p) { rankContainer.appendChild(p); });
+
+        // タブ切り替え
+        tabBar.addEventListener('click', function (e) {
+          var btn = e.target.closest('.rank-tab');
+          if (!btn) return;
+          var rid = btn.getAttribute('data-region');
+          tabBar.querySelectorAll('.rank-tab').forEach(function (t) {
+            var active = t.getAttribute('data-region') === rid;
+            t.classList.toggle('is-active', active);
+            t.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach(function (p) {
+            var active = p.id === 'rank-panel-' + rid;
+            p.classList.toggle('is-active', active);
+            p.hidden = !active;
+          });
         });
 
         // カードクリック → モーダル

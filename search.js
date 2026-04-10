@@ -63,8 +63,30 @@
     subAreaLabel: null,
     keyword: '',
     featureTags: [],
-    station: null
+    station: null,
+    nearbyMode: false,
+    userLat: null,
+    userLng: null
   };
+
+  /** 全店舗データ（fetch 後に格納、現在地検索で使用） */
+  var allShops = [];
+
+  /** Haversine 公式: 2点間の距離 (km) */
+  function haversineDistance(lat1, lng1, lat2, lng2) {
+    var R = 6371;
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLng = (lng2 - lng1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function formatDistance(km) {
+    if (km < 1) return Math.round(km * 1000) + 'm';
+    return km.toFixed(1) + 'km';
+  }
 
   var STATION_RE = /([^\s　]+駅)/;
 
@@ -305,6 +327,9 @@
 
   function buildFilterConditionsText() {
     var parts = [];
+    if (filterState.nearbyMode) {
+      parts.push('現在地から近い順');
+    }
     if (filterState.regionId && filterState.regionName) {
       parts.push('地域：' + filterState.regionName);
     }
@@ -513,6 +538,10 @@
   function applyFilters(options) {
     options = options || {};
     if (!searchResultsContainer) return;
+    if (filterState.nearbyMode) {
+      applyNearbyFilters();
+      return;
+    }
     var regionId = filterState.regionId;
     var subArea = filterState.subArea || null;
     var keyword = (filterState.keyword || '').trim().toLowerCase();
@@ -617,6 +646,7 @@
   }
 
   function clearFilters() {
+    deactivateNearbyMode();
     filterState.regionId = null;
     filterState.regionName = '';
     filterState.subArea = null;
@@ -1061,6 +1091,7 @@
       btn.setAttribute('data-filter', area.id);
       btn.setAttribute('data-region-name', area.name);
       btn.addEventListener('click', function () {
+        deactivateNearbyMode();
         filterState.regionId = filterState.regionId === area.id ? null : area.id;
         filterState.regionName = filterState.regionId ? area.name : '';
         filterState.subArea = null;
@@ -1435,6 +1466,147 @@
     });
   }
 
+  // ── 現在地から探す ──
+
+  var nearbyBtn = document.getElementById('search-nearby-btn');
+  var nearbyStatus = document.getElementById('search-nearby-status');
+  var nearbyResultsBlock = null;
+  var NEARBY_MAX = 50;
+
+  function buildNearbyCard(entry) {
+    var card = buildShopCard(entry.shop, entry.regionId);
+    var header = card.querySelector('.spot-card-header');
+    if (header && entry.distance != null) {
+      var badge = document.createElement('span');
+      badge.className = 'spot-distance';
+      badge.textContent = formatDistance(entry.distance);
+      header.appendChild(badge);
+    }
+    return card;
+  }
+
+  function renderNearbyResults(entries) {
+    // 通常ブロックを隠す
+    searchResultsContainer.querySelectorAll('.spot-block').forEach(function (b) {
+      b.style.display = 'none';
+    });
+
+    if (!nearbyResultsBlock) {
+      nearbyResultsBlock = document.createElement('div');
+      nearbyResultsBlock.id = 'nearby-results';
+      nearbyResultsBlock.className = 'spot-block';
+      searchResultsContainer.appendChild(nearbyResultsBlock);
+    }
+    nearbyResultsBlock.innerHTML = '';
+    nearbyResultsBlock.style.display = '';
+
+    var grid = document.createElement('div');
+    grid.className = 'spot-grid';
+    entries.forEach(function (entry) {
+      grid.appendChild(buildNearbyCard(entry));
+    });
+    nearbyResultsBlock.appendChild(grid);
+
+    updateSearchResultToolbar(entries.length);
+  }
+
+  function applyNearbyFilters() {
+    if (!filterState.nearbyMode || filterState.userLat == null) return;
+    var keyword = (filterState.keyword || '').trim().toLowerCase();
+    var featureTags = filterState.featureTags || [];
+
+    var filtered = allShops.filter(function (entry) {
+      var shop = entry.shop;
+      if (shop._lat == null || shop._lng == null) return false;
+      var searchable = [shop.name, shop.area, shop.description].join(' ').toLowerCase();
+      var tags = (shop.tags || []).concat(shop.features || []);
+      var matchKeyword = !keyword || searchable.indexOf(keyword) !== -1;
+      var matchFeatures = featureTags.length === 0 || featureTags.every(function (t) { return tags.indexOf(t) !== -1; });
+      return matchKeyword && matchFeatures;
+    });
+
+    filtered.forEach(function (entry) {
+      entry.distance = haversineDistance(filterState.userLat, filterState.userLng, entry.shop._lat, entry.shop._lng);
+    });
+    filtered.sort(function (a, b) { return a.distance - b.distance; });
+
+    renderNearbyResults(filtered.slice(0, NEARBY_MAX));
+  }
+
+  function activateNearbyMode(lat, lng) {
+    filterState.nearbyMode = true;
+    filterState.userLat = lat;
+    filterState.userLng = lng;
+    // 地域フィルタをクリア（全国から距離順で表示）
+    filterState.regionId = null;
+    filterState.regionName = '';
+    filterState.subArea = null;
+    filterState.subAreaLabel = null;
+    filterState.station = null;
+    document.querySelectorAll('.search-area-btn').forEach(function (btn) {
+      btn.classList.remove('is-active');
+    });
+    renderSubareaButtons(null);
+    if (nearbyBtn) nearbyBtn.classList.add('is-active');
+    if (nearbyStatus) { nearbyStatus.textContent = ''; nearbyStatus.classList.remove('is-error'); }
+    applyNearbyFilters();
+  }
+
+  function deactivateNearbyMode() {
+    if (!filterState.nearbyMode) return;
+    filterState.nearbyMode = false;
+    filterState.userLat = null;
+    filterState.userLng = null;
+    if (nearbyBtn) nearbyBtn.classList.remove('is-active');
+    if (nearbyStatus) { nearbyStatus.textContent = ''; nearbyStatus.classList.remove('is-error'); }
+    // 通常ブロックを復元
+    if (nearbyResultsBlock) {
+      nearbyResultsBlock.style.display = 'none';
+    }
+    searchResultsContainer.querySelectorAll('.spot-block:not(#nearby-results)').forEach(function (b) {
+      b.style.display = '';
+    });
+  }
+
+  if (nearbyBtn) {
+    nearbyBtn.addEventListener('click', function () {
+      if (filterState.nearbyMode) {
+        deactivateNearbyMode();
+        applyFilters({ scrollToResults: false });
+        return;
+      }
+      if (!navigator.geolocation) {
+        if (nearbyStatus) {
+          nearbyStatus.textContent = '位置情報に非対応のブラウザです';
+          nearbyStatus.classList.add('is-error');
+        }
+        return;
+      }
+      if (nearbyStatus) {
+        nearbyStatus.textContent = '位置情報を取得中…';
+        nearbyStatus.classList.remove('is-error');
+      }
+      nearbyBtn.disabled = true;
+      navigator.geolocation.getCurrentPosition(
+        function (pos) {
+          nearbyBtn.disabled = false;
+          activateNearbyMode(pos.coords.latitude, pos.coords.longitude);
+        },
+        function (err) {
+          nearbyBtn.disabled = false;
+          if (!nearbyStatus) return;
+          var msg = '位置情報を取得できませんでした';
+          if (err && err.code === 1) msg = '位置情報の許可が必要です';
+          else if (err && err.code === 3) msg = '取得がタイムアウトしました';
+          else if (location.protocol !== 'https:') msg = 'HTTPS環境でのみ利用できます';
+          nearbyStatus.textContent = msg;
+          nearbyStatus.classList.add('is-error');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    });
+  }
+
   var url = new URL('shops.json', window.location.href).href;
   fetch(url)
     .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('読み込み失敗')); })
@@ -1470,6 +1642,14 @@
         var names = { tokyo: '東京', osaka: '大阪', nagoya: '名古屋', fukuoka: '福岡', other: 'その他' };
         filterState.regionName = names[initialArea] || '';
       }
+
+      // 全店舗を flat 配列に格納（現在地検索で使用）
+      allShops = [];
+      regions.forEach(function (region) {
+        (region.shops || []).forEach(function (shop) {
+          allShops.push({ shop: shop, regionId: region.id });
+        });
+      });
 
       var totalCards = 0;
       regions.forEach(function (region) {
