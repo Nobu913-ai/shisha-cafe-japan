@@ -1672,11 +1672,26 @@
 
   if (nearbySortWrap) {
     nearbySortWrap.addEventListener('click', function (e) {
-      var btn = e.target.closest('.search-nearby-sort-btn');
-      if (!btn) return;
-      filterState.nearbySort = btn.getAttribute('data-sort');
-      nearbySortWrap.querySelectorAll('.search-nearby-sort-btn').forEach(function (b) {
-        b.classList.toggle('is-active', b === btn);
+      var item = e.target.closest('.search-nearby-sort-item');
+      if (!item || item.classList.contains('is-current')) return;
+      e.preventDefault();
+      filterState.nearbySort = item.getAttribute('data-sort');
+      nearbySortWrap.querySelectorAll('.search-nearby-sort-item').forEach(function (el) {
+        var isCurrent = el === item;
+        if (isCurrent) {
+          var span = document.createElement('span');
+          span.className = 'search-nearby-sort-item is-current';
+          span.setAttribute('data-sort', el.getAttribute('data-sort'));
+          span.textContent = el.textContent;
+          el.parentNode.replaceChild(span, el);
+        } else if (el.classList.contains('is-current')) {
+          var a = document.createElement('a');
+          a.href = '#';
+          a.className = 'search-nearby-sort-item';
+          a.setAttribute('data-sort', el.getAttribute('data-sort'));
+          a.textContent = el.textContent;
+          el.parentNode.replaceChild(a, el);
+        }
       });
       applyNearbyFilters();
     });

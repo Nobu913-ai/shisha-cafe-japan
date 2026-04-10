@@ -51,7 +51,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260410j">
+  <link rel="stylesheet" href="styles.css?v=20260410k">
 </head>
 <body class="search-page">
   <header class="header">
@@ -143,8 +143,10 @@
                 <button type="button" class="search-nearby-radius-btn" data-radius="0">制限なし</button>
               </div>
               <div class="search-nearby-sort" id="search-nearby-sort">
-                <button type="button" class="search-nearby-sort-btn is-active" data-sort="distance">距離順</button>
-                <button type="button" class="search-nearby-sort-btn" data-sort="rating">評価順</button>
+                <span class="search-nearby-sort-label">並び順：</span>
+                <span class="search-nearby-sort-item is-current" data-sort="distance">距離順</span>
+                <span class="search-nearby-sort-sep">|</span>
+                <a href="#" class="search-nearby-sort-item" data-sort="rating">評価順</a>
               </div>
             </div>
             <p class="search-nearby-status" id="search-nearby-status"></p>
@@ -213,7 +215,7 @@
   </div>
 
   <script src="area-normalize.js?v=20260325g"></script>
-  <script src="search.js?v=20260410j"></script>
+  <script src="search.js?v=20260410k"></script>
   <script>
     (function () {
       var toggle = document.getElementById('search-sidebar-toggle');
