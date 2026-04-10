@@ -1987,6 +1987,7 @@ a:hover {
 /* ========== 現在地から探す ========== */
 .search-nearby-wrap {
   margin-bottom: 16px;
+  margin-top: -4px;
 }
 
 .search-nearby-btn {
