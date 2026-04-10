@@ -320,6 +320,26 @@
       .then(function (data) {
         rankLoading.classList.add('is-hidden');
         var regions = data.regions || [];
+
+        // エリアカードに店舗件数を注入
+        var countMap = {};
+        var knownSum = 0;
+        regions.forEach(function (r) {
+          countMap[r.id] = r.shopCount || 0;
+          knownSum += r.shopCount || 0;
+        });
+        if (data.totalShopCount) {
+          countMap.other = data.totalShopCount - knownSum;
+        }
+        document.querySelectorAll('.area-card[data-area]').forEach(function (card) {
+          var areaId = card.getAttribute('data-area');
+          var count = countMap[areaId];
+          if (count > 0) {
+            var el = card.querySelector('.area-shop-count');
+            if (el) el.textContent = count.toLocaleString() + '件';
+          }
+        });
+
         if (!regions.length) return;
 
         // タブバー

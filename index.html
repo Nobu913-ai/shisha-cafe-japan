@@ -69,7 +69,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260410c">
+  <link rel="stylesheet" href="styles.css?v=20260410d">
 </head>
 <body>
   <header class="header">
@@ -137,32 +137,33 @@
     <section id="areas" class="section areas">
       <div class="container">
         <h2 class="section-title">エリアから探す</h2>
-        <p class="section-desc">エリアを選ぶと店舗検索ページに移動し、その地域の店舗を表示します。検索ページではキーワード・設備・サービスでも絞り込めます。</p>
+        <p class="section-desc">エリアを選ぶと店舗検索ページへ移動します。駅名・設備・現在地からの距離でも絞り込めます。</p>
         <div class="area-grid">
-          <a href="search.html?area=tokyo" class="area-card">
-            <span class="area-name">東京</span>
-            <span class="area-count">渋谷・新宿・六本木・銀座ほか</span>
+          <a href="search.html?area=tokyo" class="area-card" data-area="tokyo">
+            <span class="area-name-row"><span class="area-name">東京</span><span class="area-shop-count"></span></span>
+            <span class="area-count">渋谷・新宿・六本木・銀座</span>
           </a>
-          <a href="search.html?area=osaka" class="area-card">
-            <span class="area-name">大阪</span>
-            <span class="area-count">梅田・心斎橋・難波ほか</span>
+          <a href="search.html?area=osaka" class="area-card" data-area="osaka">
+            <span class="area-name-row"><span class="area-name">大阪</span><span class="area-shop-count"></span></span>
+            <span class="area-count">梅田・心斎橋・難波</span>
           </a>
-          <a href="search.html?area=nagoya" class="area-card">
-            <span class="area-name">名古屋</span>
+          <a href="search.html?area=nagoya" class="area-card" data-area="nagoya">
+            <span class="area-name-row"><span class="area-name">名古屋</span><span class="area-shop-count"></span></span>
             <span class="area-count">栄・名駅周辺</span>
           </a>
-          <a href="search.html?area=fukuoka" class="area-card">
-            <span class="area-name">福岡</span>
+          <a href="search.html?area=fukuoka" class="area-card" data-area="fukuoka">
+            <span class="area-name-row"><span class="area-name">福岡</span><span class="area-shop-count"></span></span>
             <span class="area-count">天神・中洲周辺</span>
           </a>
-          <a href="search.html?area=other" class="area-card">
-            <span class="area-name">その他</span>
+          <a href="search.html?area=other" class="area-card" data-area="other">
+            <span class="area-name-row"><span class="area-name">その他</span><span class="area-shop-count"></span></span>
             <span class="area-count">横浜・仙台・広島</span>
           </a>
         </div>
         <p class="areas-cta">
           <a href="search.html" class="hero-cta">すべての店舗を検索</a>
         </p>
+        <p class="areas-features">Wi-Fi・個室・深夜営業などの設備タグ、最寄駅、現在地からの距離で絞り込み可能</p>
       </div>
     </section>
 
@@ -245,6 +246,6 @@
   </div>
 
   <script src="area-normalize.js?v=20260325a"></script>
-  <script src="script.js?v=20260410c"></script>
+  <script src="script.js?v=20260410d"></script>
 </body>
 </html>
