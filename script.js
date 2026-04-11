@@ -163,14 +163,17 @@
     var reviewEl = document.getElementById('shop-modal-review');
     if (reviewEl) {
       reviewEl.innerHTML = '';
-      var googleQuery = name + (address ? ' ' + address : '');
-      var googleSearchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(googleQuery + ' 口コミ');
+      var reviewUrl = url;
+      if (!reviewUrl) {
+        var googleQuery = name + (address ? ' ' + address : '');
+        reviewUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(googleQuery);
+      }
       var reviewLink = document.createElement('a');
-      reviewLink.href = googleSearchUrl;
+      reviewLink.href = reviewUrl;
       reviewLink.target = '_blank';
       reviewLink.rel = 'noopener noreferrer';
       reviewLink.className = 'shop-modal-inline-link';
-      reviewLink.textContent = rating != null && ratingCount != null ? '★' + rating + '（' + ratingCount + '件）・Googleで口コミを見る' : 'Googleで評価・口コミを見る';
+      reviewLink.textContent = rating != null && ratingCount != null ? '★' + rating + '（' + ratingCount + '件）・Googleマップで口コミを見る' : 'Googleマップで評価・口コミを見る';
       reviewEl.appendChild(reviewLink);
     }
 
@@ -178,6 +181,7 @@
     if (mapEl) {
       mapEl.innerHTML = '';
       var mapQuery = address || name;
+      var mapDirectUrl = url;
       if (mapQuery) {
         var isMobile = window.innerWidth <= 640;
         if (!isMobile) {
@@ -195,7 +199,7 @@
         var mapLinkWrap = document.createElement('p');
         mapLinkWrap.className = 'shop-modal-map-link-wrap';
         var mapLink = document.createElement('a');
-        mapLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(mapQuery);
+        mapLink.href = mapDirectUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(mapQuery));
         mapLink.target = '_blank';
         mapLink.rel = 'noopener noreferrer';
         mapLink.className = 'shop-modal-inline-link';

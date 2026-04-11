@@ -1369,6 +1369,7 @@
     if (mapEl) {
       mapEl.innerHTML = '';
       var mapQuery = address || name;
+      var mapDirectUrl = url;
       if (mapQuery) {
         var isMobile = window.innerWidth <= 640;
         if (!isMobile) {
@@ -1386,7 +1387,7 @@
         var mapLinkWrap = document.createElement('p');
         mapLinkWrap.className = 'shop-modal-map-link-wrap';
         var mapLink = document.createElement('a');
-        mapLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(mapQuery);
+        mapLink.href = mapDirectUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(mapQuery));
         mapLink.target = '_blank';
         mapLink.rel = 'noopener noreferrer';
         mapLink.className = 'shop-modal-inline-link';
