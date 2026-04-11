@@ -20,6 +20,9 @@ data/
 shops_backup_*.json
 shops.json.bak_*
 
+# Override data (manual corrections, not for public)
+shops_overrides.json
+
 # 作業用エクスポート（公開サイトで使うのは shops.json のみ）
 shops_*_access.json
 *_name_access_address.tsv
