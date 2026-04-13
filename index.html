@@ -40,7 +40,7 @@
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://shisha-cafe.jp/search.html?keyword={search_term_string}"
+        "urlTemplate": "https://shisha-cafe.jp/search?keyword={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }
@@ -76,10 +76,10 @@
     <div class="header-inner">
       <a href="/" class="logo">SHISHA CAFE <span>JAPAN</span></a>
       <nav class="nav">
-        <a href="search.html">店舗検索</a>
-        <a href="ranking.html">ランキング</a>
-        <a href="guide.html">シーシャガイド</a>
-        <a href="sommelier.html">フレーバー相談</a>
+        <a href="/search">店舗検索</a>
+        <a href="/ranking">ランキング</a>
+        <a href="/guide">シーシャガイド</a>
+        <a href="/sommelier">フレーバー相談</a>
       </nav>
       <button class="menu-btn" aria-label="メニュー" aria-expanded="false"><span></span></button>
     </div>
@@ -139,29 +139,29 @@
         <h2 class="section-title">エリアから探す</h2>
         <p class="section-desc">エリアを選ぶと店舗検索ページへ移動します。駅名・設備・現在地からの距離でも絞り込めます。</p>
         <div class="area-grid">
-          <a href="search.html?area=tokyo" class="area-card" data-area="tokyo">
+          <a href="/search?area=tokyo" class="area-card" data-area="tokyo">
             <span class="area-name-row"><span class="area-name">東京</span><span class="area-shop-count"></span></span>
             <span class="area-count">渋谷・新宿・六本木・銀座</span>
           </a>
-          <a href="search.html?area=osaka" class="area-card" data-area="osaka">
+          <a href="/search?area=osaka" class="area-card" data-area="osaka">
             <span class="area-name-row"><span class="area-name">大阪</span><span class="area-shop-count"></span></span>
             <span class="area-count">梅田・心斎橋・難波</span>
           </a>
-          <a href="search.html?area=nagoya" class="area-card" data-area="nagoya">
+          <a href="/search?area=nagoya" class="area-card" data-area="nagoya">
             <span class="area-name-row"><span class="area-name">名古屋</span><span class="area-shop-count"></span></span>
             <span class="area-count">栄・名駅周辺</span>
           </a>
-          <a href="search.html?area=fukuoka" class="area-card" data-area="fukuoka">
+          <a href="/search?area=fukuoka" class="area-card" data-area="fukuoka">
             <span class="area-name-row"><span class="area-name">福岡</span><span class="area-shop-count"></span></span>
             <span class="area-count">天神・中洲周辺</span>
           </a>
-          <a href="search.html?area=other" class="area-card" data-area="other">
+          <a href="/search?area=other" class="area-card" data-area="other">
             <span class="area-name-row"><span class="area-name">その他</span><span class="area-shop-count"></span></span>
             <span class="area-count">横浜・仙台・広島</span>
           </a>
         </div>
         <p class="areas-cta">
-          <a href="search.html" class="hero-cta">すべての店舗を検索</a>
+          <a href="/search" class="hero-cta">すべての店舗を検索</a>
         </p>
         <p class="areas-features">Wi-Fi・個室・深夜営業などの設備タグ、最寄駅、現在地からの距離で絞り込み可能</p>
       </div>
@@ -202,7 +202,7 @@
         </div>
         <p class="flavor-snippet-caption">このほか80種以上のレシピから、あなたの好みに合う組み合わせを提案します。</p>
         <p class="areas-cta">
-          <a href="sommelier.html" class="hero-cta">相談してみる</a>
+          <a href="/sommelier" class="hero-cta">相談してみる</a>
         </p>
       </div>
     </section>
@@ -221,7 +221,7 @@
   <footer class="footer">
     <div class="container">
       <p class="footer-logo">SHISHA CAFE JAPAN</p>
-      <p class="footer-nav"><a href="search.html">店舗検索</a>｜<a href="ranking.html">ランキング</a>｜<a href="guide.html">シーシャガイド</a>｜<a href="sommelier.html">フレーバー相談</a>｜<a href="terms.html">利用規約</a></p>
+      <p class="footer-nav"><a href="/search">店舗検索</a>｜<a href="/ranking">ランキング</a>｜<a href="/guide">シーシャガイド</a>｜<a href="/sommelier">フレーバー相談</a>｜<a href="/terms">利用規約</a></p>
       <p class="footer-copy">掲載情報は参考です。詳細は各店舗へお問い合わせください。</p>
     </div>
   </footer>

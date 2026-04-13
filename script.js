@@ -388,7 +388,7 @@
           var more = document.createElement('p');
           more.className = 'rank-block-more';
           var moreLink = document.createElement('a');
-          moreLink.href = 'search.html?area=' + region.id;
+          moreLink.href = '/search?area=' + region.id;
           moreLink.className = 'rank-block-more-link';
           moreLink.textContent = region.name + 'の全店舗を見る →';
           more.appendChild(moreLink);
