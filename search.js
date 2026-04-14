@@ -1570,16 +1570,20 @@
       filtered = filtered.filter(function (e) { return e.distance <= radiusKm; });
     }
 
-    if (filterState.nearbySort === 'rating') {
-      filtered.sort(function (a, b) { return shopScore(b.shop) - shopScore(a.shop); });
-    } else {
-      filtered.sort(function (a, b) { return a.distance - b.distance; });
-    }
+    // 距離順で並べる（制限なし時の上位抽出用）
+    filtered.sort(function (a, b) { return a.distance - b.distance; });
 
     if (!radiusKm) {
       var capped = filtered.length > NEARBY_MAX;
-      renderNearbyResults(filtered.slice(0, NEARBY_MAX), capped);
+      filtered = filtered.slice(0, NEARBY_MAX);
+      if (filterState.nearbySort === 'rating') {
+        filtered.sort(function (a, b) { return shopScore(b.shop) - shopScore(a.shop); });
+      }
+      renderNearbyResults(filtered, capped);
     } else {
+      if (filterState.nearbySort === 'rating') {
+        filtered.sort(function (a, b) { return shopScore(b.shop) - shopScore(a.shop); });
+      }
       renderNearbyResults(filtered);
     }
   }
