@@ -246,191 +246,34 @@
     if (e.key === 'Escape' && shopModal && shopModal.classList.contains('is-open')) closeShopModal();
   });
 
-  function buildRankingCard(shop, rank, regionId) {
-    var na = typeof normalizeShopArea === 'function'
-      ? normalizeShopArea(shop, regionId || '')
-      : { key: shop.area || '', display: shop.area || '' };
-    var shopData = {
-      name: shop.name || '',
-      area: na.display,
-      description: shop.description || '',
-      hoursNote: shop.hoursNote || '',
-      tags: shop.tags || [],
-      access: shop.access || '',
-      address: shop.address || '',
-      priceNote: shop.priceNote || '',
-      reservation: shop.reservation || '',
-      features: shop.features || [],
-      payment: shop.payment || '',
-      closedDay: shop.closedDay || '',
-      url: shop.url || '',
-      phone: shop.phone || '',
-      officialUrl: shop.officialUrl || '',
-      rating: shop.rating,
-      ratingCount: shop.ratingCount
-    };
-
-    var card = document.createElement('article');
-    card.className = 'rank-card';
-    card.setAttribute('data-shop', JSON.stringify(shopData));
-    card.style.cursor = 'pointer';
-
-    // 順位バッジ
-    var badge = document.createElement('span');
-    badge.className = 'rank-badge' + (rank <= 3 ? ' rank-badge--top' + rank : '');
-    badge.textContent = rank;
-    card.appendChild(badge);
-
-    // 本文エリア
-    var body = document.createElement('div');
-    body.className = 'rank-body';
-
-    // 1行目: 店名
-    var nameEl = document.createElement('h4');
-    nameEl.className = 'rank-name';
-    nameEl.textContent = shop.name || '';
-    body.appendChild(nameEl);
-
-    // 2行目: エリア + 評価
-    var meta = document.createElement('p');
-    meta.className = 'rank-meta';
-    var r = Number(shop.rating) || 0;
-    var rc = Number(shop.ratingCount) || 0;
-    var metaText = na.display;
-    if (r) metaText += '　★' + r.toFixed(1) + '（' + rc.toLocaleString() + '件）';
-    meta.textContent = metaText;
-    body.appendChild(meta);
-
-    // 3行目: 紹介文（省略）
-    if (shop.description) {
-      var desc = document.createElement('p');
-      desc.className = 'rank-desc';
-      var text = shop.description;
-      desc.textContent = text.length > 80 ? text.slice(0, 80) + '…' : text;
-      body.appendChild(desc);
+  // ── ランキング: タブ切り替え＆カードクリック（HTML は事前レンダリング済み） ──
+  var rankContainer = document.getElementById('ranking-container');
+  if (rankContainer) {
+    var tabBar = rankContainer.querySelector('.rank-tabs');
+    if (tabBar) {
+      tabBar.addEventListener('click', function (e) {
+        var btn = e.target.closest('.rank-tab');
+        if (!btn) return;
+        var rid = btn.getAttribute('data-region');
+        tabBar.querySelectorAll('.rank-tab').forEach(function (t) {
+          var active = t.getAttribute('data-region') === rid;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        rankContainer.querySelectorAll('.rank-panel').forEach(function (p) {
+          var active = p.id === 'rank-panel-' + rid;
+          p.classList.toggle('is-active', active);
+          p.hidden = !active;
+        });
+      });
     }
 
-    card.appendChild(body);
-    return card;
-  }
-
-  // ── ランキング描画（タブ切り替え） ──
-  var rankContainer = document.getElementById('ranking-container');
-  var rankLoading = document.getElementById('ranking-loading');
-
-  if (rankContainer && rankLoading) {
-    fetch(new URL('top-shops.json', window.location.href).href)
-      .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('読み込み失敗')); })
-      .then(function (data) {
-        rankLoading.classList.add('is-hidden');
-        var regions = data.regions || [];
-
-        // エリアカードに店舗件数を注入
-        var countMap = {};
-        var knownSum = 0;
-        regions.forEach(function (r) {
-          countMap[r.id] = r.shopCount || 0;
-          knownSum += r.shopCount || 0;
-        });
-        if (data.totalShopCount) {
-          countMap.other = data.totalShopCount - knownSum;
-        }
-        document.querySelectorAll('.area-card[data-area]').forEach(function (card) {
-          var areaId = card.getAttribute('data-area');
-          var count = countMap[areaId];
-          if (count > 0) {
-            var el = card.querySelector('.area-shop-count');
-            if (el) el.textContent = count.toLocaleString() + '件';
-          }
-        });
-
-        if (!regions.length) return;
-
-        // タブバー
-        var tabBar = document.createElement('div');
-        tabBar.className = 'rank-tabs';
-        tabBar.setAttribute('role', 'tablist');
-
-        // パネル群
-        var panels = [];
-
-        regions.forEach(function (region, idx) {
-          // タブボタン
-          var tab = document.createElement('button');
-          tab.className = 'rank-tab' + (idx === 0 ? ' is-active' : '');
-          tab.setAttribute('role', 'tab');
-          tab.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
-          tab.setAttribute('aria-controls', 'rank-panel-' + region.id);
-          tab.setAttribute('data-region', region.id);
-          tab.textContent = region.name;
-          if (region.shopCount) {
-            var countSpan = document.createElement('span');
-            countSpan.className = 'rank-tab-count';
-            countSpan.textContent = region.shopCount.toLocaleString();
-            tab.appendChild(countSpan);
-          }
-          tabBar.appendChild(tab);
-
-          // パネル
-          var panel = document.createElement('div');
-          panel.className = 'rank-panel' + (idx === 0 ? ' is-active' : '');
-          panel.id = 'rank-panel-' + region.id;
-          panel.setAttribute('role', 'tabpanel');
-          if (idx !== 0) panel.hidden = true;
-
-          var list = document.createElement('div');
-          list.className = 'rank-list';
-          (region.shops || []).forEach(function (shop, i) {
-            list.appendChild(buildRankingCard(shop, i + 1, region.id));
-          });
-          panel.appendChild(list);
-
-          var more = document.createElement('p');
-          more.className = 'rank-block-more';
-          var moreLink = document.createElement('a');
-          moreLink.href = '/search?area=' + region.id;
-          moreLink.className = 'rank-block-more-link';
-          moreLink.textContent = region.name + 'の全店舗を見る →';
-          more.appendChild(moreLink);
-          panel.appendChild(more);
-
-          panels.push(panel);
-        });
-
-        rankContainer.appendChild(tabBar);
-        panels.forEach(function (p) { rankContainer.appendChild(p); });
-
-        // タブ切り替え
-        tabBar.addEventListener('click', function (e) {
-          var btn = e.target.closest('.rank-tab');
-          if (!btn) return;
-          var rid = btn.getAttribute('data-region');
-          tabBar.querySelectorAll('.rank-tab').forEach(function (t) {
-            var active = t.getAttribute('data-region') === rid;
-            t.classList.toggle('is-active', active);
-            t.setAttribute('aria-selected', active ? 'true' : 'false');
-          });
-          panels.forEach(function (p) {
-            var active = p.id === 'rank-panel-' + rid;
-            p.classList.toggle('is-active', active);
-            p.hidden = !active;
-          });
-        });
-
-        // カードクリック → モーダル
-        rankContainer.addEventListener('click', function (e) {
-          var card = e.target.closest('.rank-card');
-          if (!card) return;
-          var raw = card.getAttribute('data-shop');
-          if (!raw) return;
-          try { openShopModal(JSON.parse(raw)); } catch (err) {}
-        });
-      })
-      .catch(function () {
-        if (rankLoading) {
-          rankLoading.textContent = 'ランキングの読み込みに失敗しました。';
-          rankLoading.classList.remove('is-hidden');
-        }
-      });
+    rankContainer.addEventListener('click', function (e) {
+      var card = e.target.closest('.rank-card');
+      if (!card) return;
+      var raw = card.getAttribute('data-shop');
+      if (!raw) return;
+      try { openShopModal(JSON.parse(raw)); } catch (err) {}
+    });
   }
 })();
