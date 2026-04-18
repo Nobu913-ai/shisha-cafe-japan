@@ -703,6 +703,14 @@ a:hover {
 .rank-block-more-link:hover {
   text-decoration: underline;
 }
+.rank-block-more--all {
+  margin-top: 20px;
+  text-align: center;
+}
+.rank-block-more--all .rank-block-more-link {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
 
 .search-panel {
   margin-top: 24px;
