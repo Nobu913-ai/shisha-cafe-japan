@@ -80,8 +80,8 @@
         <div class="search-summary-slot">
           <div class="search-toolbar" id="search-results-toolbar">
             <div class="search-result-summary" id="search-result-summary" aria-live="polite" aria-atomic="true">
-              <p class="search-result-headline"><span id="search-result-count-value">—</span></p>
-              <p class="search-result-conditions" id="search-result-conditions">店舗データを読み込み中です…</p>
+              <p class="search-result-headline"><span id="search-result-count-value"><!-- SEARCH_COUNT_START -->1,452 件の店舗<!-- SEARCH_COUNT_END --></span></p>
+              <p class="search-result-conditions" id="search-result-conditions">地域・駅名・設備で絞り込めます</p>
             </div>
           </div>
         </div>
@@ -152,7 +152,19 @@
             </div>
             <p class="search-nearby-status" id="search-nearby-status"></p>
           </div>
-          <div id="search-loading" class="search-loading">店舗情報を読み込み中…</div>
+          <div id="search-loading" class="search-loading">
+<!-- SEARCH_STATIC_START -->
+<p class="search-static-lead">全国1,452店舗のシーシャカフェ・バーを掲載</p>
+<div class="search-static-regions">
+<span class="search-static-region">東京 502件</span>
+<span class="search-static-region">大阪 171件</span>
+<span class="search-static-region">名古屋 88件</span>
+<span class="search-static-region">福岡 70件</span>
+<span class="search-static-region">その他 621件</span>
+</div>
+<p class="search-static-note">Wi-Fi・個室・深夜営業などの設備タグ、最寄駅、現在地から絞り込めます</p>
+<!-- SEARCH_STATIC_END -->
+</div>
           <div id="search-results-container" class="search-results-list"></div>
         </div>
       </div>
