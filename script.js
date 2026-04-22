@@ -180,32 +180,20 @@
     var mapEl = document.getElementById('shop-modal-map');
     if (mapEl) {
       mapEl.innerHTML = '';
-      var mapQuery = address || name;
-      var mapDirectUrl = url;
-      if (mapQuery) {
-        var isMobile = window.innerWidth <= 640;
-        if (!isMobile) {
-          var iframe = document.createElement('iframe');
-          iframe.className = 'shop-modal-map-iframe';
-          iframe.src = 'https://maps.google.com/maps?q=' + encodeURIComponent(mapQuery) + '&output=embed&hl=ja';
-          iframe.width = '100%';
-          iframe.height = '250';
-          iframe.setAttribute('frameborder', '0');
-          iframe.setAttribute('allowfullscreen', '');
-          iframe.setAttribute('loading', 'lazy');
-          iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-          mapEl.appendChild(iframe);
-        }
-        var mapLinkWrap = document.createElement('p');
-        mapLinkWrap.className = 'shop-modal-map-link-wrap';
-        var mapLink = document.createElement('a');
-        mapLink.href = mapDirectUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(mapQuery));
-        mapLink.target = '_blank';
-        mapLink.rel = 'noopener noreferrer';
-        mapLink.className = 'shop-modal-inline-link';
-        mapLink.textContent = 'Googleマップで開く ↗';
-        mapLinkWrap.appendChild(mapLink);
-        mapEl.appendChild(mapLinkWrap);
+      var lat = shop._lat;
+      var lng = shop._lng;
+      var isMobile = window.innerWidth <= 640;
+      if (!isMobile && lat != null && lng != null) {
+        var iframe = document.createElement('iframe');
+        iframe.className = 'shop-modal-map-iframe';
+        iframe.src = 'https://maps.google.com/maps?q=' + lat + ',' + lng + '&z=16&output=embed&hl=ja';
+        iframe.width = '100%';
+        iframe.height = '250';
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('loading', 'lazy');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        mapEl.appendChild(iframe);
       }
     }
 
