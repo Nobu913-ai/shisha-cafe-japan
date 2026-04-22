@@ -16590,8 +16590,8 @@
         },
         {
           "name": "Shisha & cocktail bar 2FUN",
-          "area": "486-0833",
-          "address": "3F, １丁目-268-2 上条町 春日井市 愛知県 486-0833",
+          "area": "春日井市",
+          "address": "愛知県春日井市上条町１丁目-268-2 3F",
           "url": "https://maps.google.com/?cid=13196273189134891392&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
           "hoursNote": "月曜日: 定休日、火曜日: 19時00分～1時00分、水曜日: 19時00分～1時00分、木曜日: 19時00分～1時00分、金曜日: 19時00分～1時00分、土曜日: 19時00分～1時00分、日曜日: 19時00分～1時00分",
           "phone": "07016204879",
@@ -18712,6 +18712,60 @@
           "access": "伏見駅から徒歩約7分",
           "closedDay": "",
           "features": []
+        },
+        {
+          "name": "SHISHA BAR Jood",
+          "area": "刈谷市",
+          "address": "〒448-0028 愛知県刈谷市桜町５丁目８",
+          "url": "https://maps.google.com/?cid=12660548260362104672&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+          "hoursNote": "月曜日: 19時00分～3時00分、火曜日: 19時00分～3時00分、水曜日: 19時00分～3時00分、木曜日: 19時00分～3時00分、金曜日: 19時00分～5時00分、土曜日: 19時00分～5時00分、日曜日: 19時00分～3時00分",
+          "phone": "0566709360",
+          "officialUrl": "https://www.instagram.com/shishabar_jood?igsh=MWJyYTB4aml4Y3ky&utm_source=qr",
+          "rating": 4.8,
+          "ratingCount": 74,
+          "access": "刈谷駅から徒歩約5分",
+          "payment": "クレジットカード、デビットカード",
+          "reservation": "予約可の可能性（公式要確認）",
+          "priceNote": "目安 4,000円〜5,000円（Googleマップ・飲食店の価格帯）",
+          "features": [
+            "アルコール",
+            "クレカ可",
+            "深夜営業",
+            "シェア台"
+          ],
+          "_lat": 34.9927042,
+          "_lng": 137.0063074,
+          "description": "丁寧な立ち上げと豊かなフレーバーが魅力のシーシャバーです。店員さんが親身に相談に乗ってくれ、複数フレーバーのミックスで自分好みの味わいを実現できます。高級感のある落ち着いた店内で、充実したフードメニューと共にゆったり過ごせる空間です。",
+          "placeId": "ChIJ_-bMPXGdBGARYK-SeJBNs68"
+        },
+        {
+          "name": "ハングアウト",
+          "area": "刈谷市",
+          "address": "〒448-0034 愛知県刈谷市神明町１丁目３７ 第二ユタカビル 301",
+          "url": "https://maps.google.com/?cid=16037316941425474589&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+          "hoursNote": "月曜日: 17時00分～1時00分、火曜日: 定休日、水曜日: 17時00分～1時00分、木曜日: 17時00分～1時00分、金曜日: 15時00分～3時00分、土曜日: 15時00分～3時00分、日曜日: 15時00分～3時00分",
+          "phone": "08078855772",
+          "officialUrl": "https://hangoutkariya.odoo.com/",
+          "rating": 4.8,
+          "ratingCount": 60,
+          "access": "刈谷駅から徒歩約11分",
+          "payment": "クレジットカード",
+          "reservation": "予約可の可能性（公式要確認）",
+          "priceNote": "目安 3,000円〜4,000円（Googleマップ・飲食店の価格帯）",
+          "closedDay": "火曜（Googleマップ・要確認）",
+          "features": [
+            "アルコール",
+            "クレカ可",
+            "Wi-Fi",
+            "シェア台",
+            "フリードリンク",
+            "電源",
+            "深夜営業"
+          ],
+          "_lat": 34.9947842,
+          "_lng": 137.0033455,
+          "description": "友人と一緒に笑顔があふれる時間を過ごしたい方へ。シーシャの味わいはもちろん、ゲームで盛り上がったり、気さくなスタッフとの会話も楽しめる。居心地の良い空間で、無理なく自分たちのペースでくつろげます。",
+          "placeId": "ChIJ75JGWMidBGARHfwE9Mn-j94"
         }
       ]
     },
@@ -22417,7 +22471,7 @@
         {
           "name": "Istanbul Hookah Lounge",
           "area": "横須賀市",
-          "address": "サワノビル, 301, ２丁目-19-2 本町 横須賀市 神奈川県 238-0041",
+          "address": "〒238-0041 神奈川県横須賀市本町２丁目-19-2 301 サワノビル",
           "url": "https://maps.google.com/?cid=2025462363959462444&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
           "hoursNote": "月曜日: 18時30分～1時00分、火曜日: 18時30分～1時00分、水曜日: 18時30分～1時00分、木曜日: 18時30分～1時00分、金曜日: 18時00分～1時00分、土曜日: 18時00分～1時00分、日曜日: 18時30分～1時00分",
           "phone": "09091478719",
@@ -23582,31 +23636,6 @@
           "features": [],
           "description": "ペルシャ絨毯が敷かれたテラス席で、本格的なペルシャ料理とシーシャを楽しめます。ボリューム満点のケバブセットはお手頃価格で、ドリンクも格安。居心地の良さと親切な接客が魅力で、喧騒から離れた落ち着きの時間が過ごせます。",
           "placeId": "ChIJi42soJQIAWARgNL1c5lOOF8"
-        },
-        {
-          "name": "SHISHA BAR Jood",
-          "area": "その他",
-          "address": "〒448-0028 愛知県刈谷市桜町５丁目８",
-          "url": "https://maps.google.com/?cid=12660548260362104672&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
-          "hoursNote": "月曜日: 19時00分～3時00分、火曜日: 19時00分～3時00分、水曜日: 19時00分～3時00分、木曜日: 19時00分～3時00分、金曜日: 19時00分～5時00分、土曜日: 19時00分～5時00分、日曜日: 19時00分～3時00分",
-          "phone": "0566709360",
-          "officialUrl": "https://www.instagram.com/shishabar_jood?igsh=MWJyYTB4aml4Y3ky&utm_source=qr",
-          "rating": 4.8,
-          "ratingCount": 74,
-          "access": "刈谷駅から徒歩約5分",
-          "payment": "クレジットカード、デビットカード",
-          "reservation": "予約可の可能性（公式要確認）",
-          "priceNote": "目安 4,000円〜5,000円（Googleマップ・飲食店の価格帯）",
-          "features": [
-            "アルコール",
-            "クレカ可",
-            "深夜営業",
-            "シェア台"
-          ],
-          "_lat": 34.9927042,
-          "_lng": 137.0063074,
-          "description": "丁寧な立ち上げと豊かなフレーバーが魅力のシーシャバーです。店員さんが親身に相談に乗ってくれ、複数フレーバーのミックスで自分好みの味わいを実現できます。高級感のある落ち着いた店内で、充実したフードメニューと共にゆったり過ごせる空間です。",
-          "placeId": "ChIJ_-bMPXGdBGARYK-SeJBNs68"
         },
         {
           "name": "SHISHA BLUE新潟駅前店(シーシャ ブルー ニイガタエキマエテン)",
@@ -30010,7 +30039,7 @@
         {
           "name": "シーシャラウンジ マーシャ 津田沼",
           "area": "船橋市",
-          "address": "2F, ダイアパレス津田沼 ２丁目-１４-1 前原西 船橋市 千葉県 274-0825",
+          "address": "〒274-0825 千葉県船橋市前原西２丁目-１４-1 ダイアパレス津田沼 2F",
           "url": "https://maps.google.com/?cid=13235916947240623140&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
           "hoursNote": "月曜日: 15時00分～5時00分、火曜日: 15時00分～5時00分、水曜日: 15時00分～5時00分、木曜日: 15時00分～5時00分、金曜日: 15時00分～5時00分、土曜日: 15時00分～5時00分、日曜日: 15時00分～5時00分",
           "phone": "0474891600",
@@ -30528,35 +30557,6 @@
           "_lat": 36.325689,
           "_lng": 139.0050027,
           "placeId": "ChIJVVWqHECNHmARf_ne9zteSRY"
-        },
-        {
-          "name": "ハングアウト",
-          "area": "その他",
-          "address": "〒448-0034 愛知県刈谷市神明町１丁目３７ 第二ユタカビル 301",
-          "url": "https://maps.google.com/?cid=16037316941425474589&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
-          "hoursNote": "月曜日: 17時00分～1時00分、火曜日: 定休日、水曜日: 17時00分～1時00分、木曜日: 17時00分～1時00分、金曜日: 15時00分～3時00分、土曜日: 15時00分～3時00分、日曜日: 15時00分～3時00分",
-          "phone": "08078855772",
-          "officialUrl": "https://hangoutkariya.odoo.com/",
-          "rating": 4.8,
-          "ratingCount": 60,
-          "access": "刈谷駅から徒歩約11分",
-          "payment": "クレジットカード",
-          "reservation": "予約可の可能性（公式要確認）",
-          "priceNote": "目安 3,000円〜4,000円（Googleマップ・飲食店の価格帯）",
-          "closedDay": "火曜（Googleマップ・要確認）",
-          "features": [
-            "アルコール",
-            "クレカ可",
-            "Wi-Fi",
-            "シェア台",
-            "フリードリンク",
-            "電源",
-            "深夜営業"
-          ],
-          "_lat": 34.9947842,
-          "_lng": 137.0033455,
-          "description": "友人と一緒に笑顔があふれる時間を過ごしたい方へ。シーシャの味わいはもちろん、ゲームで盛り上がったり、気さくなスタッフとの会話も楽しめる。居心地の良い空間で、無理なく自分たちのペースでくつろげます。",
-          "placeId": "ChIJ75JGWMidBGARHfwE9Mn-j94"
         },
         {
           "name": "バー こっしー",
@@ -33554,7 +33554,7 @@
         {
           "name": "P.E.I. PUB",
           "area": "大分市",
-          "address": "都町2-5-13 白銀ビル 3F ５, ２丁目-５ 都町 大分市 大分県 870-0034",
+          "address": "〒870-0034 大分県大分市都町2-5-13 白銀ビル 3F",
           "url": "https://maps.google.com/?cid=5134431942704726205&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
           "hoursNote": "月曜日: 定休日、火曜日: 20時00分～2時00分、水曜日: 20時00分～2時00分、木曜日: 20時00分～2時00分、金曜日: 20時00分～4時00分、土曜日: 20時00分～4時00分、日曜日: 定休日",
           "phone": "08017344583",
@@ -35041,7 +35041,7 @@
         {
           "name": "デジャヴシーシャ-DEJAVU SHISHA- [那覇店]",
           "area": "那覇市",
-          "address": "ニュ, 2-A, １丁目-１４-16 松山 那覇市 沖縄県 900-0032",
+          "address": "〒900-0032 沖縄県那覇市松山１丁目-１４-16 2-A ニュ",
           "url": "https://maps.google.com/?cid=1029841530736489942&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
           "hoursNote": "月曜日: 20時00分～8時00分、火曜日: 20時00分～8時00分、水曜日: 20時00分～8時00分、木曜日: 20時00分～8時00分、金曜日: 20時00分～8時00分、土曜日: 20時00分～8時00分、日曜日: 20時00分～8時00分",
           "phone": "0989880660",
