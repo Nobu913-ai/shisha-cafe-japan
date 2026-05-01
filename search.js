@@ -147,7 +147,9 @@
       phone: shop.phone || '',
       officialUrl: shop.officialUrl || shop.official || '',
       rating: shop.rating,
-      ratingCount: shop.ratingCount
+      ratingCount: shop.ratingCount,
+      _lat: shop._lat,
+      _lng: shop._lng
     };
     var rawTags = (shop.tags || []).concat(shop.features || []);
     var allTags = rawTags.slice().sort(function (a, b) {

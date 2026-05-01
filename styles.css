@@ -1189,7 +1189,7 @@ a:hover {
 .shop-modal-inner {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 680px;
   max-height: 90vh;
   overflow: auto;
   background: var(--bg-card);
@@ -1197,6 +1197,25 @@ a:hover {
   border-radius: var(--radius);
   padding: 28px 24px 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  /* スクロールバーのテーマ統一（Firefox） */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* スクロールバーのテーマ統一（Chrome / Safari / Edge） */
+.shop-modal-inner::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.shop-modal-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+.shop-modal-inner::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+.shop-modal-inner::-webkit-scrollbar-thumb:hover {
+  background: #44403c;
 }
 
 .shop-modal-close {
@@ -3205,6 +3224,9 @@ a.search-nearby-sort-item:hover {
   border-radius: var(--radius);
   padding: 24px;
   min-height: 320px;
+  /* PCではビューポートに収まる高さで頭打ち。これにより選択肢が常に画面内に表示され、
+     メッセージ領域だけが内部スクロールする */
+  max-height: min(720px, calc(100vh - 240px));
   display: flex;
   flex-direction: column;
 }
@@ -3213,7 +3235,7 @@ a.search-nearby-sort-item:hover {
   position: relative; /* 子の offsetParent を確定させ、レシピジャンプの scrollTop 計算を正確にする */
   flex: 1 1 auto;
   min-height: 0;
-  max-height: 560px;
+  /* 親 .sommelier-chat の max-height で頭打ちされるため、ここでは指定しない（モバイルは別途上書き） */
   overflow-y: auto;
   margin-bottom: 20px;
   padding-top: 4px; /* 最上端の吹き出し・アイコンがわずかに切れないよう */
@@ -3221,6 +3243,25 @@ a.search-nearby-sort-item:hover {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: auto; /* html の scroll-behavior: smooth の影響を受けないよう明示 */
   overscroll-behavior-y: contain; /* モバイルで親へのバウンス連鎖を抑え、scrollTop が狂いにくくする */
+  /* スクロールバーのテーマ統一（Firefox） */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* スクロールバーのテーマ統一（Chrome / Safari / Edge） */
+.sommelier-messages::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.sommelier-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sommelier-messages::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+.sommelier-messages::-webkit-scrollbar-thumb:hover {
+  background: #44403c;
 }
 
 .sommelier-msg {
@@ -3736,6 +3777,7 @@ a.search-nearby-sort-item:hover {
 }
 
 .sommelier-restart-wrap {
+  flex-shrink: 0;
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
@@ -4178,6 +4220,8 @@ a.search-nearby-sort-item:hover {
     max-width: none;
     padding: 14px 14px;
     padding-bottom: max(10px, calc(4px + env(safe-area-inset-bottom, 0px)));
+    /* モバイルは内側 .sommelier-messages の max-height で制御するため、チャット側の制限は外す */
+    max-height: none;
   }
 
   /* 本文は内容に合わせて伸び、長くなったら max-height でスクロール（提案説明が読めるよう高めに確保） */

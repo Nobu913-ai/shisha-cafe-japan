@@ -1438,10 +1438,21 @@
       btn.dataset.choiceId = c.id;
       choicesEl.appendChild(btn);
     });
+    /* 選択肢ボタン追加で .sommelier-chat 内の Flex レイアウトが再計算され、
+       .sommelier-messages の clientHeight が縮む。直前の addMessage の scrollTo
+       は古い maxScroll を基準にしていたため、最新の bot 質問が下に隠れる。
+       ここで再度末尾へスクロールして最新メッセージを表示領域内に押し込む */
+    if (messagesEl) {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         choicesEl.classList.add("sommelier-choices--visible");
         /* scrollIntoView は document 全体がスクロールしフッターまで動くため使わない。タップしやすさは CSS の余白で確保 */
+        /* 二重保険：opacity transition 後もスクロール位置を末尾に揃える */
+        if (messagesEl) {
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
       });
     });
   }
