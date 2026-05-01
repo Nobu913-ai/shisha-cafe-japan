@@ -3402,6 +3402,8 @@ a.search-nearby-sort-item:hover {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  --sommelier-choice-cols: 3;
+  --sommelier-choice-gap: 10px;
 }
 
 .sommelier-choices--visible {
@@ -3419,6 +3421,11 @@ a.search-nearby-sort-item:hover {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
+  /* PCでは N 列の等幅レイアウトで整列（gap × (N-1) 分を引いて等分） */
+  flex: 0 0 calc((100% - var(--sommelier-choice-gap) * (var(--sommelier-choice-cols) - 1)) / var(--sommelier-choice-cols));
+  min-width: 0;
+  text-align: center;
+  line-height: 1.3;
 }
 
 @media (hover: hover) {
@@ -4162,7 +4169,7 @@ a.search-nearby-sort-item:hover {
     padding: 4px 7px;
   }
 
-  /* ── フレーバー相談（スマホ：メッセージ欄をビューポート基準で大きく確保。親flex連鎖は使わない） ── */
+  /* ── フレーバー相談（スマホ：PCと同じ哲学。チャット自体をビューポートに収め、選択肢を常時表示） ── */
   .sommelier-main {
     /* 固定ヘッダー（+ safe-area）より下に本文を開始。チャットとヘッダーが被らないよう余裕を多めに */
     padding: calc(env(safe-area-inset-top, 0px) + 72px + 18px) 0 max(16px, calc(8px + env(safe-area-inset-bottom, 0px)));
@@ -4188,31 +4195,42 @@ a.search-nearby-sort-item:hover {
     width: 100%;
     padding: 0 12px 8px;
     max-width: 100%;
+    gap: 8px;
   }
 
+  /* モバイルではキャラクターをコンパクトな横並び（アバター左、名前/役割右）にして、
+     チャットに十分な縦スペースを確保する */
   .sommelier-character {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
     width: 100%;
-    max-width: 180px;
-    padding: 12px 14px;
+    max-width: 100%;
+    padding: 8px 14px;
+    text-align: left;
+    margin-bottom: 0;
   }
 
   .sommelier-avatar {
-    margin-bottom: 10px;
+    margin: 0;
+    flex-shrink: 0;
   }
 
   .sommelier-avatar--img {
-    width: 88px;
-    height: 88px;
+    width: 56px;
+    height: 56px;
   }
 
   .sommelier-character-name {
     font-size: 0.95rem;
-    margin-bottom: 2px;
+    margin: 0 8px 0 0;
   }
 
   .sommelier-character-role {
     font-size: 0.72rem;
     line-height: 1.35;
+    margin: 0;
   }
 
   .sommelier-chat {
@@ -4220,24 +4238,25 @@ a.search-nearby-sort-item:hover {
     max-width: none;
     padding: 14px 14px;
     padding-bottom: max(10px, calc(4px + env(safe-area-inset-bottom, 0px)));
-    /* モバイルは内側 .sommelier-messages の max-height で制御するため、チャット側の制限は外す */
-    max-height: none;
-  }
-
-  /* 本文は内容に合わせて伸び、長くなったら max-height でスクロール（提案説明が読めるよう高めに確保） */
-  .sommelier-messages {
-    flex: none;
-    height: auto;
-    min-height: 0;
-    max-height: min(680px, calc(100vh - 150px));
-    margin-bottom: 6px;
-    overflow-y: auto;
+    /* PCと同じ哲学：チャット自体をビューポート内に収め、Flex で messages 内部スクロール、選択肢を常時表示 */
+    max-height: min(720px, calc(100vh - 240px));
   }
 
   @supports (height: 100svh) {
-    .sommelier-messages {
-      max-height: min(680px, calc(100svh - 150px));
+    .sommelier-chat {
+      max-height: min(720px, calc(100svh - 240px));
     }
+  }
+
+  /* メッセージ領域は親 .sommelier-chat の max-height 内で flex により伸縮し、
+     長文時は内部スクロール。モバイル独自の固定 max-height は撤去 */
+  .sommelier-messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    height: auto;
+    margin-bottom: 12px;
+    overflow-y: auto;
   }
 
   .sommelier-msg {
@@ -4276,14 +4295,19 @@ a.search-nearby-sort-item:hover {
   }
 
   .sommelier-choice-btn {
-    padding: 12px 16px;
-    font-size: 0.88rem;
-    width: 100%;
-    text-align: left;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    /* 2列レイアウト：1行に2ボタンまで並べ、選択肢が多くてもチャット枠内に収まるようにする */
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    width: auto;
+    text-align: center;
+    line-height: 1.3;
   }
 
   .sommelier-choices {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 8px;
     padding-bottom: max(8px, calc(4px + env(safe-area-inset-bottom, 0px)));
   }

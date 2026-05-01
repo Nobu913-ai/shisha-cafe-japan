@@ -1,6 +1,6 @@
 /**
  * フレーバー相談 - 対話形式でフレーバー組み合わせを提案
- * ルナ：シーシャフレーバーの知識を網羅するコンシェルジュ
+ * ルナ：シーシャフレーバーの知識を網羅する相談AI
  */
 (function () {
   var messagesEl = document.getElementById("sommelier-messages");
@@ -15,7 +15,7 @@
   var steps = [
     {
       id: "taste",
-      bot: "いらっしゃいませ。フレーバーコンシェルジュのルナです。\nお好みに合うフレーバーを、具体的な銘柄でご提案させていただきます。\n\nまず、甘さの好みをお聞かせください。",
+      bot: "いらっしゃいませ。フレーバー相談AIのルナです。\nお好みに合うフレーバーを、具体的な銘柄でご提案させていただきます。\n\nまず、甘さの好みをお聞かせください。",
       choices: [
         { id: "sweet", label: "甘めが好き" },
         { id: "fresh", label: "さっぱり系が好き" },
@@ -27,11 +27,11 @@
       bot: "ありがとうございます。お好みのフレーバー系統はいかがでしょうか。",
       choices: [
         { id: "fruit", label: "フルーツ系" },
-        { id: "mint", label: "ミント・ハーブ系" },
-        { id: "dessert", label: "デザート・スイーツ系" },
-        { id: "citrus", label: "シトラス・フローラル系" },
-        { id: "spice", label: "スパイス・ウッド系" },
-        { id: "drink", label: "ドリンク系（コーラ・紅茶など）" }
+        { id: "mint", label: "ミント・ハーブ" },
+        { id: "dessert", label: "デザート系" },
+        { id: "citrus", label: "シトラス系" },
+        { id: "spice", label: "スパイス・ウッド" },
+        { id: "drink", label: "ドリンク系" }
       ]
     },
     {
@@ -47,10 +47,10 @@
       id: "experience",
       bot: "シーシャはよく吸われますか。",
       choices: [
-        { id: "beginner", label: "初めて・数回程度" },
+        { id: "beginner", label: "初めて・数回" },
         { id: "sometimes", label: "月に数回" },
         { id: "regular", label: "週1以上" },
-        { id: "expert", label: "かなりのヘビーユーザー" }
+        { id: "expert", label: "ヘビーユーザー" }
       ]
     },
     {
@@ -65,13 +65,13 @@
         if (answers.experience === "beginner") {
           return [
             { id: "non_nicotine", label: "ノンニコチンを希望" },
-            { id: "either", label: "特にこだわらない / おまかせ" }
+            { id: "either", label: "おまかせ" }
           ];
         }
         return [
-          { id: "dark_main", label: "ダークリーフ メインで（濃厚・深め）" },
-          { id: "dark_accent", label: "ダークリーフ を少しアクセントに" },
-          { id: "blonde_only", label: "ブロンドリーフ のみ（マイルド）" },
+          { id: "dark_main", label: "ダーク メイン" },
+          { id: "dark_accent", label: "ダーク 少しだけ" },
+          { id: "blonde_only", label: "ブロンドのみ" },
           { id: "non_nicotine", label: "ノンニコチン希望" },
           { id: "either", label: "おまかせ" }
         ];
@@ -81,10 +81,10 @@
       id: "mood",
       bot: "本日はどのような気分でしょうか。",
       choices: [
-        { id: "relax", label: "ゆったりリラックスしたい" },
-        { id: "refresh", label: "リフレッシュ・爽快感" },
-        { id: "adventure", label: "新しい味に挑戦したい" },
-        { id: "classic", label: "王道・定番を楽しみたい" }
+        { id: "relax", label: "ゆったりリラックス" },
+        { id: "refresh", label: "リフレッシュ" },
+        { id: "adventure", label: "新しい味に挑戦" },
+        { id: "classic", label: "王道・定番" }
       ]
     }
   ];
@@ -1430,6 +1430,15 @@
   function showChoices(items) {
     choicesEl.innerHTML = "";
     choicesEl.classList.remove("sommelier-choices--visible");
+    /* 選択肢の数に応じてPC側の列数を切り替える（2x2, 1x3, 2x3 などきれいに揃うように）
+       2 → 2列, 3 → 3列, 4 → 2列(2x2), 5/6 → 3列。モバイルは別途2列固定 */
+    var n = items.length;
+    var cols;
+    if (n <= 2) cols = 2;
+    else if (n === 3) cols = 3;
+    else if (n === 4) cols = 2;
+    else cols = 3;
+    choicesEl.style.setProperty("--sommelier-choice-cols", String(cols));
     items.forEach(function (c) {
       var btn = document.createElement("button");
       btn.type = "button";
@@ -1651,9 +1660,10 @@
    */
   function jumpToRecipeInMessages(anchorEl, pad) {
     if (!messagesEl || !anchorEl || !messagesEl.contains(anchorEl)) return;
-    pad = typeof pad === "number" ? pad : 4;
-    /* タイトル上にほんの少し余白（下がり気味のときは数 px 下げる） */
-    var extraBreathing = 6;
+    pad = typeof pad === "number" ? pad : 0;
+    /* 前の枠（前レシピのカード下端）が見えないよう、ターゲット行をできる限り上に寄せる。
+       行の margin-top は無いため、pad=0 で previous row の margin-bottom が上方向にちょうど消える。 */
+    var extraBreathing = 0;
 
     var row = anchorEl.closest && anchorEl.closest(".sommelier-luna-row");
     var alignEl = row && messagesEl.contains(row) ? row : anchorEl;
@@ -1729,7 +1739,7 @@
       btn.setAttribute("aria-label", "提案「" + r.name + "」の位置へスクロール");
       btn.addEventListener("click", function () {
         var target = messagesEl.querySelector("#sommelier-recipe-" + n);
-        if (target) jumpToRecipeInMessages(target, 6);
+        if (target) jumpToRecipeInMessages(target, 0);
       });
       list.appendChild(btn);
     });
