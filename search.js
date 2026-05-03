@@ -720,10 +720,6 @@
     return arr.sort(function (a, b) { return (b.count || 0) - (a.count || 0); });
   }
 
-  function sortNodesByShops(nodes) {
-    return nodes.sort(function (a, b) { return countTreeShops(b) - countTreeShops(a); });
-  }
-
   /** エリアキーから都道府県プレフィックスを除去して表示名を短縮 */
   function stripPrefFromArea(area) {
     var m = area.match(/^(?:北海道|東京都|京都府|大阪府|.+?県)(.+)/);

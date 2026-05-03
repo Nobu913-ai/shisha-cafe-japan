@@ -363,20 +363,6 @@ a:hover {
   transform: translateY(-2px);
 }
 
-.area-card--button {
-  width: 100%;
-  cursor: pointer;
-  font: inherit;
-  text-align: left;
-  border: 1px solid var(--border);
-}
-
-.area-card--button.is-active {
-  border-color: var(--accent);
-  background: var(--bg-elevated);
-  box-shadow: 0 0 0 1px var(--accent);
-}
-
 .area-name-row {
   display: flex;
   align-items: baseline;
@@ -492,77 +478,6 @@ a:hover {
 /* Spots */
 .spots .section-desc {
   margin-bottom: 12px;
-}
-
-.section-desc--small {
-  font-size: 0.9rem;
-  margin-bottom: 32px;
-}
-
-.section-desc--small a {
-  text-decoration: underline;
-}
-
-.spots-loading {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 40px 20px;
-}
-
-.spots-loading.is-hidden {
-  display: none;
-}
-
-.spots-coming-soon {
-  text-align: center;
-  padding: 48px 24px 56px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.spots-coming-soon-img {
-  display: block;
-  width: 100%;
-  max-width: 560px;
-  height: auto;
-  margin: 0 auto 24px;
-  border-radius: 12px;
-  opacity: 0.85;
-}
-
-.spots-coming-soon-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin: 0 0 12px;
-  letter-spacing: 0.06em;
-}
-
-.spots-coming-soon-desc {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  line-height: 1.8;
-  margin: 0 0 24px;
-}
-
-.spots-coming-soon-link {
-  display: inline-block;
-  padding: 10px 28px;
-  background: var(--accent);
-  color: var(--bg-deep);
-  font-weight: 600;
-  font-size: 0.9rem;
-  border-radius: 24px;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.spots-coming-soon-link:hover {
-  background: var(--accent-soft);
-  transform: translateY(-1px);
 }
 
 /* ── エリア別ランキング ── */
@@ -703,61 +618,6 @@ a:hover {
 .rank-block-more-link:hover {
   text-decoration: underline;
 }
-.rank-block-more--all {
-  margin-top: 20px;
-  text-align: center;
-}
-.rank-block-more--all .rank-block-more-link {
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-
-.search-panel {
-  margin-top: 24px;
-  margin-bottom: 24px;
-  padding: 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.search-panel-row {
-  margin-bottom: 16px;
-}
-
-.search-panel-row:last-child {
-  margin-bottom: 0;
-}
-
-.search-panel-label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-
-.search-panel-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px 14px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  color: var(--text);
-  background: var(--bg-deep);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.search-panel-input::placeholder {
-  color: var(--text-muted);
-}
-
-.search-panel-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
 .search-feature-category {
   margin-bottom: 14px;
 }
@@ -838,38 +698,6 @@ a:hover {
   color: var(--bg-deep);
   background: var(--accent);
   border-color: var(--accent);
-}
-
-.search-result-count {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.search-result-count.is-hidden {
-  display: none;
-}
-
-.search-filter-bar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-  padding: 12px 16px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.search-filter-bar.is-hidden {
-  display: none;
-}
-
-.search-filter-label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--accent);
 }
 
 .search-filter-clear {
@@ -1292,14 +1120,6 @@ a:hover {
   gap: 8px;
 }
 
-.shop-modal-tag {
-  font-size: 0.75rem;
-  color: #d6d3d1;
-  background: var(--bg-elevated);
-  padding: 4px 10px;
-  border-radius: 6px;
-}
-
 .shop-modal-section {
   margin-bottom: 20px;
 }
@@ -1330,24 +1150,6 @@ a:hover {
 
 .shop-modal-links {
   margin-bottom: 16px;
-}
-
-.shop-modal-link {
-  display: inline-block;
-  padding: 10px 18px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--bg-deep);
-  background: var(--accent);
-  border-radius: 8px;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.shop-modal-link:hover {
-  background: var(--accent-soft);
-  text-decoration: none;
-  transform: translateY(-1px);
 }
 
 .shop-modal-phone-link {
@@ -1384,12 +1186,6 @@ a:hover {
 .shop-modal-inline-link:hover {
   color: var(--accent-soft);
   border-color: var(--accent-soft);
-}
-
-.shop-modal-map-link-wrap {
-  margin: 8px 0 0;
-  font-size: 0.85rem;
-  text-align: right;
 }
 
 .shop-modal-share {
@@ -1730,21 +1526,6 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 0 0 12px;
-}
-
-.search-section-hint {
-  margin: -6px 0 10px;
-  font-size: 0.78rem;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
-
-.search-section-subtitle {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  margin: 0 0 10px;
 }
 
 .search-form-input {
@@ -2105,13 +1886,6 @@ a:hover {
   line-height: 1.55;
   word-break: break-word;
   overflow-wrap: anywhere;
-}
-
-.search-content .search-result-count {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0;
 }
 
 .search-content .search-loading {
@@ -2832,11 +2606,6 @@ a.search-nearby-sort-item:hover {
 
 .guide-table tbody tr:last-child td {
   border-bottom: none;
-}
-
-/* ダークリーフセクション */
-.guide-section--dark .flavor-cards--dark {
-  margin-bottom: 24px;
 }
 
 .flavor-cards {
@@ -3700,16 +3469,6 @@ a.search-nearby-sort-item:hover {
   overflow-wrap: anywhere;
 }
 
-.sommelier-result-footer {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  padding: 12px 16px;
-  background: rgba(217, 119, 6, 0.06);
-  border-radius: 8px;
-  margin-top: 4px;
-}
-
 .sommelier-result-nav {
   flex-shrink: 0;
   margin-top: 8px;
@@ -3927,19 +3686,6 @@ a.search-nearby-sort-item:hover {
     font-size: 1.1rem;
   }
 
-  /* ── 調査中プレースホルダー ── */
-  .spots-coming-soon {
-    padding: 32px 16px 40px;
-  }
-
-  .spots-coming-soon-img {
-    max-width: 100%;
-  }
-
-  .spots-coming-soon-title {
-    font-size: 1.2rem;
-  }
-
   /* ── ランキング ── */
   .rank-tabs {
     gap: 0;
@@ -4015,26 +3761,9 @@ a.search-nearby-sort-item:hover {
     font-size: 1.35rem;
   }
 
-  .search-panel {
-    padding: 16px;
-  }
-
-  .search-panel-input {
-    max-width: 100%;
-  }
-
   .search-feature-tag {
     padding: 8px 14px;
     font-size: 0.82rem;
-  }
-
-  .search-filter-bar {
-    padding: 10px 12px;
-    gap: 10px;
-  }
-
-  .search-filter-label {
-    font-size: 0.88rem;
   }
 
   /* ── 検索サイドバー（折りたたみ式） ── */
