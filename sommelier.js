@@ -1381,7 +1381,7 @@
     wrap.setAttribute("aria-hidden", "true");
     var img = document.createElement("img");
     img.className = "sommelier-msg-avatar-img";
-    img.src = "images/sommelier-avatar-sm.png";
+    img.src = "images/sommelier-avatar-sm.webp";
     img.alt = "";
     img.width = 40;
     img.height = 40;
