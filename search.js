@@ -73,6 +73,10 @@
 
   /** 全店舗データ（fetch 後に格納、現在地検索で使用） */
   var allShops = [];
+  var regionsData = [];
+  var renderedRegions = {};
+  var shopIdMap = {};
+  var totalShopCount = 0;
 
   /** Haversine 公式: 2点間の距離 (km) */
   function haversineDistance(lat1, lng1, lat2, lng2) {
@@ -541,6 +545,34 @@
     }, 720);
   }
 
+  function renderRegion(regionId) {
+    if (renderedRegions[regionId]) return;
+    var region = null;
+    for (var i = 0; i < regionsData.length; i++) {
+      if (regionsData[i].id === regionId) { region = regionsData[i]; break; }
+    }
+    if (!region) return;
+    var block = document.createElement('div');
+    block.className = 'spot-block';
+    block.setAttribute('data-region', region.id);
+    var title = document.createElement('h3');
+    title.className = 'spot-block-title';
+    title.textContent = region.name;
+    block.appendChild(title);
+    var grid = document.createElement('div');
+    grid.className = 'spot-grid';
+    region.shops.forEach(function (shop) {
+      grid.appendChild(buildShopCard(shop, region.id));
+    });
+    block.appendChild(grid);
+    searchResultsContainer.appendChild(block);
+    renderedRegions[regionId] = true;
+  }
+
+  function renderAllRegions() {
+    regionsData.forEach(function (r) { renderRegion(r.id); });
+  }
+
   function applyFilters(options) {
     options = options || {};
     if (!searchResultsContainer) return;
@@ -553,6 +585,24 @@
     var keyword = (filterState.keyword || '').trim().toLowerCase();
     var featureTags = filterState.featureTags || [];
     var visibleCount = 0;
+
+    var hasActiveFilter = regionId || keyword || featureTags.length || filterState.station;
+    if (!hasActiveFilter && totalShopCount > 0) {
+      searchResultsContainer.querySelectorAll('.spot-block').forEach(function (block) {
+        block.classList.add('spot-block--hidden');
+      });
+      if (searchLoading) searchLoading.classList.remove('is-hidden');
+      updateSearchResultToolbar(totalShopCount);
+      updateJumpToFeaturesLink();
+      return;
+    }
+
+    if (searchLoading) searchLoading.classList.add('is-hidden');
+    if (regionId) {
+      renderRegion(regionId);
+    } else if (keyword || featureTags.length || filterState.station) {
+      renderAllRegions();
+    }
 
     searchResultsContainer.querySelectorAll('.spot-block').forEach(function (block) {
       var blockRegion = block.getAttribute('data-region');
@@ -666,11 +716,9 @@
     var stationInput = document.getElementById('search-station-input');
     if (stationInput) stationInput.value = '';
     searchResultsContainer.querySelectorAll('.spot-block').forEach(function (block) {
-      block.classList.remove('spot-block--hidden');
+      block.classList.add('spot-block--hidden');
     });
-    searchResultsContainer.querySelectorAll('.spot-card').forEach(function (card) {
-      card.classList.remove('spot-card--hidden');
-    });
+    if (searchLoading) searchLoading.classList.remove('is-hidden');
     document.querySelectorAll('.search-area-btn').forEach(function (btn) {
       btn.classList.remove('is-active');
     });
@@ -1263,23 +1311,15 @@
     return window.location.origin + window.location.pathname + '?shop=' + id;
   }
 
-  /** URLに `?shop=<id>` があれば該当カードの店舗データを探してモーダルを開く */
+  /** URLに `?shop=<id>` があれば shopIdMap から店舗データを探してモーダルを開く */
   function tryOpenShopFromUrl() {
     try {
       var params = new URLSearchParams(window.location.search);
       var targetId = params.get('shop');
       if (!targetId) return;
-      var cards = document.querySelectorAll('.spot-card[data-shop]');
-      for (var i = 0; i < cards.length; i++) {
-        var raw = cards[i].getAttribute('data-shop');
-        if (!raw) continue;
-        try {
-          var shop = JSON.parse(raw);
-          if (computeShopId(shop.name, shop.area) === targetId) {
-            openShopModal(shop);
-            return;
-          }
-        } catch (e) {}
+      var shopData = shopIdMap[targetId];
+      if (shopData) {
+        openShopModal(shopData);
       }
     } catch (e) {}
   }
@@ -1603,7 +1643,7 @@
     if (nearbyBtn) nearbyBtn.classList.remove('is-active');
     if (nearbyStatus) { nearbyStatus.textContent = ''; nearbyStatus.classList.remove('is-error'); }
     if (nearbyOptionsWrap) nearbyOptionsWrap.classList.remove('is-visible');
-    // nearby結果を消し、通常ブロックを復元
+    // nearby結果を消す（通常ブロックの復元は後続の applyFilters に委ねる）
     if (nearbyResultsBlock) {
       nearbyResultsBlock.style.display = 'none';
     }
@@ -1697,8 +1737,6 @@
   fetch(url)
     .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('読み込み失敗')); })
     .then(function (data) {
-      if (searchLoading) searchLoading.classList.add('is-hidden');
-
       var regions = data.regions || [];
       regionAreasMap = {};
       regionHierarchy = {};
@@ -1737,24 +1775,49 @@
         });
       });
 
-      var totalCards = 0;
-      regions.forEach(function (region) {
-        var block = document.createElement('div');
-        block.className = 'spot-block';
-        block.setAttribute('data-region', region.id);
-        var title = document.createElement('h3');
-        title.className = 'spot-block-title';
-        title.textContent = region.name;
-        block.appendChild(title);
-        var grid = document.createElement('div');
-        grid.className = 'spot-grid';
-        sortShopsByScore(region.shops || []).forEach(function (shop) {
-          grid.appendChild(buildShopCard(shop, region.id));
-          totalCards++;
-        });
-        block.appendChild(grid);
-        searchResultsContainer.appendChild(block);
+      // ソート済みデータを保存（オンデマンドレンダリング用）
+      regionsData = regions.map(function (region) {
+        return { id: region.id, name: region.name, shops: sortShopsByScore(region.shops || []) };
       });
+      totalShopCount = allShops.length;
+
+      // shopIdMap を構築（?shop= パラメータ用）
+      allShops.forEach(function (entry) {
+        var shop = entry.shop;
+        var na = typeof normalizeShopArea === 'function'
+          ? normalizeShopArea(shop, entry.regionId)
+          : { key: shop.area || '', display: shop.area || '' };
+        var shopData = {
+          name: shop.name || '',
+          area: na.display,
+          description: shop.description || '',
+          hoursNote: shop.hoursNote || '',
+          tags: shop.tags || [],
+          access: shop.access || '',
+          address: shop.address || shop['住所'] || '',
+          priceNote: shop.priceNote || '',
+          reservation: shop.reservation || '',
+          features: shop.features || [],
+          payment: shop.payment || '',
+          closedDay: shop.closedDay || shop['定休日'] || '',
+          url: shop.url || '',
+          phone: shop.phone || '',
+          officialUrl: shop.officialUrl || shop.official || '',
+          rating: shop.rating,
+          ratingCount: shop.ratingCount,
+          _lat: shop._lat,
+          _lng: shop._lng
+        };
+        var id = computeShopId(shopData.name, shopData.area);
+        shopIdMap[id] = shopData;
+      });
+
+      // 初期エリア指定がある場合のみそのリージョンをレンダリング
+      if (initialArea) {
+        renderRegion(initialArea);
+        if (searchLoading) searchLoading.classList.add('is-hidden');
+      }
+      // 初期エリア指定がない場合は静的サマリーを表示したまま（カードは描画しない）
 
       document.querySelectorAll('#search-area-buttons > .search-area-btn').forEach(function (btn) {
         btn.classList.toggle('is-active', btn.getAttribute('data-filter') === filterState.regionId);
