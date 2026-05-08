@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ページが見つかりません｜SHISHA CAFE JAPAN</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1a140e">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@600&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/styles.css?v=20260508a">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">SHISHA CAFE <span>JAPAN</span></a>
+      <nav class="nav">
+        <a href="/">トップ</a>
+        <a href="/search">店舗検索</a>
+        <a href="/ranking">ランキング</a>
+        <a href="/guide">シーシャガイド</a>
+        <a href="/sommelier">フレーバー相談</a>
+      </nav>
+      <button class="menu-btn" aria-label="メニュー" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <main class="notfound-main">
+    <div class="container">
+      <p class="notfound-code">404</p>
+      <h1 class="notfound-title">ページが見つかりません</h1>
+      <p class="notfound-desc">お探しのページは移動または削除された可能性があります。</p>
+      <div class="notfound-links">
+        <a href="/search" class="notfound-btn">店舗を検索する</a>
+        <a href="/" class="notfound-link">トップページへ戻る</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-logo">SHISHA CAFE JAPAN</p>
+      <p class="footer-nav"><a href="/">トップ</a>｜<a href="/search">店舗検索</a>｜<a href="/ranking">ランキング</a>｜<a href="/guide">シーシャガイド</a>｜<a href="/sommelier">フレーバー相談</a>｜<a href="/terms">利用規約</a>｜<a href="/privacy">プライバシーポリシー</a></p>
+      <p class="footer-copy">掲載情報は参考です。詳細は各店舗へお問い合わせください。</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var menuBtn = document.querySelector('.menu-btn');
+      var nav = document.querySelector('.nav');
+      if (menuBtn && nav) {
+        menuBtn.addEventListener('click', function () {
+          var expanded = menuBtn.getAttribute('aria-expanded') !== 'true';
+          menuBtn.setAttribute('aria-expanded', expanded);
+          nav.classList.toggle('is-open', expanded);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
