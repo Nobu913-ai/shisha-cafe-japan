@@ -99,6 +99,7 @@
   var shopModalBackdrop = shopModal ? shopModal.querySelector('.shop-modal-backdrop') : null;
   var shopModalClose = shopModal ? shopModal.querySelector('.shop-modal-close') : null;
 
+  window.openShopModal = openShopModal;
   function openShopModal(shop) {
     if (!shopModal || !shop) return;
     var area = shop.area || '';

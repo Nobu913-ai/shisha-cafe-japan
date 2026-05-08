@@ -4198,3 +4198,211 @@ a.search-nearby-sort-item:hover {
   }
 }
 
+/* ========== エリアページ ========== */
+.area-main {
+  padding: 100px 0 60px;
+}
+
+.area-breadcrumb {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.area-breadcrumb a {
+  color: var(--text-muted);
+}
+
+.area-breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.area-header {
+  margin-bottom: 28px;
+}
+
+.area-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.area-lead {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.area-intro {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+.area-overview {
+  font-size: 0.92rem;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.area-guide {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.area-sub-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.area-sub-link {
+  font-size: 0.88rem;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: background 0.15s;
+}
+
+.area-sub-link:hover {
+  background: var(--accent-glow);
+  text-decoration: none;
+}
+
+.area-shop-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.area-search-link {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.area-search-link-btn {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  border-radius: 8px;
+  padding: 10px 24px;
+  transition: background 0.15s;
+}
+
+.area-search-link-btn:hover {
+  background: var(--accent-glow);
+  text-decoration: none;
+}
+
+.area-nearby {
+  margin-bottom: 32px;
+}
+
+.area-nearby-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+.area-nearby-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.area-nearby-link {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.area-nearby-link:hover {
+  border-color: var(--accent-soft);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.area-site-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+}
+
+.area-site-nav a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.area-site-nav a:hover {
+  color: var(--accent);
+}
+
+.area-links-section {
+  padding: 32px 0 0;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+.area-links-heading {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.area-links-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.area-links-grid a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.area-links-grid a:hover {
+  border-color: var(--accent-soft);
+  color: var(--text);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .area-main {
+    padding: 80px 0 40px;
+  }
+
+  .area-title {
+    font-size: 1.35rem;
+  }
+
+  .area-intro {
+    padding: 16px 18px;
+  }
+
+  .area-shop-list .spot-card {
+    padding: 16px;
+  }
+}
+
