@@ -1088,6 +1088,39 @@ a:hover {
   line-height: 1.3;
 }
 
+.shop-modal-photo-wrap {
+  margin: 0 0 18px;
+  animation: fadeInPhoto 0.18s ease-out;
+}
+
+@keyframes fadeInPhoto {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shop-modal-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.shop-modal-photo-attribution {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.shop-modal-photo-attribution a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .shop-modal-dl {
   display: grid;
   grid-template-columns: 100px 1fr;

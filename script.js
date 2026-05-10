@@ -3,6 +3,90 @@
 
   var TAG_ORDER = ['Wi-Fi', '電源', 'クレカ可', '個室', '駐車場', 'テラス席', 'アルコール', 'フリードリンク', 'ノンニコチン', 'シェア台'];
 
+  var PHOTO_API_ENDPOINT = 'https://shisha-cafe-place-photo.shisha-cafe.workers.dev';
+  var photoCache = {};
+  var currentModalPhotoRequestId = 0;
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  function buildAttributionEl(attributions) {
+    var wrap = document.createElement('div');
+    wrap.className = 'shop-modal-photo-attribution';
+    var parts = ['写真: Google Maps'];
+    var names = [];
+    if (attributions && attributions.length) {
+      for (var i = 0; i < attributions.length; i++) {
+        var a = attributions[i];
+        if (!a.displayName) continue;
+        if (a.uri) {
+          var link = document.createElement('a');
+          link.href = a.uri;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.textContent = a.displayName;
+          names.push(link.outerHTML);
+        } else {
+          names.push(escapeHtml(a.displayName));
+        }
+      }
+    }
+    if (names.length) {
+      parts.push('撮影: ' + names.join(', '));
+    }
+    wrap.innerHTML = parts.join(' / ');
+    return wrap;
+  }
+
+  function fetchShopPhoto(placeId, callback) {
+    if (!placeId || !PHOTO_API_ENDPOINT) {
+      callback(null);
+      return;
+    }
+    if (photoCache[placeId]) {
+      callback(photoCache[placeId]);
+      return;
+    }
+    var requestId = ++currentModalPhotoRequestId;
+    fetch(PHOTO_API_ENDPOINT + '?placeId=' + encodeURIComponent(placeId) + '&width=640')
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (requestId !== currentModalPhotoRequestId) return;
+        if (data && data.photoUrl) {
+          photoCache[placeId] = data;
+          callback(data);
+        } else {
+          callback(null);
+        }
+      })
+      .catch(function () {
+        if (requestId !== currentModalPhotoRequestId) return;
+        callback(null);
+      });
+  }
+
+  function insertShopPhoto(photo) {
+    var existing = document.getElementById('shop-modal-photo-wrap');
+    if (existing) existing.remove();
+    if (!photo || !photo.photoUrl) return;
+    var aiDesc = shopModal ? shopModal.querySelector('.shop-modal-ai-desc') : null;
+    if (!aiDesc) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'shop-modal-photo-wrap';
+    wrap.id = 'shop-modal-photo-wrap';
+    var img = document.createElement('img');
+    img.className = 'shop-modal-photo';
+    img.src = photo.photoUrl;
+    img.alt = '店舗写真';
+    img.loading = 'lazy';
+    wrap.appendChild(img);
+    wrap.appendChild(buildAttributionEl(photo.attributions));
+    aiDesc.parentNode.insertBefore(wrap, aiDesc);
+  }
+
   function shopScore(shop) {
     var r = Number(shop.rating) || 0;
     var c = Number(shop.ratingCount) || 0;
@@ -216,6 +300,14 @@
 
     var linksEl = document.getElementById('shop-modal-links');
     linksEl.innerHTML = '';
+
+    var existingPhoto = document.getElementById('shop-modal-photo-wrap');
+    if (existingPhoto) existingPhoto.remove();
+    if (shop.placeId) {
+      fetchShopPhoto(shop.placeId, function (photo) {
+        insertShopPhoto(photo);
+      });
+    }
 
     shopModal.classList.add('is-open');
     shopModal.setAttribute('aria-hidden', 'false');

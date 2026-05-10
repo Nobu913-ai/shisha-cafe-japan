@@ -1,0 +1,11 @@
+name = "shisha-cafe-place-photo"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# 本番デプロイ時に設定:
+# wrangler secret put GOOGLE_PLACES_API_KEY
+
+# カスタムドメイン (Cloudflare DNS設定後に有効化):
+# [routes]
+# pattern = "api.shisha-cafe.jp/place-photo*"
+# zone_name = "shisha-cafe.jp"
