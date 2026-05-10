@@ -55,7 +55,7 @@
       });
   }
 
-  function insertShopPhoto(photo, modalEl) {
+  function insertShopPhoto(photo, modalEl, shopName) {
     var existing = document.getElementById('shop-modal-photo-wrap');
     if (existing) existing.remove();
     if (!photo || !photo.photoUrl) return;
@@ -67,7 +67,7 @@
     var img = document.createElement('img');
     img.className = 'shop-modal-photo';
     img.src = photo.photoUrl;
-    img.alt = '店舗写真';
+    img.alt = shopName ? shopName + 'の店舗写真' : '店舗写真';
     img.loading = 'lazy';
     wrap.appendChild(img);
     wrap.appendChild(buildAttributionEl(photo.attributions));
@@ -1520,7 +1520,7 @@
     if (existingPhoto) existingPhoto.remove();
     if (shop.placeId) {
       fetchShopPhoto(shop.placeId, function (photo) {
-        insertShopPhoto(photo, shopModal);
+        insertShopPhoto(photo, shopModal, shop.name);
       });
     }
 

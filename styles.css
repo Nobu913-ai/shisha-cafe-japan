@@ -1115,12 +1115,6 @@ a:hover {
   line-height: 1.4;
 }
 
-.shop-modal-photo-attribution a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 .shop-modal-dl {
   display: grid;
   grid-template-columns: 100px 1fr;
