@@ -41,3 +41,9 @@ images/README.md
 
 # Local-only files
 qr_local.png
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example

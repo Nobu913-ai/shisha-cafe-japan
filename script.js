@@ -16,28 +16,17 @@
   function buildAttributionEl(attributions) {
     var wrap = document.createElement('div');
     wrap.className = 'shop-modal-photo-attribution';
-    var parts = ['写真: Google Maps'];
+    var text = '写真: Google Maps';
     var names = [];
     if (attributions && attributions.length) {
       for (var i = 0; i < attributions.length; i++) {
-        var a = attributions[i];
-        if (!a.displayName) continue;
-        if (a.uri) {
-          var link = document.createElement('a');
-          link.href = a.uri;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.textContent = a.displayName;
-          names.push(link.outerHTML);
-        } else {
-          names.push(escapeHtml(a.displayName));
-        }
+        if (attributions[i].displayName) names.push(attributions[i].displayName);
       }
     }
     if (names.length) {
-      parts.push('撮影: ' + names.join(', '));
+      text += ' / 撮影: ' + names.join(', ');
     }
-    wrap.innerHTML = parts.join(' / ');
+    wrap.textContent = text;
     return wrap;
   }
 
