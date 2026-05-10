@@ -34,20 +34,21 @@ scripts/            — 運用スクリプト（gitignored）
 
 詳細は `docs/update-flow.md` を参照。
 
-### 月次更新（既存店舗）
+### 月次フルフロー（既存更新 + 新規追加）
 ```
-python3 scripts/refetch_places.py --dry-run          # 確認
-python3 scripts/refetch_places.py --apply --update-tags  # 実行
-python3 scripts/gen_top_shops.py                     # ランキング再生成
-```
+# ステップ1: 既存店舗の月次更新
+python3 scripts/refetch_places.py --dry-run               # 確認
+python3 scripts/refetch_places.py --apply --update-tags    # 実行
 
-### 新規店舗追加
-```
-python3 scripts/add_new_shops.py --dry-run                   # 確認
+# ステップ2: 新規店舗の追加
+python3 scripts/add_new_shops.py --dry-run                 # 確認
 python3 scripts/add_new_shops.py --apply --skip-descriptions  # 追加
-python3 scripts/enrich_new_shops.py --apply                   # 口コミ+タグ
-python3 scripts/generate_descriptions_ai.py --empty-only      # 紹介文
-python3 scripts/gen_top_shops.py                              # ランキング再生成
+python3 scripts/enrich_new_shops.py --apply                # 口コミ+タグ
+python3 scripts/generate_descriptions_ai.py --empty-only   # 紹介文
+
+# ステップ3: 出力の再生成
+python3 scripts/gen_top_shops.py                           # ランキング再生成
+python3 scripts/gen_area_pages.py                          # エリアLP再生成
 ```
 
 ### 注意事項
