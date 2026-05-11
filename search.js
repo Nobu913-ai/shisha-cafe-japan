@@ -1656,6 +1656,7 @@
 
   function applyNearbyFilters() {
     if (!filterState.nearbyMode || filterState.userLat == null) return;
+    if (searchLoading) searchLoading.classList.add('is-hidden');
     var keyword = (filterState.keyword || '').trim().toLowerCase();
     var featureTags = filterState.featureTags || [];
 
