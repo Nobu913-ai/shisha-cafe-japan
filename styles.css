@@ -407,6 +407,25 @@ a:hover {
   color: var(--text-muted);
 }
 
+.areas-sublinks {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.areas-sublinks a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--text-muted);
+  padding-bottom: 1px;
+}
+
+.areas-sublinks a:hover {
+  border-bottom-style: solid;
+}
+
 /* Flavor snippet */
 .flavor-snippet-example-label {
   text-align: center;
