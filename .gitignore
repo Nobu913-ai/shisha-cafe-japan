@@ -42,6 +42,13 @@ images/README.md
 # Local-only files
 qr_local.png
 
+# X (Twitter) アカウント運用専用アセット（サイト本体では未使用）
+luna_img/
+images/x_header.png
+images/x_icon.png
+images/icon-x-400.png
+images/icon-x-400.svg
+
 # wrangler files
 .wrangler
 .dev.vars*
