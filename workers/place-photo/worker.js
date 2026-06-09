@@ -1,6 +1,22 @@
 const ALLOWED_ORIGINS = ['https://shisha-cafe.jp', 'https://www.shisha-cafe.jp'];
 const ALLOWED_WIDTHS = [320, 640, 800];
 const MAX_PLACE_ID_LENGTH = 200;
+const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+
+const rateLimitMap = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.start > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(ip, { start: now, count: 1 });
+    return false;
+  }
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) return true;
+  return false;
+}
 
 export default {
   async fetch(request, env) {
@@ -14,6 +30,20 @@ export default {
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders });
+    }
+
+    const referer = request.headers.get('Referer') || '';
+    const allowed =
+      ALLOWED_ORIGINS.includes(origin) ||
+      ALLOWED_ORIGINS.some(function (o) { return referer.startsWith(o + '/'); });
+
+    if (!allowed) {
+      return jsonResponse({ error: 'Forbidden' }, 403, corsHeaders);
+    }
+
+    const clientIp = request.headers.get('CF-Connecting-IP') || '';
+    if (clientIp && isRateLimited(clientIp)) {
+      return jsonResponse({ error: 'Too many requests' }, 429, corsHeaders);
     }
 
     if (request.method !== 'GET') {
