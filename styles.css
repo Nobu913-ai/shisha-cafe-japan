@@ -767,6 +767,11 @@ a:hover {
   color: var(--text-muted);
   margin: 0;
 }
+.search-static-updated {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 12px 0 0;
+}
 
 .search-results-container .spot-block-title {
   margin-top: 0;
@@ -4280,6 +4285,12 @@ a.search-nearby-sort-item:hover {
   line-height: 1.6;
 }
 
+.area-updated {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 8px 0 0;
+}
+
 .area-intro {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
@@ -4299,6 +4310,14 @@ a.search-nearby-sort-item:hover {
   font-size: 0.88rem;
   color: var(--text-muted);
   margin: 0;
+}
+
+.area-scope-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
 }
 
 .area-sub-links {
@@ -4327,6 +4346,41 @@ a.search-nearby-sort-item:hover {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
   margin-bottom: 28px;
+}
+
+.area-more-shops {
+  margin-bottom: 28px;
+}
+
+.area-more-shops-summary {
+  display: block;
+  text-align: center;
+  font-size: 0.92rem;
+  color: var(--accent);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  cursor: pointer;
+  list-style: none;
+  transition: background 0.15s;
+  margin-bottom: 24px;
+}
+
+.area-more-shops-summary::-webkit-details-marker {
+  display: none;
+}
+
+.area-more-shops-summary::after {
+  content: ' ▼';
+  font-size: 0.8em;
+}
+
+.area-more-shops[open] > .area-more-shops-summary::after {
+  content: ' ▲';
+}
+
+.area-more-shops-summary:hover {
+  background: var(--accent-glow);
 }
 
 .area-search-link {
