@@ -809,6 +809,32 @@ a:hover {
   gap: 24px;
 }
 
+.spot-block-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: -8px 0 20px;
+  line-height: 1.6;
+}
+
+.search-more-btn {
+  display: block;
+  width: 100%;
+  margin: 28px 0 0;
+  padding: 14px 20px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.search-more-btn:hover {
+  background: var(--accent-glow);
+}
+
 .spot-card {
   background: var(--bg-card);
   border: 1px solid var(--border);

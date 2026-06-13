@@ -151,6 +151,16 @@
   var shopIdMap = {};
   var totalShopCount = 0;
 
+  // ── 段階レンダリング設定 ──
+  var REGION_PAGE_SIZE = 50;     // エリア選択時、1ページあたりのカード数
+  var TOP_PICKS_INITIAL = 20;    // 初期表示（おすすめ順）の件数
+  var TOP_PICKS_STEP = 20;       // 「もっと見る」1回あたりの追加件数
+  // regionId -> { block, grid, moreBtn, rendered, full } のレンダリング状態
+  var regionRenderState = {};
+  // おすすめ順（全国スコア降順）の flat リストと描画済み件数
+  var topPicksList = [];
+  var topPicksRendered = 0;
+
   /** Haversine 公式: 2点間の距離 (km) */
   function haversineDistance(lat1, lng1, lat2, lng2) {
     var R = 6371;
@@ -619,32 +629,161 @@
     }, 720);
   }
 
-  function renderRegion(regionId) {
-    if (renderedRegions[regionId]) return;
-    var region = null;
+  function getRegionData(regionId) {
     for (var i = 0; i < regionsData.length; i++) {
-      if (regionsData[i].id === regionId) { region = regionsData[i]; break; }
+      if (regionsData[i].id === regionId) return regionsData[i];
     }
+    return null;
+  }
+
+  /** リージョンの「もっと見る」ボタンの表示/件数を更新する。 */
+  function updateRegionMoreBtn(regionId) {
+    var st = regionRenderState[regionId];
+    if (!st || !st.moreBtn) return;
+    var region = getRegionData(regionId);
+    var remaining = region ? region.shops.length - st.rendered : 0;
+    if (remaining <= 0) {
+      st.moreBtn.style.display = 'none';
+    } else {
+      st.moreBtn.style.display = '';
+      var next = Math.min(REGION_PAGE_SIZE, remaining);
+      st.moreBtn.textContent = 'さらに表示（残り' + remaining.toLocaleString() + '件・次の' + next + '件）';
+    }
+  }
+
+  /** 指定リージョンのカードを最大 count 件まで追加描画する（chunk 描画）。 */
+  function renderRegion(regionId, count) {
+    var region = getRegionData(regionId);
     if (!region) return;
-    var block = document.createElement('div');
-    block.className = 'spot-block';
-    block.setAttribute('data-region', region.id);
-    var title = document.createElement('h3');
-    title.className = 'spot-block-title';
-    title.textContent = region.name;
-    block.appendChild(title);
-    var grid = document.createElement('div');
-    grid.className = 'spot-grid';
-    region.shops.forEach(function (shop) {
-      grid.appendChild(buildShopCard(shop, region.id));
-    });
-    block.appendChild(grid);
-    searchResultsContainer.appendChild(block);
-    renderedRegions[regionId] = true;
+    if (typeof count !== 'number') count = REGION_PAGE_SIZE;
+
+    var st = regionRenderState[regionId];
+    if (!st) {
+      var block = document.createElement('div');
+      block.className = 'spot-block';
+      block.setAttribute('data-region', region.id);
+      var title = document.createElement('h3');
+      title.className = 'spot-block-title';
+      title.textContent = region.name;
+      block.appendChild(title);
+      var grid = document.createElement('div');
+      grid.className = 'spot-grid';
+      block.appendChild(grid);
+
+      var moreBtn = document.createElement('button');
+      moreBtn.type = 'button';
+      moreBtn.className = 'search-more-btn';
+      moreBtn.style.display = 'none';
+      moreBtn.addEventListener('click', function () {
+        renderRegion(region.id, REGION_PAGE_SIZE);
+      });
+      block.appendChild(moreBtn);
+
+      searchResultsContainer.appendChild(block);
+      st = regionRenderState[regionId] = { block: block, grid: grid, moreBtn: moreBtn, rendered: 0, full: false };
+      renderedRegions[regionId] = true;
+    }
+
+    var shops = region.shops;
+    var end = Math.min(st.rendered + count, shops.length);
+    var frag = document.createDocumentFragment();
+    for (var i = st.rendered; i < end; i++) {
+      frag.appendChild(buildShopCard(shops[i], region.id));
+    }
+    st.grid.appendChild(frag);
+    st.rendered = end;
+    if (st.rendered >= shops.length) st.full = true;
+    updateRegionMoreBtn(regionId);
+  }
+
+  /** 最初の1ページだけを保証する（未描画なら描画、描画済みなら何もしない）。 */
+  function ensureRegionRendered(regionId) {
+    if (!regionRenderState[regionId]) renderRegion(regionId, REGION_PAGE_SIZE);
+  }
+
+  /** 指定リージョンの残り全カードを描画する（絞り込み適用前に全件をDOMへ）。 */
+  function renderRegionFull(regionId) {
+    var region = getRegionData(regionId);
+    if (!region) return;
+    renderRegion(regionId, region.shops.length);
   }
 
   function renderAllRegions() {
-    regionsData.forEach(function (r) { renderRegion(r.id); });
+    regionsData.forEach(function (r) { renderRegionFull(r.id); });
+  }
+
+  // ── 初期表示：おすすめ順（全国スコア降順）の上位を表示 ──
+
+  function ensureTopPicksList() {
+    if (topPicksList.length || !allShops.length) return;
+    topPicksList = allShops.slice().sort(function (a, b) {
+      return shopScore(b.shop) - shopScore(a.shop);
+    });
+  }
+
+  /** 初期おすすめブロックを生成し、TOP_PICKS_INITIAL 件を描画する。 */
+  function renderTopPicks() {
+    ensureTopPicksList();
+    var block = document.getElementById('search-top-picks');
+    if (!block) {
+      block = document.createElement('div');
+      block.className = 'spot-block';
+      block.id = 'search-top-picks';
+      block.setAttribute('data-region', '__top__');
+      var title = document.createElement('h3');
+      title.className = 'spot-block-title';
+      title.textContent = '注目のシーシャカフェ';
+      block.appendChild(title);
+      var note = document.createElement('p');
+      note.className = 'spot-block-note';
+      note.textContent = 'Googleの評価・口コミ数をもとにした注目店を表示しています。地域・駅・設備で絞り込むと全店から探せます。';
+      block.appendChild(note);
+      var grid = document.createElement('div');
+      grid.className = 'spot-grid';
+      grid.id = 'search-top-picks-grid';
+      block.appendChild(grid);
+      var moreBtn = document.createElement('button');
+      moreBtn.type = 'button';
+      moreBtn.className = 'search-more-btn';
+      moreBtn.id = 'search-top-picks-more';
+      moreBtn.addEventListener('click', function () {
+        renderTopPicksChunk(TOP_PICKS_STEP);
+      });
+      block.appendChild(moreBtn);
+      searchResultsContainer.appendChild(block);
+      topPicksRendered = 0;
+      renderTopPicksChunk(TOP_PICKS_INITIAL);
+    }
+    block.classList.remove('spot-block--hidden');
+    block.style.display = '';
+  }
+
+  function renderTopPicksChunk(count) {
+    var grid = document.getElementById('search-top-picks-grid');
+    if (!grid) return;
+    var end = Math.min(topPicksRendered + count, topPicksList.length);
+    var frag = document.createDocumentFragment();
+    for (var i = topPicksRendered; i < end; i++) {
+      frag.appendChild(buildShopCard(topPicksList[i].shop, topPicksList[i].regionId));
+    }
+    grid.appendChild(frag);
+    topPicksRendered = end;
+    var moreBtn = document.getElementById('search-top-picks-more');
+    if (moreBtn) {
+      var remaining = topPicksList.length - topPicksRendered;
+      if (remaining <= 0) {
+        moreBtn.style.display = 'none';
+      } else {
+        moreBtn.style.display = '';
+        var next = Math.min(TOP_PICKS_STEP, remaining);
+        moreBtn.textContent = 'さらに表示（次の' + next + '件）';
+      }
+    }
+  }
+
+  function hideTopPicks() {
+    var block = document.getElementById('search-top-picks');
+    if (block) block.style.display = 'none';
   }
 
   function applyFilters(options) {
@@ -663,22 +802,36 @@
     var hasActiveFilter = regionId || keyword || featureTags.length || filterState.station;
     if (!hasActiveFilter && totalShopCount > 0) {
       searchResultsContainer.querySelectorAll('.spot-block').forEach(function (block) {
+        if (block.id === 'search-top-picks') return;
         block.classList.add('spot-block--hidden');
       });
       if (searchLoading) searchLoading.classList.remove('is-hidden');
+      renderTopPicks();
       updateSearchResultToolbar(totalShopCount);
       updateJumpToFeaturesLink();
       return;
     }
 
+    hideTopPicks();
     if (searchLoading) searchLoading.classList.add('is-hidden');
+    // エリア内の絞り込み（サブエリア・キーワード・設備・駅）があるときは
+    // 全件を DOM に展開してから判定する。単なるエリア選択のみなら chunk 描画。
+    var regionSubFilter = !!(subArea || keyword || featureTags.length || filterState.station);
     if (regionId) {
-      renderRegion(regionId);
+      if (regionSubFilter) {
+        renderRegionFull(regionId);
+      } else {
+        ensureRegionRendered(regionId);
+      }
     } else if (keyword || featureTags.length || filterState.station) {
       renderAllRegions();
     }
 
+    // chunk 描画中（エリア選択のみ・絞り込みなし）は件数をエリア総数で表示する
+    var chunkedRegionOnly = regionId && !regionSubFilter;
+
     searchResultsContainer.querySelectorAll('.spot-block').forEach(function (block) {
+      if (block.id === 'search-top-picks') return;
       var blockRegion = block.getAttribute('data-region');
       var blockVisible = !regionId || blockRegion === regionId;
       if (!blockVisible) {
@@ -714,6 +867,12 @@
         }
       });
     });
+
+    // chunk 描画中はエリア総数を表示（実際の DOM は一部のみ）
+    if (chunkedRegionOnly) {
+      var rd = getRegionData(regionId);
+      if (rd) visibleCount = rd.shops.length;
+    }
 
     updateSearchResultToolbar(visibleCount);
     updateJumpToFeaturesLink();
@@ -1896,12 +2055,12 @@
         shopIdMap[id] = shopData;
       });
 
-      // 初期エリア指定がある場合のみそのリージョンをレンダリング
+      // 初期エリア指定がある場合のみそのリージョンをレンダリング（chunk 描画）
       if (initialArea) {
-        renderRegion(initialArea);
+        ensureRegionRendered(initialArea);
         if (searchLoading) searchLoading.classList.add('is-hidden');
       }
-      // 初期エリア指定がない場合は静的サマリーを表示したまま（カードは描画しない）
+      // 初期エリア指定がない場合は applyFilters でおすすめ順を表示する
 
       document.querySelectorAll('#search-area-buttons > .search-area-btn').forEach(function (btn) {
         btn.classList.toggle('is-active', btn.getAttribute('data-filter') === filterState.regionId);
