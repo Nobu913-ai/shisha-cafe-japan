@@ -1806,6 +1806,15 @@
     var recs = getRecommendations();
     hideChoices();
 
+    // GA4: 診断完了をキーイベント候補として送信
+    if (typeof gtag === "function") {
+      gtag("event", "sommelier_complete", {
+        taste: (state.answers && state.answers.taste) || "",
+        category: (state.answers && state.answers.category) || "",
+        top_recipe: (recs && recs[0] && recs[0].name) || ""
+      });
+    }
+
     var sep = document.createElement("div");
     sep.className = "sommelier-result-sep";
     messagesEl.appendChild(sep);

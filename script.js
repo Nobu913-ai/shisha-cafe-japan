@@ -214,6 +214,9 @@
         phoneLink.href = 'tel:' + phone.replace(/\D/g, '');
         phoneLink.className = 'shop-modal-phone-link';
         phoneLink.textContent = phone;
+        phoneLink.addEventListener('click', function () {
+          if (typeof gtag === 'function') gtag('event', 'shop_phone_click', { shop_name: name, shop_area: area });
+        });
         phoneDd.appendChild(phoneLink);
       } else {
         phoneDd.textContent = '—';
@@ -281,6 +284,9 @@
         officialLink.rel = 'noopener noreferrer';
         officialLink.className = 'shop-modal-inline-link';
         officialLink.textContent = '公式サイトを開く ↗';
+        officialLink.addEventListener('click', function () {
+          if (typeof gtag === 'function') gtag('event', 'shop_official_click', { shop_name: name, shop_area: area });
+        });
         officialEl.appendChild(officialLink);
       } else {
         officialEl.textContent = '—';
