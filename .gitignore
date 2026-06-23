@@ -54,3 +54,6 @@ images/icon-x-400.svg
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Analytics 自動取得用の venv（scripts/fetch_analytics.py）
+.venv-analytics/
