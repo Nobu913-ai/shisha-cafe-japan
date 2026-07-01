@@ -3,6 +3,9 @@ const ALLOWED_WIDTHS = [320, 640, 800];
 const MAX_PLACE_ID_LENGTH = 200;
 const RATE_LIMIT_MAX = 30;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+// 写真レスポンスのキャッシュ期間。Google Places API（Place Details + Place Photo）の
+// 呼び出し回数=課金を削減するのが目的。同一店の再表示でAPIを叩かない。
+const PHOTO_CACHE_TTL_SEC = 7 * 24 * 60 * 60; // 7日
 
 const rateLimitMap = new Map();
 
@@ -19,7 +22,7 @@ function isRateLimited(ip) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') || '';
     const corsHeaders = {
       'Access-Control-Allow-Origin': ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
@@ -69,6 +72,28 @@ export default {
       return jsonResponse({ error: 'Server configuration error' }, 500, corsHeaders);
     }
 
+    // キャッシュ確認（オリジン非依存キー。ヒット時は Google API を叩かない）
+    // ペイロードのみキャッシュし、CORS ヘッダは配信時にリクエスト毎で付与する。
+    const cache = caches.default;
+    const cacheKey = new Request(
+      'https://place-photo-cache.internal/photo?placeId=' +
+        encodeURIComponent(placeId) +
+        '&width=' +
+        width,
+      { method: 'GET' }
+    );
+    const cachedRes = await cache.match(cacheKey);
+    if (cachedRes) {
+      const cachedBody = await cachedRes.text();
+      return new Response(cachedBody, {
+        status: 200,
+        headers: Object.assign({}, corsHeaders, {
+          'Content-Type': 'application/json',
+          'X-Cache': 'HIT',
+        }),
+      });
+    }
+
     try {
       const detailsUrl =
         'https://places.googleapis.com/v1/places/' +
@@ -112,15 +137,31 @@ export default {
         };
       });
 
-      return jsonResponse(
-        {
-          photoUrl: photoData.photoUri || null,
-          attributions: attributions,
-          source: 'Google Maps',
-        },
-        200,
-        corsHeaders
-      );
+      const payload = {
+        photoUrl: photoData.photoUri || null,
+        attributions: attributions,
+        source: 'Google Maps',
+      };
+      const payloadJson = JSON.stringify(payload);
+
+      // 写真が取れた場合のみキャッシュ（null/失敗はキャッシュせず次回リトライさせる）。
+      if (payload.photoUrl) {
+        const toCache = new Response(payloadJson, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=' + PHOTO_CACHE_TTL_SEC,
+          },
+        });
+        ctx.waitUntil(cache.put(cacheKey, toCache));
+      }
+
+      return new Response(payloadJson, {
+        status: 200,
+        headers: Object.assign({}, corsHeaders, {
+          'Content-Type': 'application/json',
+          'X-Cache': 'MISS',
+        }),
+      });
     } catch (e) {
       return jsonResponse(null, 200, corsHeaders);
     }

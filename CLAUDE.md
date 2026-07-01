@@ -43,8 +43,10 @@ scripts/            — 運用スクリプト（gitignored）
 ### 月次フルフロー（既存更新 + 新規追加）
 ```
 # ステップ1: 既存店舗の月次更新
-python3 scripts/refetch_places.py --dry-run               # 確認
-python3 scripts/refetch_places.py --apply --update-tags    # 実行
+# ※ Place Details は reviews無しの軽量マスク（Enterprise SKU）で取得しコストを抑制。
+#   --update-tags を付けると reviews を取得し最上位 E+A SKU になるので月次では付けない（タグは手動）。
+python3 scripts/refetch_places.py --dry-run --limit 50     # 差分傾向のサンプル確認（全件dry-runは課金2倍のため一部で十分）
+python3 scripts/refetch_places.py --apply                  # 実行（applyも差分表示+バックアップあり）
 
 # ステップ2: 新規店舗の追加
 python3 scripts/add_new_shops.py --dry-run                 # 確認
