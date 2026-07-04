@@ -5,6 +5,8 @@ const RATE_LIMIT_MAX = 30;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 // 写真レスポンスのキャッシュ期間。Google Places API（Place Details + Place Photo）の
 // 呼び出し回数=課金を削減するのが目的。同一店の再表示でAPIを叩かない。
+// ※ Cache API は *.workers.dev ドメインでは動作しない（ゾーン単位のため）ので Workers KV を使用。
+//   バインディング: PHOTO_CACHE（wrangler.toml の kv_namespaces で設定）
 const PHOTO_CACHE_TTL_SEC = 7 * 24 * 60 * 60; // 7日
 
 const rateLimitMap = new Map();
@@ -72,26 +74,22 @@ export default {
       return jsonResponse({ error: 'Server configuration error' }, 500, corsHeaders);
     }
 
-    // キャッシュ確認（オリジン非依存キー。ヒット時は Google API を叩かない）
+    // KVキャッシュ確認（ヒット時は Google API を叩かない）
     // ペイロードのみキャッシュし、CORS ヘッダは配信時にリクエスト毎で付与する。
-    const cache = caches.default;
-    const cacheKey = new Request(
-      'https://place-photo-cache.internal/photo?placeId=' +
-        encodeURIComponent(placeId) +
-        '&width=' +
-        width,
-      { method: 'GET' }
-    );
-    const cachedRes = await cache.match(cacheKey);
-    if (cachedRes) {
-      const cachedBody = await cachedRes.text();
-      return new Response(cachedBody, {
-        status: 200,
-        headers: Object.assign({}, corsHeaders, {
-          'Content-Type': 'application/json',
-          'X-Cache': 'HIT',
-        }),
-      });
+    // バインディング未設定でも動作は継続（キャッシュなしで従来通り）。
+    const kv = env.PHOTO_CACHE;
+    const cacheKey = 'photo:' + placeId + ':' + width;
+    if (kv) {
+      const cached = await kv.get(cacheKey);
+      if (cached !== null) {
+        return new Response(cached, {
+          status: 200,
+          headers: Object.assign({}, corsHeaders, {
+            'Content-Type': 'application/json',
+            'X-Cache': 'HIT',
+          }),
+        });
+      }
     }
 
     try {
@@ -145,14 +143,10 @@ export default {
       const payloadJson = JSON.stringify(payload);
 
       // 写真が取れた場合のみキャッシュ（null/失敗はキャッシュせず次回リトライさせる）。
-      if (payload.photoUrl) {
-        const toCache = new Response(payloadJson, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=' + PHOTO_CACHE_TTL_SEC,
-          },
-        });
-        ctx.waitUntil(cache.put(cacheKey, toCache));
+      if (payload.photoUrl && kv) {
+        ctx.waitUntil(
+          kv.put(cacheKey, payloadJson, { expirationTtl: PHOTO_CACHE_TTL_SEC })
+        );
       }
 
       return new Response(payloadJson, {

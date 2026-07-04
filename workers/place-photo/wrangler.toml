@@ -2,6 +2,12 @@ name = "shisha-cafe-place-photo"
 main = "worker.js"
 compatibility_date = "2024-01-01"
 
+# 写真レスポンスのKVキャッシュ（Places API課金削減・7日TTL）
+# Cache API は workers.dev で動作しないため KV を使用
+[[kv_namespaces]]
+binding = "PHOTO_CACHE"
+id = "2a42512620d2400da28a39d9f240497a"
+
 # 本番デプロイ時に設定:
 # wrangler secret put GOOGLE_PLACES_API_KEY
 
