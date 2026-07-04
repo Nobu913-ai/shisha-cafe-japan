@@ -4587,3 +4587,182 @@ a.search-nearby-sort-item:hover {
   color: var(--text-muted);
 }
 
+
+/* ===== ガイド Phase1 改善（2026-07-05）: レベルバッジ・目的別入口・折りたたみ・CTA ===== */
+
+/* アンカー着地位置: モバイルのsticky目次の実高さ（JSが --guide-sticky-overlap に計測）に連動。
+   PCは変数未設定のため従来の90pxフォールバック */
+.guide-section,
+.guide-tips {
+  scroll-margin-top: calc(var(--guide-sticky-overlap, 80px) + 10px);
+}
+
+/* 目次のレベルグループ見出し */
+.guide-toc-group {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  padding: 12px 0 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  list-style: none;
+}
+.guide-toc-list .guide-toc-group:first-child { padding-top: 0; }
+/* モバイル: 目次はチップ(flex-wrap)表示のため、グループ見出しは行全体を占有して改行させる */
+@media (max-width: 900px) {
+  .guide-toc-group {
+    flex-basis: 100%;
+    border-bottom: none;
+    padding: 10px 0 0;
+    margin-bottom: 0;
+  }
+  .guide-toc-list .guide-toc-group:first-child { padding-top: 2px; }
+}
+
+/* 目的別入口（ヒーロー直下） */
+.guide-entry {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 20px 0 8px;
+}
+.guide-entry-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.guide-entry-btn:hover {
+  border-color: var(--accent-soft);
+  background: var(--bg-elevated);
+}
+.guide-entry-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.guide-entry-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+@media (max-width: 700px) {
+  .guide-entry { grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+  .guide-entry-btn { padding: 12px 40px 12px 14px; }
+}
+
+/* ジャンプであることを示す手がかり（キャプション＋矢印） */
+.guide-entry-caption {
+  margin: 20px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.guide-entry-caption + .guide-entry { margin-top: 10px; }
+.guide-entry-btn {
+  position: relative;
+  padding-right: 40px;
+}
+.guide-entry-btn::after {
+  content: "↓";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.guide-entry-btn:hover::after { transform: translate(0, -40%); }
+
+/* セクションのレベルバッジ */
+.guide-level {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin: -6px 0 14px;
+}
+.guide-level--basic {
+  color: #7dd3a0;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+}
+.guide-level--mid {
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-soft);
+}
+.guide-level--deep {
+  color: #b8a1e3;
+  background: rgba(147, 112, 219, 0.1);
+  border: 1px solid rgba(147, 112, 219, 0.35);
+}
+
+/* 玄人セクションの折りたたみ */
+.guide-collapse {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  padding: 0;
+  margin-top: 4px;
+}
+.guide-collapse-summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--accent);
+  user-select: none;
+}
+.guide-collapse-summary::-webkit-details-marker { display: none; }
+.guide-collapse-summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.15s;
+}
+.guide-collapse[open] > .guide-collapse-summary::before { transform: rotate(90deg); }
+.guide-collapse[open] > .guide-collapse-summary { border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.guide-collapse > *:not(summary) { margin-left: 14px; margin-right: 14px; }
+.guide-collapse > *:last-child { margin-bottom: 14px; }
+
+/* フレーバー章のフレーバー相談CTA */
+.guide-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius);
+}
+.guide-cta-text {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.guide-cta-btn {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--bg-deep);
+  background: var(--accent);
+  border-radius: 8px;
+  padding: 10px 20px;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.guide-cta-btn:hover { background: var(--accent-soft); }
+@media (max-width: 700px) {
+  .guide-cta { flex-direction: column; align-items: stretch; text-align: center; }
+}
