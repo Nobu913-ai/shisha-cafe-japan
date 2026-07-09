@@ -1283,6 +1283,111 @@
       tags: { taste: ["sweet"], category: ["dessert", "drink"], mint: ["none"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
     },
 
+    // ── クリームソーダ・チョコミント・モヒート系 ──
+    {
+      name: "オレンジクリームソーダ",
+      simple: [
+        { flavor: "オレンジソーダ", ratio: 50 },
+        { flavor: "クリーム（バニラ）", ratio: 30 },
+        { flavor: "グミキャンディ", ratio: 20 }
+      ],
+      items: [
+        { flavor: "オレンジソーダ", brand: "Tangiers Noir", leaf: "dark", ratio: 50 },
+        { flavor: "オレンジクリーム", brand: "Fumari", leaf: "blonde", ratio: 30 },
+        { flavor: "ホワイトグミベア", brand: "Fumari", leaf: "blonde", ratio: 20 }
+      ],
+      desc: "Tangiers Noirのオレンジソーダの弾ける柑橘に、Fumariのオレンジクリームとホワイトグミベアのまろやかな甘さを重ねた。ミント無しで最後まで甘やかに楽しめる、喫茶店のクリームソーダのようなブレンド。",
+      tags: { taste: ["sweet", "both"], category: ["citrus", "drink"], mint: ["none"], exp: ["sometimes", "regular", "expert"], dark: ["dark_main", "dark_accent", "either"], mood: ["classic", "relax"] }
+    },
+    {
+      name: "ハニースウィートミント",
+      simple: [
+        { flavor: "ミント", ratio: 60 },
+        { flavor: "ハニー", ratio: 40 }
+      ],
+      items: [
+        { flavor: "スウィートミント", brand: "Fumari", leaf: "blonde", ratio: 60 },
+        { flavor: "ハニー", brand: "Al Fakher", leaf: "blonde", ratio: 40 }
+      ],
+      desc: "Fumariのスウィートミントのまろやかな清涼感に、アルファーヘルのハニーで蜂蜜の丸い甘さを足した、甘め寄りのミントブレンド。全ブロンド構成で軽やか、ミントは好きだけど甘さも欲しい方に。",
+      tags: { taste: ["sweet", "both"], category: ["mint"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "チョコミントフロスト",
+      simple: [
+        { flavor: "チョコレート", ratio: 40 },
+        { flavor: "ミント", ratio: 35 },
+        { flavor: "アイス（清涼感）", ratio: 25 }
+      ],
+      items: [
+        { flavor: "ダークチョコレート", brand: "Darkside", leaf: "dark", ratio: 40 },
+        { flavor: "スウィートミント", brand: "Fumari", leaf: "blonde", ratio: 35 },
+        { flavor: "トゥワイスザアイス", brand: "Trifecta", leaf: "blonde", ratio: 25 }
+      ],
+      desc: "Darksideのビターなダークチョコレートに、Fumariのスウィートミントとトゥワイスザアイスの氷冷感を合わせたチョコミントブレンド。チョコミントアイスが好きなら間違いない、甘さと清涼感の王道バランス。",
+      tags: { taste: ["sweet", "both", "fresh"], category: ["dessert", "mint"], mint: ["light", "strong"], exp: ["sometimes", "regular"], dark: ["dark_accent", "either"], mood: ["refresh", "relax"] }
+    },
+    {
+      name: "レモンシャーベット",
+      simple: [
+        { flavor: "レモン", ratio: 45 },
+        { flavor: "グミキャンディ", ratio: 30 },
+        { flavor: "ミント", ratio: 25 }
+      ],
+      items: [
+        { flavor: "レモン", brand: "Al Fakher", leaf: "blonde", ratio: 45 },
+        { flavor: "ホワイトグミベア", brand: "Fumari", leaf: "blonde", ratio: 30 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 25 }
+      ],
+      desc: "アルファーヘルのレモンの酸味に、Fumariのホワイトグミベアのキャンディのような甘さを重ね、ミントで冷たく仕上げたシャーベット風ブレンド。全ブロンド構成で軽やか、食後のお口直しのようなさっぱりデザート。",
+      tags: { taste: ["fresh", "both"], category: ["dessert", "citrus"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh", "relax"] }
+    },
+    {
+      name: "チョコミントセッション",
+      simple: [
+        { flavor: "チョコレート", ratio: 50 },
+        { flavor: "ミント", ratio: 30 },
+        { flavor: "ペパーミント", ratio: 20 }
+      ],
+      items: [
+        { flavor: "ダークチョコレート", brand: "Darkside", leaf: "dark", ratio: 50 },
+        { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 30 },
+        { flavor: "スーパーミント", brand: "Darkside", leaf: "dark", ratio: 20 }
+      ],
+      desc: "Darksideのダークチョコレートを軸に、Tangiers Noirのケインミントとスーパーミントで極冷に締めた全ダーク構成のチョコミント。濃厚な甘苦さと鋭い清涼感が交互に来る、玄人向けのセッションブレンド。",
+      tags: { taste: ["both", "fresh"], category: ["dessert", "mint"], mint: ["strong"], exp: ["regular", "expert"], dark: ["dark_main", "dark_accent"], mood: ["refresh", "adventure"] }
+    },
+    {
+      name: "ダークモヒート",
+      simple: [
+        { flavor: "ライム・レモン", ratio: 40 },
+        { flavor: "ミント", ratio: 35 },
+        { flavor: "ペパーミント", ratio: 25 }
+      ],
+      items: [
+        { flavor: "レモンブラスト", brand: "Darkside", leaf: "dark", ratio: 40 },
+        { flavor: "スーパーミント", brand: "Darkside", leaf: "dark", ratio: 35 },
+        { flavor: "ケインミント", brand: "Tangiers Noir", leaf: "dark", ratio: 25 }
+      ],
+      desc: "Darksideのレモンブラストの鮮烈な柑橘にスーパーミントとケインミントを重ねた、モヒートを思わせる全ダークのカクテルブレンド。ニコチン感も清涼感もしっかり、バーの夜に似合う本格派。",
+      tags: { taste: ["fresh"], category: ["drink", "citrus", "mint"], mint: ["strong"], exp: ["regular", "expert"], dark: ["dark_main", "dark_accent"], mood: ["refresh", "adventure"] }
+    },
+    {
+      name: "ジンジャーレモンティー",
+      simple: [
+        { flavor: "チャイ（ジンジャー・シナモン）", ratio: 40 },
+        { flavor: "レモン", ratio: 35 },
+        { flavor: "ミント", ratio: 25 }
+      ],
+      items: [
+        { flavor: "スパイスドチャイ", brand: "Fumari", leaf: "blonde", ratio: 40 },
+        { flavor: "レモン", brand: "Al Fakher", leaf: "blonde", ratio: 35 },
+        { flavor: "ミント", brand: "Al Fakher", leaf: "blonde", ratio: 25 }
+      ],
+      desc: "Fumariのスパイスドチャイのジンジャーとシナモンの温かみに、アルファーヘルのレモンの酸味とミントの爽やかさを合わせた。ホットジンジャーレモネードのような、体に沁みるスパイスブレンド。全ブロンドで軽やか。",
+      tags: { taste: ["fresh", "both"], category: ["spice", "drink"], mint: ["light", "strong"], exp: ["sometimes", "regular"], dark: ["blonde_only", "either"], mood: ["refresh", "adventure"] }
+    },
+
     // ── ノンニコチン ──
     {
       name: "ノンニコチン フルーツミックス",
@@ -1370,6 +1475,69 @@
       ],
       desc: "ノンニコチンで楽しむアップルパイ風ブレンド。りんごの甘酸っぱさとシナモンの温かみ、ハニーの自然な甘さが調和した、秋冬やゆったりしたリラックスタイムにぴったりの一杯。",
       tags: { taste: ["sweet"], category: ["fruit", "spice", "dessert"], mint: ["none"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ノンニコチン ハニーミント",
+      nonNicotine: true,
+      items: [
+        { flavor: "ミント", leaf: "herbal", ratio: 55 },
+        { flavor: "ハニー", leaf: "herbal", ratio: 45 }
+      ],
+      desc: "ノンニコチンで楽しむ甘め寄りのミントブレンド。ミントの清涼感にハニーの丸い甘さを重ねた、はちみつミントティーのような優しい味わい。ミントは好きだけど甘さも欲しい方におすすめ。",
+      tags: { taste: ["sweet", "both"], category: ["mint"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ノンニコチン オレンジハニー",
+      nonNicotine: true,
+      items: [
+        { flavor: "オレンジ", leaf: "herbal", ratio: 60 },
+        { flavor: "ハニー", leaf: "herbal", ratio: 25 },
+        { flavor: "バニラ", leaf: "herbal", ratio: 15 }
+      ],
+      desc: "ノンニコチンで楽しむ甘めの柑橘ブレンド。オレンジのジューシーな酸味にハニーとバニラのまろやかな甘さを合わせた、はちみつオレンジティーのような味わい。ミント無しで最後まで甘やか。",
+      tags: { taste: ["sweet"], category: ["citrus"], mint: ["none"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "classic"] }
+    },
+    {
+      name: "ノンニコチン チョコミント",
+      nonNicotine: true,
+      items: [
+        { flavor: "チョコレート", leaf: "herbal", ratio: 60 },
+        { flavor: "ミント", leaf: "herbal", ratio: 40 }
+      ],
+      desc: "ノンニコチンで楽しむ王道チョコミント。チョコレートの濃厚な甘さとミントの清涼感のシンプルな組み合わせで、チョコミントアイスが好きな方ならまず外さないデザートブレンド。",
+      tags: { taste: ["sweet", "both"], category: ["dessert", "mint"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], mood: ["relax", "refresh"] }
+    },
+    {
+      name: "ノンニコチン レモンヨーグルト",
+      nonNicotine: true,
+      items: [
+        { flavor: "ヨーグルト", leaf: "herbal", ratio: 45 },
+        { flavor: "レモン", leaf: "herbal", ratio: 35 },
+        { flavor: "ミント", leaf: "herbal", ratio: 20 }
+      ],
+      desc: "ノンニコチンで楽しむさっぱり系デザートブレンド。ヨーグルトのまろやかな酸味にレモンの爽やかさとミントの清涼感を添えた、フローズンヨーグルトのような軽やかな味わい。食後にもおすすめ。",
+      tags: { taste: ["fresh", "both"], category: ["dessert", "citrus"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], mood: ["refresh", "relax"] }
+    },
+    {
+      name: "ノンニコチン ジンジャーレモングラス",
+      nonNicotine: true,
+      items: [
+        { flavor: "レモングラス", leaf: "herbal", ratio: 40 },
+        { flavor: "ジンジャー", leaf: "herbal", ratio: 35 },
+        { flavor: "ミント", leaf: "herbal", ratio: 25 }
+      ],
+      desc: "ノンニコチンで楽しむハーブティーのようなスパイスブレンド。レモングラスの爽やかな香りにジンジャーの温かみ、ミントの清涼感を重ねた、体に沁みるすっきりした味わい。フルーツ系に飽きた方の気分転換にも。",
+      tags: { taste: ["fresh", "both"], category: ["spice"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], mood: ["refresh", "adventure"] }
+    },
+    {
+      name: "ノンニコチン モヒート",
+      nonNicotine: true,
+      items: [
+        { flavor: "ライム", leaf: "herbal", ratio: 50 },
+        { flavor: "ミント", leaf: "herbal", ratio: 50 }
+      ],
+      desc: "ノンニコチンで楽しむモヒート風ブレンド。ライムの酸味とミントの清涼感だけのシンプルな構成で、ノンアルコールカクテルのようにすっきり爽快。お酒と合わせても、さっぱりリフレッシュしたい日にも。",
+      tags: { taste: ["fresh"], category: ["drink", "mint", "citrus"], mint: ["light", "strong"], exp: ["beginner", "sometimes", "regular"], mood: ["refresh"] }
     }
   ];
 
