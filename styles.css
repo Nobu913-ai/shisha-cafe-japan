@@ -4677,6 +4677,9 @@ a.search-nearby-sort-item:hover {
   font-size: 1rem;
 }
 .guide-entry-btn:hover::after { transform: translate(0, -40%); }
+/* 他ページへの誘導に使う場合は → にする（ガイド本文の章内ジャンプ ↓ と区別する） */
+.guide-entry--nav .guide-entry-btn::after { content: "→"; }
+.guide-entry--nav .guide-entry-btn:hover::after { transform: translate(3px, -50%); }
 
 /* セクションのレベルバッジ */
 .guide-level {

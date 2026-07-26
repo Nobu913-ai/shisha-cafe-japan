@@ -199,7 +199,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@600&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/styles.css?v=20260613a">
+  <link rel="stylesheet" href="/styles.css?v=20260726a">
 </head>
 <body class="area-page">
   <header class="header">
@@ -337,10 +337,20 @@
         </div>
       </nav>
 
-      <nav class="area-site-nav">
-        <a href="/ranking">エリア別ランキング</a>
-        <a href="/sommelier">フレーバー相談</a>
-        <a href="/guide">初めての方はシーシャガイドへ</a>
+      <p class="guide-entry-caption">次に読むなら</p>
+      <nav class="guide-entry guide-entry--nav" aria-label="関連ページ">
+        <a href="/guide" class="guide-entry-btn">
+          <span class="guide-entry-label">📖 シーシャガイド</span>
+          <span class="guide-entry-desc">初めての方へ。吸い方・フレーバーの選び方・料金の目安を解説しています</span>
+        </a>
+        <a href="/sommelier" class="guide-entry-btn">
+          <span class="guide-entry-label">🍹 フレーバー相談</span>
+          <span class="guide-entry-desc">好みを答えるだけで、合うフレーバーのミックスをAIが提案します</span>
+        </a>
+        <a href="/ranking" class="guide-entry-btn">
+          <span class="guide-entry-label">⭐ エリア別ランキング</span>
+          <span class="guide-entry-desc">Google評価と口コミ数でエリアごとの人気店TOP10を掲載</span>
+        </a>
       </nav>
     </div>
   </main>
@@ -385,6 +395,6 @@
   </div>
 
   <script src="/script.js?v=20260620a"></script>
-  <script src="/area-page.js?v=20260613a"></script>
+  <script src="/area-page.js?v=20260726a"></script>
 </body>
 </html>

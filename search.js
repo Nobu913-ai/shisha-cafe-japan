@@ -213,6 +213,22 @@
     { label: 'サービス', tags: ['アルコール', 'フリードリンク', 'ノンニコチン', 'シェア台', '24時間営業', '深夜営業'] }
   ];
 
+  /** URLの `feature` パラメータ（カンマ区切り）から既知の設備タグだけを取り出す。
+   *  例: /search?feature=ノンニコチン → ['ノンニコチン']
+   *  機能別LP（/feature/<slug>）から絞り込み済みの状態で遷移させるために使う。 */
+  function getInitialFeatures() {
+    var params = new URLSearchParams(window.location.search);
+    var raw = params.get('feature');
+    if (!raw) return [];
+    var valid = [];
+    FEATURE_CATEGORIES.forEach(function (category) {
+      valid = valid.concat(category.tags);
+    });
+    return raw.split(',')
+      .map(function (t) { return t.trim(); })
+      .filter(function (t) { return t && valid.indexOf(t) !== -1; });
+  }
+
   function buildShopCard(shop, regionIdForArea) {
     var na = typeof normalizeShopArea === 'function'
       ? normalizeShopArea(shop, regionIdForArea || '')
@@ -2015,6 +2031,11 @@
         filterState.regionName = names[initialArea] || '';
       }
 
+      var initialFeatures = getInitialFeatures();
+      if (initialFeatures.length) {
+        filterState.featureTags = initialFeatures;
+      }
+
       // 全店舗を flat 配列に格納（現在地検索で使用）
       allShops = [];
       regions.forEach(function (region) {
@@ -2088,6 +2109,9 @@
         b.classList.toggle('is-active', b.getAttribute('data-subarea') === filterState.subArea);
       });
       renderStationButtons('');
+      document.querySelectorAll('.search-feature-tag').forEach(function (btn) {
+        btn.classList.toggle('is-active', filterState.featureTags.indexOf(btn.getAttribute('data-tag')) !== -1);
+      });
       applyFilters({ scrollToResults: false });
 
       // URLの `shop` パラメータがあれば対応する店舗モーダルを自動で開く
