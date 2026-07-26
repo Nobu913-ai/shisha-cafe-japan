@@ -8,6 +8,7 @@
 - **`.env` は絶対に上書き(`>`)しない** — 必ず追記(`>>`)で操作。過去にGoogleマップAPIキー消失事故あり
 - **APIコストに注意** — Place Details API、Anthropic API は課金あり。全件再処理は避け、必要な分だけ処理する
 - **既存UXを壊す変更は避ける** — SEO目的でも中間ページ等の動線悪化は不採用（Tier2エリアページ見送りの前例あり）
+- **JS/CSSを変更したら参照側HTMLの `?v=` も必ず更新する** — 漏れると本番の返訪ユーザーだけ古い挙動になる（ローカル初回アクセスでは再現しないため気づけない）。生成ページ（`area/*` `feature/*`）の版はジェネレータ内のテンプレートに書かれているので、HTMLを直接直さずジェネレータを直して再生成する
 - **店舗数の表記は「全国1,400店舗以上」で統一** — サイト・Note記事・X・スキルすべて横断。実数（現在約1,435店）に近いキリの良い下限＋「以上」。具体的な件数は出さない
 
 ## プロジェクト構成
@@ -20,6 +21,8 @@ script.js           — トップページ等の共通スクリプト
 styles.css          — 全ページ共通スタイル
 index.html          — トップページ
 search.html         — 店舗検索ページ
+area/               — エリア別LP 18ページ（gen_area_pages.py が生成）
+feature/            — 機能・条件別LP（gen_feature_pages.py が生成。現在 non-nicotine の1枚）
 docs/               — 内部ドキュメント（gitignored）
   roadmap.md        — ロードマップ・タスク管理
   update-flow.md    — 更新フロー仕様（運用手順・フィールドルール・スクリプト一覧）
@@ -60,7 +63,8 @@ python3 scripts/infer_features_from_text.py --backup       # クレカ可/アル
 
 # ステップ3: 出力の再生成
 python3 scripts/gen_top_shops.py                           # ランキング再生成
-python3 scripts/gen_area_pages.py                          # エリアLP再生成
+python3 scripts/gen_area_pages.py                          # エリアLP18ページ再生成
+python3 scripts/gen_feature_pages.py                       # 機能別LP再生成（店舗数・エリア件数が変わるため必須）
 ```
 
 ### 注意事項
@@ -88,6 +92,7 @@ python3 scripts/gen_area_pages.py                          # エリアLP再生�
 | `enrich_station_access.py` | 最寄り駅+徒歩時間 | Google Routes |
 | `gen_top_shops.py` | ランキング再生成 + HTML埋め込み | なし |
 | `gen_area_pages.py` | エリアLP（18ページ）+ sitemap 再生成 | なし |
+| `gen_feature_pages.py` | 機能・条件別LP（`FEATURE_DEFS` に定義）+ sitemap 再生成。`gen_area_pages.py` の関数を import して再利用 | なし |
 | `fetch_analytics.py` | GA4+Search Console データ自動取得（手動ZIP不要。専用venv `.venv-analytics/` で実行） | なし（無料API） |
 
 ## ランキング事前レンダリング
@@ -98,3 +103,17 @@ python3 scripts/gen_area_pages.py                          # エリアLP再生�
 - `script.js` にはタブ切り替えとモーダル表示のイベントハンドラのみ残し、HTMLの二重管理を回避
 
 **pre-commit hook** により、`shops.json` をコミットすると `gen_top_shops.py` が自動実行される。
+
+## 機能・条件別LP（`/feature/`・2026-07-26 新設）
+
+エリアLP（`/area/` = 場所軸）に対し、`/feature/` は **設備・条件軸**の着地ページ。`scripts/gen_feature_pages.py` の `FEATURE_DEFS` にスラッグ・解説文・FAQを定義して生成する。
+
+**構成**: H1＋解説 → 「エリアから探す」（`.area-grid` のリンク5枚。トップページと同一UI）→ よくある質問（FAQPage JSON-LD）→ 関連リンクカード
+
+- **店舗一覧は載せない**。地域での絞り込みは `/search?area=<rid>&feature=<tag>` に受け渡す（全件載せると 462店で約1.3MB になるため）
+- 構造化データは `BreadcrumbList` と `FAQPage` のみ。**店舗一覧を出さないので `CollectionPage` は付けない**（可視コンテンツと一致させるGoogleの要件）
+- CSSは `area-*` / `guide-*` の既存クラスを流用。追加したのは `.guide-entry--nav`（他ページ誘導の矢印を→にする）だけ
+
+**背景**: GSC分析（2026-07-26）で「シーシャ ニコチンなし」等のノンニコチン系クエリ10変種すべてが**掲載順位1.0でクリック0**と判明。着地が `/area/osaka` で、全国区の情報質問に対する意図ミスマッチを起こしていた。詳細は `docs/seo-plan.md` の Tier 2.5。
+
+**検索ページの `?feature=`**: `search.js` の `getInitialFeatures()` が `FEATURE_CATEGORIES` の許可リストで検証して適用する。`?area=` との併用可。絞り込み条件のURL共有にも使える。
