@@ -5,7 +5,7 @@
   <script>if(location.pathname.endsWith('.html')){location.replace(location.pathname.replace(/\.html$/,'').replace(/\/index$/,'/')+location.search+location.hash)}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>シーシャフレーバー診断｜好みに合うミックスをAIが提案｜SHISHA CAFE JAPAN</title>
-  <meta name="description" content="シーシャのフレーバー選びに迷ったら。気分・好み・経験レベルに合わせて、AIがおすすめのミックス（組み合わせ）を提案します。80種以上のレシピから最適な一杯を。">
+  <meta name="description" content="シーシャのフレーバー選びに迷ったら。気分・好み・経験レベルに合わせて、AIがおすすめのミックス（組み合わせ）を提案します。90種以上のレシピから最適な一杯を。">
   <link rel="canonical" href="https://shisha-cafe.jp/sommelier">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#1a140e">
@@ -14,7 +14,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SHISHA CAFE JAPAN">
   <meta property="og:title" content="シーシャフレーバー診断｜好みに合うミックスをAIが提案">
-  <meta property="og:description" content="シーシャのフレーバー選びに迷ったら。気分・好みに合わせてAIがおすすめミックスを提案。80種以上のレシピから最適な一杯を。">
+  <meta property="og:description" content="シーシャのフレーバー選びに迷ったら。気分・好みに合わせてAIがおすすめミックスを提案。90種以上のレシピから最適な一杯を。">
   <meta property="og:url" content="https://shisha-cafe.jp/sommelier">
   <meta property="og:image" content="https://shisha-cafe.jp/images/ogp-sommelier.png">
   <meta property="og:image:width" content="1200">
@@ -39,6 +39,48 @@
   }
   </script>
 
+  <!-- JSON-LD: FAQPage（可視の「よくある質問」と一致させる） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "提案された組み合わせは、どの店舗でも注文できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "フレーバーの取り扱いは店舗ごとに異なるため、まったく同じ銘柄がないこともあります。その場合は「ストロベリー6割、ミント4割くらいで」のように系統と配合比を伝えると、店舗にある銘柄で近い組み合わせを作ってもらえます。簡易版の表示はそのまま伝えられる言い方にしてあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "シーシャが初めてでも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "使えます。質問の中で「シーシャ経験」を聞いているため、初めての方には吸いやすく甘さのわかりやすい組み合わせが優先して提案されます。ミントの強さも「なし」から選べます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ノンニコチンの組み合わせも提案されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "されます。「葉の種類」の質問でノンニコチンを選ぶと、ニコチンを含まないフレーバーで構成した組み合わせだけが提案されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "フレーバーの系統にはどんな違いがありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "フルーツ系は甘く親しみやすい定番、ミント・ハーブ系は清涼感が中心、デザート系はバニラやチョコなどの甘い香り、シトラス・フローラル系は酸味や花の香り、スパイス系はシナモンなどの複雑な香り、ドリンク系は紅茶やコーラなどの再現系です。"
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-THHM4DJRV2"></script>
   <script>
@@ -54,7 +96,7 @@
   <link rel="preload" href="sommelier.js?v=20260620a" as="script">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@600&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=20260508a">
+  <link rel="stylesheet" href="styles.css?v=20260802a">
 </head>
 <body>
   <header class="header">
@@ -117,6 +159,74 @@
           </div>
         </div>
       </div>
+
+      <!-- 診断はJSで動くため、JSを実行しないクローラー・AI検索には上のチャットUIが空に見える。
+           ここから下は静的HTMLで、診断の中身とレシピの考え方を可視化している。 -->
+      <section class="section guide-section" id="about">
+        <h2 class="section-title section-title--icon"><span class="section-title-icon">🍃</span>フレーバー相談でわかること</h2>
+        <p class="area-scope-note">6つの質問に答えると、<strong>90種類以上のレシピ</strong>の中からあなたの好みに合う組み合わせを提案します。提案は「店舗でそのまま伝えられる簡易版」と「銘柄・葉の種類・配合比まで指定した詳細版」の2段階で表示されます。</p>
+
+        <div class="flavor-cards">
+          <article class="flavor-card flavor-card--wide flavor-card--with-icon">
+            <span class="flavor-card-icon flavor-card-icon--large">❓</span>
+            <h3 class="flavor-card-title">6つの質問</h3>
+            <ul class="flavor-list">
+              <li><strong>味の方向性</strong>：甘さ重視か、爽快さ重視か、その両方か</li>
+              <li><strong>フレーバー系統</strong>：フルーツ／ミント・ハーブ／デザート／シトラス・フローラル／スパイス／ドリンクの6系統から選択</li>
+              <li><strong>ミントの強さ</strong>：なし／控えめ／しっかり</li>
+              <li><strong>シーシャ経験</strong>：初めて／たまに吸う／よく吸う／かなり詳しい</li>
+              <li><strong>葉の種類</strong>：ノンニコチン希望／ブロンドのみ／ダークをアクセントに／ダーク中心</li>
+              <li><strong>その日の気分</strong>：リラックス／リフレッシュ／新しい体験／定番</li>
+            </ul>
+          </article>
+
+          <article class="flavor-card flavor-card--wide flavor-card--with-icon">
+            <span class="flavor-card-icon flavor-card-icon--large">🧾</span>
+            <h3 class="flavor-card-title">提案の例</h3>
+            <ul class="flavor-list">
+              <li><strong>ストロベリーミント</strong>（ストロベリー60％＋ミント40％）— 濃厚なイチゴの甘さに強清涼ミントが効く、初体験でも満足度の高い鉄板の組み合わせ。</li>
+              <li><strong>トロピカルパラダイス</strong>（マンゴー50％＋パッションフルーツ30％＋ミント20％）— 南国感のあるブレンド。ミントで後味をすっきりまとめています。</li>
+            </ul>
+            <p class="guide-note">実際の提案では、上記の簡易版に加えて銘柄（Fumari・Darkside など）と葉の種類まで表示されます。店舗の取り扱い銘柄によっては同じ銘柄がないこともあるため、系統と配合比を伝えて近いもので組んでもらうのがおすすめです。</p>
+          </article>
+        </div>
+
+        <h2 class="section-title section-title--icon"><span class="section-title-icon">❓</span>よくある質問</h2>
+        <div class="guide-faq">
+          <details class="guide-faq-item">
+            <summary class="guide-faq-q">提案された組み合わせは、どの店舗でも注文できますか？</summary>
+            <p class="guide-faq-a">フレーバーの取り扱いは店舗ごとに異なるため、まったく同じ銘柄がないこともあります。その場合は「ストロベリー6割、ミント4割くらいで」のように<strong>系統と配合比</strong>を伝えると、店舗にある銘柄で近い組み合わせを作ってもらえます。簡易版の表示はそのまま伝えられる言い方にしてあります。</p>
+          </details>
+          <details class="guide-faq-item">
+            <summary class="guide-faq-q">シーシャが初めてでも使えますか？</summary>
+            <p class="guide-faq-a">使えます。質問の中で「シーシャ経験」を聞いているため、初めての方には吸いやすく甘さのわかりやすい組み合わせが優先して提案されます。ミントの強さも「なし」から選べます。</p>
+          </details>
+          <details class="guide-faq-item">
+            <summary class="guide-faq-q">ノンニコチンの組み合わせも提案されますか？</summary>
+            <p class="guide-faq-a">されます。「葉の種類」の質問でノンニコチンを選ぶと、ニコチンを含まないフレーバーで構成した組み合わせだけが提案されます。ノンニコチンを取り扱う店舗は<a href="/feature/non-nicotine">ノンニコチンのシーシャ</a>から探せます。</p>
+          </details>
+          <details class="guide-faq-item">
+            <summary class="guide-faq-q">フレーバーの系統にはどんな違いがありますか？</summary>
+            <p class="guide-faq-a">フルーツ系は甘く親しみやすい定番、ミント・ハーブ系は清涼感が中心、デザート系はバニラやチョコなどの甘い香り、シトラス・フローラル系は酸味や花の香り、スパイス系はシナモンなどの複雑な香り、ドリンク系は紅茶やコーラなどの再現系です。それぞれの詳しい解説は<a href="/guide#flavor-categories">シーシャガイドのフレーバーの種類</a>にまとめています。</p>
+          </details>
+        </div>
+
+        <p class="guide-entry-caption">次に読むなら</p>
+        <nav class="guide-entry guide-entry--nav">
+          <a class="guide-entry-btn" href="/guide">
+            <span class="guide-entry-label">シーシャガイド</span>
+            <span class="guide-entry-desc">吸い方・料金・フレーバー・銘柄の基礎をまとめて解説</span>
+          </a>
+          <a class="guide-entry-btn" href="/search">
+            <span class="guide-entry-label">店舗を探す</span>
+            <span class="guide-entry-desc">エリア・最寄駅・設備から全国のシーシャカフェを検索</span>
+          </a>
+          <a class="guide-entry-btn" href="/feature/non-nicotine">
+            <span class="guide-entry-label">ノンニコチンのシーシャ</span>
+            <span class="guide-entry-desc">ニコチンなしで吸えるお店と、フレーバーの選び方</span>
+          </a>
+        </nav>
+      </section>
     </div>
   </main>
 
@@ -128,6 +238,9 @@
     </div>
   </footer>
 
+  <!-- FAQのアコーディオン（1つ開いたら他を閉じる）。document委譲＋要素ガード済みで、
+       .area-shop-card を持たないこのページでは FAQ の処理だけが動く。 -->
+  <script src="area-page.js?v=20260802a" defer></script>
   <script src="sommelier.js?v=20260620a" defer></script>
   <script>
     (function () {
