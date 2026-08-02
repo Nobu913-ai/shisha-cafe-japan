@@ -304,6 +304,13 @@
       });
     }
 
+    // 店舗詳細の開封を計測（search.js 側と同じイベント名で揃える）。
+    // トップ・ランキングのモーダルは replaceState を呼ばないため、
+    // これまで開封が一切計測されていなかった。
+    if (typeof gtag === 'function') {
+      gtag('event', 'shop_modal_open', { shop_name: shop.name, shop_area: shop.area });
+    }
+
     shopModal.classList.add('is-open');
     shopModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';

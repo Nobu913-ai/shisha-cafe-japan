@@ -1709,6 +1709,13 @@
     hideShareFeedback();
     updateUrlShopParam(computeShopId(shop.name, shop.area));
 
+    // 店舗詳細の開封を計測する。以前は updateUrlShopParam の replaceState を
+    // GA4拡張計測が page_view として拾っていたが、その設定を切った（2026-08-02）ため
+    // 明示的なイベントで数える。PVと違いモーダル開封だけを正確に数えられる。
+    if (typeof gtag === 'function') {
+      gtag('event', 'shop_modal_open', { shop_name: shop.name, shop_area: shop.area });
+    }
+
     shopModal.classList.add('is-open');
     shopModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
