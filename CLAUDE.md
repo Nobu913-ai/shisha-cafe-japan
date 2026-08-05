@@ -50,7 +50,7 @@ scripts/            — 運用スクリプト（gitignored）
 # ステップ1: 既存店舗の月次更新
 # ※ Place Details は reviews無しの軽量マスク（Enterprise SKU）で取得しコストを抑制。
 #   --update-tags を付けると reviews を取得し最上位 E+A SKU になるので月次では付けない（タグは手動）。
-python3 scripts/refetch_places.py --dry-run --limit 50     # 差分傾向のサンプル確認（全件dry-runは課金2倍のため一部で十分）
+python3 scripts/refetch_places.py --dry-run --limit 10     # 差分傾向のサンプル確認（dry-runも課金対象。傾向確認は10件で足りる）
 python3 scripts/refetch_places.py --apply                  # 実行（applyも差分表示+バックアップあり）
 
 # ステップ2: 新規店舗の追加
