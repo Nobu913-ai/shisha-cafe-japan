@@ -2769,6 +2769,16 @@ a.search-nearby-sort-item:hover {
     padding: 0 24px;
   }
 
+  /* .guide-layout は align-items:flex-start のため、縦積みになるとカラムが
+     stretch されず「中身の最大幅」まで広がる。中に画面幅より横長の要素があると
+     ページ全体が横にはみ出し、目次からのアンカー移動も横ずれする。
+     サイドバー側は width:100% で対処済みだったが、コンテンツ側が漏れていた。
+     幅を固定しておけば、はみ出しは各要素の overflow 側で吸収される。 */
+  .guide-content {
+    width: 100%;
+    max-width: 100%;
+  }
+
   /* スクロールしても目次が画面上部に留まる（固定ヘッダー直下） */
   .guide-sidebar {
     width: 100%;
