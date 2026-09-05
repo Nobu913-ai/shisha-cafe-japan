@@ -25,6 +25,7 @@ index.html          — トップページ
 search.html         — 店舗検索ページ
 area/               — エリア別LP 18ページ（gen_area_pages.py が生成）
 feature/            — 機能・条件別LP（gen_feature_pages.py が生成。現在 non-nicotine の1枚）
+shop/               — 店舗個別ページ（gen_shop_pages.py が生成。URLは `/shop/<CID>`）
 docs/               — 内部ドキュメント（gitignored）
   roadmap.md        — ロードマップ・タスク管理
   update-flow.md    — 更新フロー仕様（運用手順・フィールドルール・スクリプト一覧）
@@ -67,6 +68,7 @@ python3 scripts/infer_features_from_text.py --backup       # クレカ可/アル
 python3 scripts/gen_top_shops.py                           # ランキング再生成
 python3 scripts/gen_area_pages.py                          # エリアLP18ページ再生成
 python3 scripts/gen_feature_pages.py                       # 機能別LP再生成（店舗数・エリア件数が変わるため必須）
+python3 scripts/gen_shop_pages.py                          # 店舗個別ページ再生成（口コミ数の変動で対象が増えるため必須）
 ```
 
 ### 注意事項
@@ -74,6 +76,7 @@ python3 scripts/gen_feature_pages.py                       # 機能別LP再生�
 - **データファイルのキーはCID**（Google Maps URL の `cid=` パラメータ）。位置ベースのインデックスは使わない
 - **`add_new_shops.py` は `--skip-descriptions` を付ける** — 付けないと全店舗の紹介文を再生成してしまう
 - **紹介文・AIタグ（5種）は Anthropic API を使わず Claude が手動作成** — `generate_descriptions_ai.py` / `enrich_tags_ai.py` は実行しない（API課金回避）。口コミ・`data/description_contexts.json` を読んで執筆・判定し shops.json に直接記入
+- **`gen_shop_pages.py` の対象は「口コミ500件以上＋データ充足」+ 需要実証済みの18店** — 閾値を割った店のページは**消さない**（一度公開したURLを消すと404になり順位も失うため）。削除するのは shops.json から消えた店だけ
 - **新規店はルールタグを取りこぼす** — `add_new_shops`/`enrich_new_shops` は `infer_*` を呼ばない。新規追加後は `infer_hours_tags.py`（深夜営業等）・`infer_features_from_text.py`（クレカ可等）を必ず実行してから出力再生成する
 - **口コミは Place Details API の place_id 経由で取得** — Text Search は誤マッチするため使わない
 - **`shops_overrides.json`** で手動修正を保護（officialUrl, area, description）
@@ -95,6 +98,7 @@ python3 scripts/gen_feature_pages.py                       # 機能別LP再生�
 | `gen_top_shops.py` | ランキング再生成 + HTML埋め込み | なし |
 | `gen_area_pages.py` | エリアLP（18ページ）+ sitemap 再生成 | なし |
 | `gen_feature_pages.py` | 機能・条件別LP（`FEATURE_DEFS` に定義）+ sitemap 再生成。`gen_area_pages.py` の関数を import して再利用 | なし |
+| `gen_shop_pages.py` | 店舗個別ページ `/shop/<CID>` + sitemap 再生成。`gen_area_pages.py` の関数を import して再利用 | なし |
 | `fetch_analytics.py` | GA4+Search Console データ自動取得（手動ZIP不要。専用venv `.venv-analytics/` で実行） | なし（無料API） |
 
 ## ランキング事前レンダリング
