@@ -1490,6 +1490,15 @@
     return (hash >>> 0).toString(36);
   }
 
+  /** Google Maps URL（`?cid=...`）からCIDを取り出す。
+   *  CIDはデータのキーであり店名・エリアが変わっても不変なので、
+   *  共有URLや外部からのリンクにはこちらを使う。
+   *  computeShopId は店名+エリアのハッシュのため、月次更新で店名が変わるとIDが変わってしまう。 */
+  function computeShopCid(url) {
+    var m = /[?&]cid=(\d+)/.exec(url || '');
+    return m ? m[1] : '';
+  }
+
   /** クリップボードへコピー（Clipboard API優先、フォールバックあり） */
   function copyTextToClipboard(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1556,7 +1565,7 @@
 
   /** 共有用のクリーンなURL（フィルタ条件を含まず、`?shop=<id>` のみ）を生成 */
   function buildShareUrlForShop(shop) {
-    var id = computeShopId(shop.name, shop.area);
+    var id = computeShopCid(shop.url) || computeShopId(shop.name, shop.area);
     return window.location.origin + window.location.pathname + '?shop=' + id;
   }
 
@@ -1707,7 +1716,7 @@
 
     currentShopForShare = shop;
     hideShareFeedback();
-    updateUrlShopParam(computeShopId(shop.name, shop.area));
+    updateUrlShopParam(computeShopCid(shop.url) || computeShopId(shop.name, shop.area));
 
     // 店舗詳細の開封を計測する。以前は updateUrlShopParam の replaceState を
     // GA4拡張計測が page_view として拾っていたが、その設定を切った（2026-08-02）ため
@@ -2085,8 +2094,13 @@
           _lng: shop._lng,
           placeId: shop.placeId || ''
         };
+        // ハッシュIDとCIDの両方をキーにする。
+        // エリアLPのJSON-LDは `/search?shop=<CID>` を出力しているため、
+        // CIDを受け付けないと当該リンクがモーダルを開けない（2026-09-05 修正）。
         var id = computeShopId(shopData.name, shopData.area);
         shopIdMap[id] = shopData;
+        var cid = computeShopCid(shopData.url);
+        if (cid) shopIdMap[cid] = shopData;
       });
 
       // 初期エリア指定がある場合のみそのリージョンをレンダリング（chunk 描画）

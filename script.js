@@ -171,6 +171,78 @@
   var shopModal = document.getElementById('shop-modal');
   var shopModalBackdrop = shopModal ? shopModal.querySelector('.shop-modal-backdrop') : null;
   var shopModalClose = shopModal ? shopModal.querySelector('.shop-modal-close') : null;
+  var shopModalShareBtn = document.getElementById('shop-modal-share-btn');
+  var shopModalShareFeedback = document.getElementById('shop-modal-share-feedback');
+  var currentShopForShare = null;
+
+  /** Google Maps URL（`?cid=...`）からCIDを取り出す。
+   *  CIDはデータのキーで店名・エリアが変わっても不変なので共有URLに使う。 */
+  function computeShopCid(url) {
+    var m = /[?&]cid=(\d+)/.exec(url || '');
+    return m ? m[1] : '';
+  }
+
+  /** 共有URL。店舗ページがあればそれを、無ければ検索ページのディープリンクを返す。 */
+  function buildShareUrlForShop(shop) {
+    var cid = computeShopCid(shop && shop.url);
+    if (!cid) return window.location.origin + window.location.pathname;
+    return window.location.origin + '/search?shop=' + cid;
+  }
+
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve(); else reject(new Error('execCommand copy failed'));
+      } catch (e) { reject(e); }
+    });
+  }
+
+  function showShareFeedback(el, message, isError) {
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle('is-error', !!isError);
+    setTimeout(function () { el.textContent = ''; el.classList.remove('is-error'); }, 2400);
+  }
+
+  /** 共有ボタンの共通配線。モーダルにも店舗ページにも同じ挙動を与える。 */
+  function wireShareButton(btn, feedbackEl, getUrl) {
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var url = getUrl();
+      if (!url) return;
+      copyTextToClipboard(url).then(function () {
+        showShareFeedback(feedbackEl, 'URLをコピーしました', false);
+      }).catch(function () {
+        showShareFeedback(feedbackEl, 'コピーできませんでした', true);
+      });
+    });
+  }
+
+  wireShareButton(shopModalShareBtn, shopModalShareFeedback, function () {
+    return currentShopForShare ? buildShareUrlForShop(currentShopForShare) : '';
+  });
+
+  // 店舗個別ページ（/shop/<CID>）の共有ボタン。共有するのはページ自身のURL。
+  var pageShareBtn = document.getElementById('shop-page-share-btn');
+  if (pageShareBtn) {
+    wireShareButton(pageShareBtn, document.getElementById('shop-page-share-feedback'), function () {
+      return window.location.origin + window.location.pathname;
+    });
+  }
 
   window.openShopModal = openShopModal;
   function openShopModal(shop) {
@@ -310,6 +382,9 @@
     if (typeof gtag === 'function') {
       gtag('event', 'shop_modal_open', { shop_name: shop.name, shop_area: shop.area });
     }
+
+    currentShopForShare = shop;
+    if (shopModalShareFeedback) shopModalShareFeedback.textContent = '';
 
     shopModal.classList.add('is-open');
     shopModal.setAttribute('aria-hidden', 'false');
