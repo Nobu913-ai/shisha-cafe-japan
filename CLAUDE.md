@@ -80,6 +80,8 @@ python3 scripts/gen_shop_pages.py                          # 店舗個別ペー�
 - **新規店はルールタグを取りこぼす** — `add_new_shops`/`enrich_new_shops` は `infer_*` を呼ばない。新規追加後は `infer_hours_tags.py`（深夜営業等）・`infer_features_from_text.py`（クレカ可等）を必ず実行してから出力再生成する
 - **口コミは Place Details API の place_id 経由で取得** — Text Search は誤マッチするため使わない
 - **`shops_overrides.json`** で手動修正を保護（officialUrl, area, description）
+- **`officialUrl` は空欄のときだけ Google の `websiteUri` で埋まる（fill）** — 既存値は上書きされない。月次更新では「officialUrl 乖離」件数も出力されるので、`always` へ切り替えるかの判断材料にする
+- **`closedDay` は refetch では更新されない** — `extract_fields_from_details()` が生成しないため。手で入れた値（例「なし」）は月次更新で消えない
 - **環境変数**: `GOOGLE_MAPS_API_KEY`（Places API）、`ANTHROPIC_API_KEY`（AI判定・紹介文）、`GA4_PROPERTY_ID`/`GSC_SITE_URL`（アクセス解析自動取得）
 - **APIキーのフォールバック**: スクリプトは `GOOGLE_PLACES_API_KEY` を優先、未設定なら `GOOGLE_MAPS_API_KEY` を使用。`.env` には `GOOGLE_MAPS_API_KEY` のみ入れておけば両方で動く
 
