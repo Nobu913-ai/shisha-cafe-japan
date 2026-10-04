@@ -9,14 +9,14 @@
 - **APIコストに注意** — Place Details API、Anthropic API は課金あり。全件再処理は避け、必要な分だけ処理する
 - **既存UXを壊す変更は避ける** — SEO目的でも中間ページ等の動線悪化は不採用（Tier2エリアページ見送りの前例あり）
 - **JS/CSSを変更したら参照側HTMLの `?v=` も必ず更新する** — 漏れると本番の返訪ユーザーだけ古い挙動になる（ローカル初回アクセスでは再現しないため気づけない）。生成ページ（`area/*` `feature/*`）の版はジェネレータ内のテンプレートに書かれているので、HTMLを直接直さずジェネレータを直して再生成する
-- **店舗数の表記は「全国1,400店舗以上」で統一** — サイト・Note記事・X・スキルすべて横断。実数（現在約1,432店）に近いキリの良い下限＋「以上」。**手書きのコピー（meta description・OGP・見出し・記事本文）では具体的な件数を出さない**
+- **店舗数の表記は「全国1,400店舗以上」で統一** — サイト・Note記事・X・スキルすべて横断。実数（現在約1,438店）に近いキリの良い下限＋「以上」。**手書きのコピー（meta description・OGP・見出し・記事本文）では具体的な件数を出さない**
   - **例外: データから自動生成される表示は実数でよい** — エリアLPの「おすすめ178店」、機能別LPの「全461店」、`search.html` の静的サマリー「全国1,432店舗を掲載」（`gen_top_shops.py:476`）が該当。**再生成のたびにデータへ自動追従するので陳腐化しない**うえ、AI検索・SEOでは具体的で更新日の明示された数字のほうが引用されやすいため。「1,400店舗以上」と矛盾するわけではなく粒度の違い（1,432は1,400以上）
   - 判断基準: **人が書いた文言か、データが生成した文言か**。前者は必ず「1,400店舗以上」
 
 ## プロジェクト構成
 
 ```
-shops.json          — 全店舗データ（約1432店。手書きコピーの表記は「1,400店舗以上」で統一）
+shops.json          — 全店舗データ（約1438店。手書きコピーの表記は「1,400店舗以上」で統一）
 top-shops.json      — エリア別ランキング
 search.js           — 店舗検索のメインロジック
 script.js           — トップページ等の共通スクリプト
@@ -80,7 +80,7 @@ python3 scripts/gen_shop_pages.py                          # 店舗個別ペー�
 - **新規店はルールタグを取りこぼす** — `add_new_shops`/`enrich_new_shops` は `infer_*` を呼ばない。新規追加後は `infer_hours_tags.py`（深夜営業等）・`infer_features_from_text.py`（クレカ可等）を必ず実行してから出力再生成する
 - **口コミは Place Details API の place_id 経由で取得** — Text Search は誤マッチするため使わない
 - **`shops_overrides.json`** で手動修正を保護（officialUrl, area, description）
-- **`officialUrl` は空欄のときだけ Google の `websiteUri` で埋まる（fill）** — 既存値は上書きされない。月次更新では「officialUrl 乖離」件数も出力されるので、`always` へ切り替えるかの判断材料にする
+- **`officialUrl` は Google の `websiteUri` に常に合わせる（always・2026-10-04〜）** — 店舗への案内「Googleマップを直せば月次更新で反映」と一致させるため。手動修正は `shops_overrides.json` で保護。月次更新で出る「officialUrl 乖離」一覧で、短縮URL（t.co）・リンク切れ・予約サイトに変わった店がないか確認し、必要なら overrides で是正する
 - **`closedDay` は refetch では更新されない** — `extract_fields_from_details()` が生成しないため。手で入れた値（例「なし」）は月次更新で消えない
 - **環境変数**: `GOOGLE_MAPS_API_KEY`（Places API）、`ANTHROPIC_API_KEY`（AI判定・紹介文）、`GA4_PROPERTY_ID`/`GSC_SITE_URL`（アクセス解析自動取得）
 - **APIキーのフォールバック**: スクリプトは `GOOGLE_PLACES_API_KEY` を優先、未設定なら `GOOGLE_MAPS_API_KEY` を使用。`.env` には `GOOGLE_MAPS_API_KEY` のみ入れておけば両方で動く
